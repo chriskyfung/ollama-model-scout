@@ -568,24 +568,27 @@ export default function App() {
   const chartData = useMemo(() => {
     if (!selectedModel) return [];
     const maxContext = selectedModel.details?.context_length || 131072;
-    const steps = [2048, 4096, 8192, 16384, 32768, 65536, maxContext];
+    const baseSteps = [2048, 4096, 8192, 16384, 32768, 65536];
+    const validSteps = baseSteps.filter((c) => c < maxContext);
+    validSteps.push(maxContext);
 
-    return steps
-      .filter((c) => c <= maxContext)
-      .map((c) => {
-        const perf = calculatePerformance(
-          c,
-          hardware.vram,
-          hardware.ram,
-          selectedModel.details?.parameter_size,
-          selectedModel.details?.quantization_level,
-        );
-        return {
-          context: c >= 1024 ? `${Math.round(c / 1024)}K` : `${c}`,
-          contextNum: c,
-          ...perf,
-        };
-      });
+    // 移除可能重複的數值並排序
+    const uniqueSteps = Array.from(new Set(validSteps)).sort((a, b) => a - b);
+
+    return uniqueSteps.map((c) => {
+      const perf = calculatePerformance(
+        c,
+        hardware.vram,
+        hardware.ram,
+        selectedModel.details?.parameter_size,
+        selectedModel.details?.quantization_level,
+      );
+      return {
+        context: c >= 1024 ? `${Math.round(c / 1024)}K` : `${c}`,
+        contextNum: c,
+        ...perf,
+      };
+    });
   }, [selectedModel, hardware]);
 
   return (
