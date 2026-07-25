@@ -443,9 +443,9 @@ export default function App() {
           valB = b.size === "remote" ? -1 : b.size || 0;
         } else if (sortConfig.key === "status") {
           // 狀態排序權重: ok > error > untested (0)
-          const weight = { ok: 2, error: 1, undefined: 0 };
-          valA = weight[testResults[a.name]?.status];
-          valB = weight[testResults[b.name]?.status];
+          const weight = { ok: 2, error: 1 };
+          valA = weight[testResults[a.name]?.status] || 0;
+          valB = weight[testResults[b.name]?.status] || 0;
         } else if (
           [
             "family",
