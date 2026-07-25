@@ -712,14 +712,14 @@ export default function App() {
                 <label className="block text-xs font-semibold text-slate-400 mb-1.5">
                   Custom Headers (JSON 格式)
                 </label>
-                <input
-                  type="text"
+                <textarea
                   value={apiConfig.headers}
                   onChange={(e) =>
                     setApiConfig({ ...apiConfig, headers: e.target.value })
                   }
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm font-mono text-slate-300 focus:border-cyan-500 outline-none"
-                  placeholder='{"X-Custom-Header": "Value"}'
+                  rows={3}
+                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm font-mono text-slate-300 focus:border-cyan-500 outline-none resize-y min-h-[80px]"
+                  placeholder={`{\n  "X-Custom-Header": "Value"\n}`}
                 />
               </div>
             </div>
