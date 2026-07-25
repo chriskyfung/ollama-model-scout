@@ -75,8 +75,8 @@ const MOCK_MODELS = [
   },
 ];
 
-function isDigit(str) {
-  return typeof str === "string" && /^[0-9]*$/.test(str);
+function isDigit(val) {
+  return val !== null && val !== undefined && /^\d+$/.test(String(val));
 }
 
 // 修正 size 單位：加入 KB
