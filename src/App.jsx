@@ -1,6 +1,8 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceArea, ReferenceLine } from 'recharts';
-import { Search, Settings, Cloud, Cpu, Database, ChevronDown, Filter, HardDrive, Zap, AlertTriangle, RefreshCw, CheckCircle2, XCircle, Sliders, Server, HelpCircle, Terminal, X } from 'lucide-react';
+import { Search, Settings, Cloud, Cpu, SquareActivity, ChevronDown, Filter, HardDrive, Zap, AlertTriangle, RefreshCw, CheckCircle2, XCircle, Sliders, Server, HelpCircle, Terminal, X } from 'lucide-react';
+
+const VERSION = "v1.0.0";
 
 const MOCK_MODELS = [
   {
@@ -597,10 +599,13 @@ export default function App() {
       <div className="max-w-7xl mx-auto mb-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 flex items-center gap-3">
-              <Database className="w-8 h-8 text-cyan-400" />
-              Ollama 模型偵察中心 v1.0.0
-            </h1>
+            <div className="flex gap-1">
+              <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 flex items-center gap-3">
+                <SquareActivity className="w-8 h-8 text-cyan-400" />
+                Ollama 模型偵察中心
+              </h1>
+              <span className="text-xs text-slate-400">{VERSION}</span>
+            </div>
             <p className="text-xs text-slate-400 mt-1">
               遠端伺服器監控與硬體超頻推論評估系統
             </p>
