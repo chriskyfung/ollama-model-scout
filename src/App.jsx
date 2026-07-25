@@ -170,7 +170,7 @@ const calculatePerformance = (
   } else if (vramRatio <= 0) {
     estimatedTps = cpuSpeed;
   } else {
-    estimatedTps = 1 / ((vramRatio / gpuSpeed) + ((1 - vramRatio) / cpuSpeed));
+    estimatedTps = 1 / (vramRatio / gpuSpeed + (1 - vramRatio) / cpuSpeed);
   }
 
   const tokensPerSecond = Math.max(0.5, Math.min(estimatedTps * 0.85, 120));
