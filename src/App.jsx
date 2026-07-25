@@ -1,6 +1,35 @@
-import React, { useState, useMemo, useEffect } from 'react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceArea, ReferenceLine } from 'recharts';
-import { Search, Settings, Cloud, Cpu, SquareActivity, ChevronDown, Filter, HardDrive, Zap, AlertTriangle, RefreshCw, CheckCircle2, XCircle, Sliders, Server, HelpCircle, Terminal, X } from 'lucide-react';
+import React, { useState, useMemo, useEffect } from "react";
+import {
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  ReferenceArea,
+  ReferenceLine,
+} from "recharts";
+import {
+  Search,
+  Settings,
+  Cloud,
+  Cpu,
+  SquareActivity,
+  ChevronDown,
+  Filter,
+  HardDrive,
+  Zap,
+  AlertTriangle,
+  RefreshCw,
+  CheckCircle2,
+  XCircle,
+  Sliders,
+  Server,
+  HelpCircle,
+  Terminal,
+  X,
+} from "lucide-react";
 
 const VERSION = "v1.0.0";
 
@@ -83,20 +112,20 @@ function isDigit(val) {
 
 // 修正 size 單位：加入 KB
 const formatBytes = (bytes) => {
-  if (bytes === 'remote') return 'Cloud';
-  if (!bytes || isNaN(bytes)) return '0 B';
+  if (bytes === "remote") return "Cloud";
+  if (!bytes || isNaN(bytes)) return "0 B";
   const k = 1024;
-  const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+  const sizes = ["B", "KB", "MB", "GB", "TB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
 };
 
 // 格式化 Parameter Size 呈現
 const formatParameterSize = (paramStr) => {
   // return paramStr;
-  if (!paramStr) return '-';
+  if (!paramStr) return "-";
   if (!isDigit(paramStr)) return paramStr;
-  const sizes = ['', 'K', 'M', 'B', 'T'];
+  const sizes = ["", "K", "M", "B", "T"];
   const i = Math.floor(Math.log10(paramStr) / 3);
   return parseFloat((paramStr / Math.pow(10, 3 * i)).toFixed(2)) + sizes[i];
 };
@@ -104,24 +133,24 @@ const formatParameterSize = (paramStr) => {
 const getBitsPerParam = (quantization) => {
   if (!quantization) return 4.5;
   const q = quantization.toUpperCase();
-  if (q.includes('F16') || q.includes('16B')) return 16;
-  if (q.includes('F32')) return 32;
-  if (q.includes('Q8')) return 8.5;
-  if (q.includes('Q6')) return 6.5;
-  if (q.includes('Q5')) return 5.5;
-  if (q.includes('Q4')) return 4.5;
-  if (q.includes('Q3')) return 3.5;
-  if (q.includes('Q2')) return 2.8;
+  if (q.includes("F16") || q.includes("16B")) return 16;
+  if (q.includes("F32")) return 32;
+  if (q.includes("Q8")) return 8.5;
+  if (q.includes("Q6")) return 6.5;
+  if (q.includes("Q5")) return 5.5;
+  if (q.includes("Q4")) return 4.5;
+  if (q.includes("Q3")) return 3.5;
+  if (q.includes("Q2")) return 2.8;
   return 4.5;
 };
 
 const parseParamSizeToNum = (paramStr) => {
-  if (!paramStr || paramStr === 'Cloud') return 7;
+  if (!paramStr || paramStr === "Cloud") return 7;
   const match = paramStr.match(/^([\d.]+)\s*([BMbm])?$/);
   if (!match) return 7;
   const val = parseFloat(match[1]);
-  const unit = (match[2] || 'B').toUpperCase();
-  return unit === 'B' ? val : val / 1000;
+  const unit = (match[2] || "B").toUpperCase();
+  return unit === "B" ? val : val / 1000;
 };
 
 const calculatePerformance = (
@@ -162,7 +191,7 @@ const calculatePerformance = (
 
   // 4. 速度推估 (Tokens/sec) - 諧振平均數 (Harmonic Mean)
   const gpuSpeed = 500 / Math.max(0.5, modelWeightGB); // GPU 頻寬 500 GB/s
-  const cpuSpeed = 60 / Math.max(0.5, modelWeightGB);  // CPU 頻寬 60 GB/s
+  const cpuSpeed = 60 / Math.max(0.5, modelWeightGB); // CPU 頻寬 60 GB/s
 
   let estimatedTps = 0;
   if (vramTotal === 0) {
