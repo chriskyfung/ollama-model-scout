@@ -654,896 +654,913 @@ export default function App() {
           </div>
         </div>
 
-        {/* 連線狀態 Banner */}
-        {apiStatus.message && (
-          <div
-            className={`p-3.5 rounded-xl border mb-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-xs md:text-sm animate-in fade-in ${
-              apiStatus.state === "error" || apiStatus.isFallback
-                ? "bg-amber-950/40 border-amber-800/60 text-amber-200"
-                : "bg-emerald-950/40 border-emerald-800/60 text-emerald-200"
-            }`}
-          >
-            <div className="flex items-center gap-2.5">
-              {apiStatus.isFallback ? (
-                <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
-              ) : apiStatus.state === "error" ? (
-                <XCircle className="w-4 h-4 text-rose-400 shrink-0" />
-              ) : (
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-              )}
-              <span>{apiStatus.message}</span>
+        <main className="max-w-7xl mx-auto px-4 md:px-6 pt-6 pb-16 space-y-8">
+          {/* 連線狀態 Banner */}
+          {apiStatus.message && (
+            <div
+              className={`p-3.5 rounded-xl border flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-xs md:text-sm animate-in fade-in ${
+                apiStatus.state === "error" || apiStatus.isFallback
+                  ? "bg-amber-950/40 border-amber-800/60 text-amber-200"
+                  : "bg-emerald-950/40 border-emerald-800/60 text-emerald-200"
+              }`}
+            >
+              <div className="flex items-center gap-2.5">
+                {apiStatus.isFallback ? (
+                  <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
+                ) : apiStatus.state === "error" ? (
+                  <XCircle className="w-4 h-4 text-rose-400 shrink-0" />
+                ) : (
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                )}
+                <span>{apiStatus.message}</span>
+              </div>
+              <div className="flex items-center gap-4 shrink-0">
+                {apiStatus.state === "error" && (
+                  <label className="flex items-center gap-2 text-xs cursor-pointer hover:text-white transition-colors">
+                    <input
+                      type="checkbox"
+                      checked={allowMockFallback}
+                      onChange={(e) => {
+                        const newVal = e.target.checked;
+                        setAllowMockFallback(newVal);
+                        fetchModels(newVal);
+                      }}
+                      className="accent-cyan-500 rounded cursor-pointer"
+                    />
+                    <span>啟用 Mock 資料</span>
+                  </label>
+                )}
+                <button
+                  onClick={() => fetchModels()}
+                  className="flex items-center gap-1 text-xs px-2.5 py-1 bg-slate-900/80 hover:bg-slate-800 rounded-lg border border-slate-700 transition-colors"
+                >
+                  <RefreshCw className="w-3 h-3" /> 重試
+                </button>
+              </div>
             </div>
-            <div className="flex items-center gap-4 shrink-0">
-              {apiStatus.state === "error" && (
-                <label className="flex items-center gap-2 text-xs cursor-pointer hover:text-white transition-colors">
-                  <input
-                    type="checkbox"
-                    checked={allowMockFallback}
-                    onChange={(e) => {
-                      const newVal = e.target.checked;
-                      setAllowMockFallback(newVal);
-                      fetchModels(newVal);
-                    }}
-                    className="accent-cyan-500 rounded cursor-pointer"
-                  />
-                  <span>啟用 Mock 資料</span>
-                </label>
-              )}
-              <button
-                onClick={() => fetchModels()}
-                className="flex items-center gap-1 text-xs px-2.5 py-1 bg-slate-900/80 hover:bg-slate-800 rounded-lg border border-slate-700 transition-colors"
-              >
-                <RefreshCw className="w-3 h-3" /> 重試
-              </button>
-            </div>
-          </div>
-        )}
+          )}
 
-        {/* 展開式 API & 硬體規格設定面板 */}
-        {showApiSettings && (
-          <div className="bg-slate-900/90 backdrop-blur-md border border-slate-800 rounded-2xl p-6 mb-6 grid grid-cols-1 md:grid-cols-3 gap-6 shadow-2xl animate-in slide-in-from-top-4">
-            {/* API 連線區 */}
-            <div className="md:col-span-2 space-y-4 border-b md:border-b-0 md:border-r border-slate-800 pb-4 md:pb-0 md:pr-6">
-              <h3 className="text-sm font-bold text-cyan-400 flex items-center gap-2">
-                <Server className="w-4 h-4" /> 遠端 Ollama API 配置
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {/* 展開式 API & 硬體規格設定面板 */}
+          {showApiSettings && (
+            <div className="bg-slate-900/90 backdrop-blur-md border border-slate-800 rounded-2xl p-6 grid grid-cols-1 md:grid-cols-3 gap-6 shadow-2xl animate-in slide-in-from-top-4">
+              {/* API 連線區 */}
+              <div className="md:col-span-2 space-y-4 border-b md:border-b-0 md:border-r border-slate-800 pb-4 md:pb-0 md:pr-6">
+                <h3 className="text-sm font-bold text-cyan-400 flex items-center gap-2">
+                  <Server className="w-4 h-4" /> 遠端 Ollama API 配置
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-400 mb-1.5">
+                      Base URL
+                    </label>
+                    <input
+                      type="text"
+                      value={apiConfig.url}
+                      onChange={(e) =>
+                        setApiConfig({ ...apiConfig, url: e.target.value })
+                      }
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-slate-200 focus:border-cyan-500 outline-none"
+                      placeholder="http://localhost:11434"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-slate-400 mb-1.5">
+                      Bearer API Key (選填)
+                    </label>
+                    <input
+                      type="password"
+                      value={apiConfig.key}
+                      onChange={(e) =>
+                        setApiConfig({ ...apiConfig, key: e.target.value })
+                      }
+                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-slate-200 focus:border-cyan-500 outline-none"
+                      placeholder="sk-..."
+                    />
+                  </div>
+                </div>
                 <div>
                   <label className="block text-xs font-semibold text-slate-400 mb-1.5">
-                    Base URL
+                    Custom Headers (JSON 格式)
                   </label>
+                  <textarea
+                    value={apiConfig.headers}
+                    onChange={(e) =>
+                      setApiConfig({ ...apiConfig, headers: e.target.value })
+                    }
+                    rows={3}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm font-mono text-slate-300 focus:border-cyan-500 outline-none resize-y min-h-[80px]"
+                    placeholder={`{\n  "X-Custom-Header": "Value"\n}`}
+                  />
+                </div>
+              </div>
+
+              {/* 本地硬體規格設定區 (解決使用者輸入 VRAM/RAM 需求) */}
+              <div className="space-y-4">
+                <h3 className="text-sm font-bold text-emerald-400 flex items-center gap-2">
+                  <Cpu className="w-4 h-4" /> 本地硬體規格模擬 (VRAM / RAM)
+                </h3>
+                <div>
+                  <label className="flex justify-between text-xs font-semibold text-slate-400 mb-1.5">
+                    <span>GPU VRAM 顯存</span>
+                    <span className="text-emerald-400 font-mono font-bold">
+                      {hardware.vram} GB
+                    </span>
+                  </label>
+                  <input
+                    type="number"
+                    min="0"
+                    max="128"
+                    value={hardware.vram}
+                    onChange={(e) =>
+                      setHardware({
+                        ...hardware,
+                        vram: Math.max(0, Number(e.target.value)),
+                      })
+                    }
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-1.5 text-sm font-mono text-slate-200 focus:border-emerald-500 outline-none"
+                  />
+                </div>
+                <div>
+                  <label className="flex justify-between text-xs font-semibold text-slate-400 mb-1.5">
+                    <span>系統 RAM 記憶體</span>
+                    <span className="text-cyan-400 font-mono font-bold">
+                      {hardware.ram} GB
+                    </span>
+                  </label>
+                  <input
+                    type="number"
+                    min="4"
+                    max="512"
+                    value={hardware.ram}
+                    onChange={(e) =>
+                      setHardware({
+                        ...hardware,
+                        ram: Math.max(4, Number(e.target.value)),
+                      })
+                    }
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-1.5 text-sm font-mono text-slate-200 focus:border-cyan-500 outline-none"
+                  />
+                </div>
+
+                {/* 快捷預設按鈕 */}
+                <div className="pt-1 flex flex-wrap gap-2">
+                  <button
+                    onClick={() => setHardware({ vram: 0, ram: 32 })}
+                    className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-[11px] rounded-lg text-slate-300"
+                  >
+                    純 CPU (32G)
+                  </button>
+                  <button
+                    onClick={() => setHardware({ vram: 16, ram: 32 })}
+                    className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-[11px] rounded-lg text-slate-300"
+                  >
+                    MacBook (16G)
+                  </button>
+                  <button
+                    onClick={() => setHardware({ vram: 24, ram: 64 })}
+                    className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-[11px] rounded-lg text-slate-300"
+                  >
+                    RTX 4090 (24G)
+                  </button>
+                </div>
+              </div>
+
+              <div className="md:col-span-3 flex justify-end pt-2 border-t border-slate-800">
+                <button
+                  onClick={fetchModels}
+                  className="px-6 py-2 bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-500 hover:to-emerald-500 text-white rounded-xl text-sm font-semibold transition-all shadow-lg shadow-cyan-950/50"
+                >
+                  套用設定並重新載入
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* === 2. 模型搜尋與診斷矩陣區塊 (`#models`) === */}
+          <section id="models" className="scroll-mt-20">
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 mb-6 space-y-4 shadow-xl">
+              <div className="flex flex-col md:flex-row gap-4">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
                   <input
                     type="text"
-                    value={apiConfig.url}
-                    onChange={(e) =>
-                      setApiConfig({ ...apiConfig, url: e.target.value })
-                    }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-slate-200 focus:border-cyan-500 outline-none"
-                    placeholder="http://localhost:11434"
+                    placeholder="搜尋模型名稱、能力、家族、量化等級..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-200 focus:border-cyan-500 outline-none transition-colors"
                   />
                 </div>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1.5">
-                    Bearer API Key (選填)
-                  </label>
-                  <input
-                    type="password"
-                    value={apiConfig.key}
-                    onChange={(e) =>
-                      setApiConfig({ ...apiConfig, key: e.target.value })
-                    }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-slate-200 focus:border-cyan-500 outline-none"
-                    placeholder="sk-..."
-                  />
+
+                {/* 欄位顯示/隱藏選單 */}
+                <div className="relative shrink-0">
+                  <button
+                    onClick={() => setShowColumnMenu(!showColumnMenu)}
+                    className="w-full md:w-auto flex items-center justify-between gap-2 px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 text-sm font-medium text-slate-300"
+                  >
+                    <Filter className="w-4 h-4 text-cyan-400" />
+                    <span>欄位自訂</span>
+                    <ChevronDown className="w-3.5 h-3.5" />
+                  </button>
+                  {showColumnMenu && (
+                    <div className="absolute right-0 mt-2 w-52 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl z-50 p-3 space-y-1">
+                      <div className="text-xs font-bold text-slate-400 px-2 pb-2 border-b border-slate-800">
+                        顯示欄位開關
+                      </div>
+                      {Object.keys(columns).map((col) => (
+                        <label
+                          key={col}
+                          className="flex items-center gap-2.5 px-2 py-1.5 hover:bg-slate-800/80 rounded-lg cursor-pointer text-xs text-slate-300"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={columns[col]}
+                            onChange={() =>
+                              setColumns((p) => ({ ...p, [col]: !p[col] }))
+                            }
+                            className="accent-cyan-500 rounded"
+                          />
+                          <span className="capitalize">
+                            {col.replace(/([A-Z])/g, " $1")}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
-              <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1.5">
-                  Custom Headers (JSON 格式)
-                </label>
-                <textarea
-                  value={apiConfig.headers}
-                  onChange={(e) =>
-                    setApiConfig({ ...apiConfig, headers: e.target.value })
-                  }
-                  rows={3}
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm font-mono text-slate-300 focus:border-cyan-500 outline-none resize-y min-h-[80px]"
-                  placeholder={`{\n  "X-Custom-Header": "Value"\n}`}
-                />
-              </div>
-            </div>
 
-            {/* 本地硬體規格設定區 (解決使用者輸入 VRAM/RAM 需求) */}
-            <div className="space-y-4">
-              <h3 className="text-sm font-bold text-emerald-400 flex items-center gap-2">
-                <Cpu className="w-4 h-4" /> 本地硬體規格模擬 (VRAM / RAM)
-              </h3>
-              <div>
-                <label className="flex justify-between text-xs font-semibold text-slate-400 mb-1.5">
-                  <span>GPU VRAM 顯存</span>
-                  <span className="text-emerald-400 font-mono font-bold">
-                    {hardware.vram} GB
+              {/* 多維度智慧動態篩選按鈕列 */}
+              <div className="flex flex-col space-y-3 pt-3 border-t border-slate-800/60 text-xs">
+                {/* 1. 類型 (Type) */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
+                    Type:
                   </span>
-                </label>
-                <input
-                  type="number"
-                  min="0"
-                  max="128"
-                  value={hardware.vram}
-                  onChange={(e) =>
-                    setHardware({
-                      ...hardware,
-                      vram: Math.max(0, Number(e.target.value)),
-                    })
-                  }
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-1.5 text-sm font-mono text-slate-200 focus:border-emerald-500 outline-none"
-                />
-              </div>
-              <div>
-                <label className="flex justify-between text-xs font-semibold text-slate-400 mb-1.5">
-                  <span>系統 RAM 記憶體</span>
-                  <span className="text-cyan-400 font-mono font-bold">
-                    {hardware.ram} GB
-                  </span>
-                </label>
-                <input
-                  type="number"
-                  min="4"
-                  max="512"
-                  value={hardware.ram}
-                  onChange={(e) =>
-                    setHardware({
-                      ...hardware,
-                      ram: Math.max(4, Number(e.target.value)),
-                    })
-                  }
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-1.5 text-sm font-mono text-slate-200 focus:border-cyan-500 outline-none"
-                />
-              </div>
-
-              {/* 快捷預設按鈕 */}
-              <div className="pt-1 flex flex-wrap gap-2">
-                <button
-                  onClick={() => setHardware({ vram: 0, ram: 32 })}
-                  className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-[11px] rounded-lg text-slate-300"
-                >
-                  純 CPU (32G)
-                </button>
-                <button
-                  onClick={() => setHardware({ vram: 16, ram: 32 })}
-                  className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-[11px] rounded-lg text-slate-300"
-                >
-                  MacBook (16G)
-                </button>
-                <button
-                  onClick={() => setHardware({ vram: 24, ram: 64 })}
-                  className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-[11px] rounded-lg text-slate-300"
-                >
-                  RTX 4090 (24G)
-                </button>
-              </div>
-            </div>
-
-            <div className="md:col-span-3 flex justify-end pt-2 border-t border-slate-800">
-              <button
-                onClick={fetchModels}
-                className="px-6 py-2 bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-500 hover:to-emerald-500 text-white rounded-xl text-sm font-semibold transition-all shadow-lg shadow-cyan-950/50"
-              >
-                套用設定並重新載入
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* 智慧搜尋與動態過濾矩陣 */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 mb-6 space-y-4 shadow-xl">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
-              <input
-                type="text"
-                placeholder="搜尋模型名稱、能力、家族、量化等級..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-200 focus:border-cyan-500 outline-none transition-colors"
-              />
-            </div>
-
-            {/* 欄位顯示/隱藏選單 */}
-            <div className="relative shrink-0">
-              <button
-                onClick={() => setShowColumnMenu(!showColumnMenu)}
-                className="w-full md:w-auto flex items-center justify-between gap-2 px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 text-sm font-medium text-slate-300"
-              >
-                <Filter className="w-4 h-4 text-cyan-400" />
-                <span>欄位自訂</span>
-                <ChevronDown className="w-3.5 h-3.5" />
-              </button>
-              {showColumnMenu && (
-                <div className="absolute right-0 mt-2 w-52 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl z-50 p-3 space-y-1">
-                  <div className="text-xs font-bold text-slate-400 px-2 pb-2 border-b border-slate-800">
-                    顯示欄位開關
-                  </div>
-                  {Object.keys(columns).map((col) => (
-                    <label
-                      key={col}
-                      className="flex items-center gap-2.5 px-2 py-1.5 hover:bg-slate-800/80 rounded-lg cursor-pointer text-xs text-slate-300"
+                  {["all", "local", "remote"].map((t) => (
+                    <button
+                      key={t}
+                      onClick={() => setFilters((p) => ({ ...p, type: t }))}
+                      className={`px-3 py-1 rounded-lg font-semibold transition-all border ${
+                        filters.type === t
+                          ? "bg-cyan-500/20 border-cyan-500 text-cyan-300 shadow-sm shadow-cyan-950"
+                          : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
+                      }`}
                     >
-                      <input
-                        type="checkbox"
-                        checked={columns[col]}
-                        onChange={() =>
-                          setColumns((p) => ({ ...p, [col]: !p[col] }))
-                        }
-                        className="accent-cyan-500 rounded"
-                      />
-                      <span className="capitalize">
-                        {col.replace(/([A-Z])/g, " $1")}
-                      </span>
-                    </label>
+                      {t === "remote" ? "CLOUD (REMOTE)" : t.toUpperCase()}
+                    </button>
                   ))}
                 </div>
-              )}
-            </div>
-          </div>
 
-          {/* 自動生成的過濾按鈕群組 (Capabilities, Family, Quantization, Type) */}
-          <div className="flex flex-col space-y-3 pt-3 border-t border-slate-800/60 text-xs">
-            {/* 1. 類型 (Type) */}
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
-                Type:
-              </span>
-              {["all", "local", "remote"].map((t) => (
-                <button
-                  key={t}
-                  onClick={() => setFilters((p) => ({ ...p, type: t }))}
-                  className={`px-3 py-1 rounded-lg font-semibold transition-all border ${
-                    filters.type === t
-                      ? "bg-cyan-500/20 border-cyan-500 text-cyan-300 shadow-sm shadow-cyan-950"
-                      : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
-                  }`}
-                >
-                  {t === "remote" ? "CLOUD (REMOTE)" : t.toUpperCase()}
-                </button>
-              ))}
-            </div>
-
-            {/* 2. 能力 (Capabilities) */}
-            {availableCapabilities.length > 0 && (
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
-                  Caps:
-                </span>
-                {availableCapabilities.map((c) => (
-                  <button
-                    key={c}
-                    onClick={() => toggleFilter("capabilities", c)}
-                    className={`px-3 py-1 rounded-lg border transition-all ${
-                      filters.capabilities.includes(c)
-                        ? "bg-indigo-500/20 border-indigo-500 text-indigo-300"
-                        : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
-                    }`}
-                  >
-                    {c}
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {/* 3. 家族 (Family) */}
-            {availableFamilies.length > 0 && (
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
-                  Family:
-                </span>
-                {availableFamilies.map((f) => (
-                  <button
-                    key={f}
-                    onClick={() => toggleFilter("families", f)}
-                    className={`px-3 py-1 rounded-lg border transition-all ${
-                      filters.families.includes(f)
-                        ? "bg-teal-500/20 border-teal-500 text-teal-300"
-                        : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
-                    }`}
-                  >
-                    {f}
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {/* 4. 量化 (Quantization - 全部大寫) */}
-            {availableQuantizations.length > 0 && (
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
-                  Quant:
-                </span>
-                {availableQuantizations.map((q) => (
-                  <button
-                    key={q}
-                    onClick={() => toggleFilter("quantizations", q)}
-                    className={`px-3 py-1 rounded-lg border transition-all ${
-                      filters.quantizations.includes(q)
-                        ? "bg-emerald-500/20 border-emerald-500 text-emerald-300"
-                        : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
-                    }`}
-                  >
-                    {q}
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {/* 5. 測試狀態 (Test Status) */}
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
-                Status:
-              </span>
-              {[
-                { id: "all", label: "所有狀態" },
-                { id: "success", label: "連線成功" },
-                { id: "error", label: "連線失敗" },
-                { id: "untested", label: "尚未測試" },
-              ].map((st) => (
-                <button
-                  key={st.id}
-                  onClick={() =>
-                    setFilters((p) => ({ ...p, testStatus: st.id }))
-                  }
-                  className={`px-3 py-1 rounded-lg font-semibold transition-all border ${
-                    filters.testStatus === st.id
-                      ? "bg-indigo-500/20 border-indigo-500 text-indigo-300 shadow-sm shadow-indigo-950"
-                      : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
-                  }`}
-                >
-                  {st.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* 主數據表格 */}
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl relative z-10">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs md:text-sm whitespace-nowrap">
-              <thead className="bg-slate-950/80 border-b border-slate-800 text-slate-400 font-semibold select-none">
-                <tr>
-                  {columns.name && (
-                    <th
-                      className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
-                      onClick={() => sortTable("name")}
-                    >
-                      Model Name
-                    </th>
-                  )}
-                  {columns.family && (
-                    <th
-                      className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
-                      onClick={() => sortTable("family")}
-                    >
-                      Family
-                    </th>
-                  )}
-                  {columns.parameterSize && (
-                    <th
-                      className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
-                      onClick={() => sortTable("parameter_size")}
-                    >
-                      Parameters
-                    </th>
-                  )}
-                  {columns.quantization && (
-                    <th
-                      className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
-                      onClick={() => sortTable("quantization_level")}
-                    >
-                      Quantization
-                    </th>
-                  )}
-                  {columns.contextLength && (
-                    <th
-                      className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
-                      onClick={() => sortTable("context_length")}
-                    >
-                      Context Length
-                    </th>
-                  )}
-                  {columns.size && (
-                    <th
-                      className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
-                      onClick={() => sortTable("size")}
-                    >
-                      Size
-                    </th>
-                  )}
-                  {columns.status && (
-                    <th
-                      className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
-                      onClick={() => sortTable("status")}
-                    >
-                      API Status
-                    </th>
-                  )}
-                  {columns.capabilities && (
-                    <th className="p-4">Capabilities</th>
-                  )}
-                  {columns.modifiedAt && (
-                    <th
-                      className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
-                      onClick={() => sortTable("modified_at")}
-                    >
-                      Modified At
-                    </th>
-                  )}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-800/40">
-                {filteredModels.length === 0 ? (
-                  <tr>
-                    <td colSpan="8" className="p-8 text-center text-slate-500">
-                      沒有符合過濾條件的模型
-                    </td>
-                  </tr>
-                ) : (
-                  filteredModels.map((m) => {
-                    const isRemote =
-                      m.size === "remote" ||
-                      m.details?.format === "api" ||
-                      !!m.remote_model;
-                    const quantUpper = m.details?.quantization_level
-                      ? m.details.quantization_level.toUpperCase()
-                      : "-";
-
-                    return (
-                      <tr
-                        key={m.name}
-                        onClick={() => setSelectedModel(m)}
-                        className={`hover:bg-slate-800/50 cursor-pointer transition-colors ${
-                          selectedModel?.name === m.name
-                            ? "bg-cyan-950/40 border-l-4 border-l-cyan-400"
-                            : ""
+                {/* 2. 能力 (Capabilities) */}
+                {availableCapabilities.length > 0 && (
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
+                      Caps:
+                    </span>
+                    {availableCapabilities.map((c) => (
+                      <button
+                        key={c}
+                        onClick={() => toggleFilter("capabilities", c)}
+                        className={`px-3 py-1 rounded-lg border transition-all ${
+                          filters.capabilities.includes(c)
+                            ? "bg-indigo-500/20 border-indigo-500 text-indigo-300"
+                            : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
                         }`}
                       >
-                        {columns.name && (
-                          <td className="p-4 font-semibold text-slate-200 flex items-center gap-2">
-                            {m.name}
-                            {isRemote && (
-                              <span className="px-1.5 py-0.5 bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-[10px] rounded">
-                                Cloud
-                              </span>
-                            )}
-                          </td>
-                        )}
-                        {columns.family && (
-                          <td className="p-4 text-slate-400">
-                            {m.details?.family || "-"}
-                          </td>
-                        )}
-                        {columns.parameterSize && (
-                          <td className="p-4">
-                            <span className="px-2 py-0.5 bg-slate-800 rounded-md text-xs font-mono text-slate-300">
-                              {formatParameterSize(m.details?.parameter_size)}
-                            </span>
-                          </td>
-                        )}
-                        {columns.quantization && (
-                          <td className="p-4 font-mono text-slate-300">
-                            <span className="px-2 py-0.5 bg-slate-950 rounded border border-slate-800">
-                              {quantUpper}
-                            </span>
-                          </td>
-                        )}
-                        {columns.contextLength && (
-                          <td className="p-4 font-mono text-xs text-slate-400">
-                            {(m.details?.context_length || 0).toLocaleString()}
-                          </td>
-                        )}
-                        {columns.size && (
-                          <td className="p-4 font-mono text-xs">
-                            {isRemote ? (
-                              <span className="inline-flex items-center gap-1.5 text-indigo-400 bg-indigo-950/40 px-2 py-1 rounded-md border border-indigo-800/40">
-                                <Cloud className="w-3.5 h-3.5" /> Cloud API
-                              </span>
-                            ) : (
-                              <span className="inline-flex items-center gap-1.5 text-emerald-400 bg-emerald-950/40 px-2 py-1 rounded-md border border-emerald-800/40">
-                                <HardDrive className="w-3.5 h-3.5" />{" "}
-                                {formatBytes(m.size)}
-                              </span>
-                            )}
-                          </td>
-                        )}
-                        {columns.status && (
-                          <td className="p-4 font-mono text-xs">
-                            {testResults[m.name] ? (
-                              <span
-                                className={`px-2 py-1 rounded-md text-[10px] border ${
-                                  testResults[m.name].status === "ok"
-                                    ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
-                                    : "bg-rose-500/20 text-rose-400 border-rose-500/30"
-                                }`}
-                              >
-                                {testResults[m.name].msg}
-                              </span>
-                            ) : (
-                              <span className="text-slate-600">-</span>
-                            )}
-                          </td>
-                        )}
-                        {columns.capabilities && (
-                          <td className="p-4">
-                            <div className="flex gap-1 flex-wrap">
-                              {(m.capabilities || []).map((cap) => (
-                                <span
-                                  key={cap}
-                                  className="px-2 py-0.5 bg-slate-800 rounded text-[10px] text-slate-300"
-                                >
-                                  {cap}
-                                </span>
-                              ))}
-                            </div>
-                          </td>
-                        )}
-                        {columns.modifiedAt && (
-                          <td className="p-4 text-xs text-slate-500 font-mono">
-                            {m.modified_at
-                              ? new Date(m.modified_at).toLocaleDateString()
-                              : "-"}
-                          </td>
-                        )}
-                      </tr>
-                    );
-                  })
+                        {c}
+                      </button>
+                    ))}
+                  </div>
                 )}
-              </tbody>
-            </table>
-          </div>
 
-          {/* 表格 Footer 統計 */}
-          <div className="bg-slate-950 p-4 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-slate-400">
-            <div className="flex items-center gap-4">
-              <span>
-                顯示模型:{" "}
-                <strong className="text-white">{filteredModels.length}</strong>{" "}
-                個
-              </span>
-              <span className="h-3 w-px bg-slate-800"></span>
-              <span>
-                本地模型佔用:{" "}
-                <strong className="text-emerald-400 font-mono">
-                  {formatBytes(totalLocalSize)}
-                </strong>
-              </span>
-            </div>
+                {/* 3. 家族 (Family) */}
+                {availableFamilies.length > 0 && (
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
+                      Family:
+                    </span>
+                    {availableFamilies.map((f) => (
+                      <button
+                        key={f}
+                        onClick={() => toggleFilter("families", f)}
+                        className={`px-3 py-1 rounded-lg border transition-all ${
+                          filters.families.includes(f)
+                            ? "bg-teal-500/20 border-teal-500 text-teal-300"
+                            : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
+                        }`}
+                      >
+                        {f}
+                      </button>
+                    ))}
+                  </div>
+                )}
 
-            <div className="flex items-center gap-3">
-              {testLogs.length > 0 && (
-                <button
-                  onClick={() => setShowLogs(true)}
-                  className="flex items-center gap-2 px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-xl transition-colors text-xs font-semibold"
-                >
-                  <Terminal className="w-3.5 h-3.5" /> 檢視測試日誌
-                </button>
-              )}
-              <button
-                onClick={handleBatchTest}
-                disabled={isTesting}
-                className="flex items-center gap-2 px-4 py-1.5 bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-300 border border-indigo-500/30 rounded-xl transition-colors text-xs font-semibold disabled:opacity-50"
-              >
-                <Zap className="w-3.5 h-3.5" />
-                {isTesting ? "批次測試中..." : "批次測試雲端 API 連線"}
-              </button>
-            </div>
-          </div>
-        </div>
+                {/* 4. 量化 (Quantization - 全部大寫) */}
+                {availableQuantizations.length > 0 && (
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
+                      Quant:
+                    </span>
+                    {availableQuantizations.map((q) => (
+                      <button
+                        key={q}
+                        onClick={() => toggleFilter("quantizations", q)}
+                        className={`px-3 py-1 rounded-lg border transition-all ${
+                          filters.quantizations.includes(q)
+                            ? "bg-emerald-500/20 border-emerald-500 text-emerald-300"
+                            : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
+                        }`}
+                      >
+                        {q}
+                      </button>
+                    ))}
+                  </div>
+                )}
 
-        {/* 底部戰略指揮艙 (The Tactical Deck) */}
-        {selectedModel && (
-          <div className="mt-6 bg-slate-900/90 backdrop-blur-2xl border border-slate-700/60 rounded-2xl p-6 shadow-2xl animate-in slide-in-from-bottom-6 flex flex-col lg:flex-row gap-8 relative overflow-hidden">
-            {/* 左側：推論控制與硬體溢流預估 */}
-            <div className="flex-1 space-y-6 relative z-10">
-              <div className="flex justify-between items-start border-b border-slate-800 pb-4">
-                <div>
-                  <h3 className="text-xl font-bold text-white flex items-center gap-2">
-                    {selectedModel.name}
-                  </h3>
-                  <p className="text-xs text-slate-400 mt-1">
-                    參數規模:{" "}
-                    {formatParameterSize(selectedModel.details?.parameter_size)}{" "}
-                    | 量化:{" "}
-                    {selectedModel.details?.quantization_level?.toUpperCase() ||
-                      "UNKNOWN"}{" "}
-                    | 最大 Context:{" "}
-                    {(
-                      selectedModel.details?.context_length || 0
-                    ).toLocaleString()}
-                  </p>
+                {/* 5. 測試狀態 (Test Status) */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
+                    Status:
+                  </span>
+                  {[
+                    { id: "all", label: "所有狀態" },
+                    { id: "success", label: "連線成功" },
+                    { id: "error", label: "連線失敗" },
+                    { id: "untested", label: "尚未測試" },
+                  ].map((st) => (
+                    <button
+                      key={st.id}
+                      onClick={() =>
+                        setFilters((p) => ({ ...p, testStatus: st.id }))
+                      }
+                      className={`px-3 py-1 rounded-lg font-semibold transition-all border ${
+                        filters.testStatus === st.id
+                          ? "bg-indigo-500/20 border-indigo-500 text-indigo-300 shadow-sm shadow-indigo-950"
+                          : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
+                      }`}
+                    >
+                      {st.label}
+                    </button>
+                  ))}
                 </div>
-                <button
-                  onClick={() => setSelectedModel(null)}
-                  className="p-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-400 hover:text-white transition-colors"
-                >
-                  <XCircle className="w-5 h-5" />
-                </button>
+              </div>
+            </div>
+
+            {/* 模型列表數據表格 */}
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl relative z-10">
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs md:text-sm whitespace-nowrap">
+                  <thead className="bg-slate-950/80 border-b border-slate-800 text-slate-400 font-semibold select-none">
+                    <tr>
+                      {columns.name && (
+                        <th
+                          className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
+                          onClick={() => sortTable("name")}
+                        >
+                          Model Name
+                        </th>
+                      )}
+                      {columns.family && (
+                        <th
+                          className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
+                          onClick={() => sortTable("family")}
+                        >
+                          Family
+                        </th>
+                      )}
+                      {columns.parameterSize && (
+                        <th
+                          className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
+                          onClick={() => sortTable("parameter_size")}
+                        >
+                          Parameters
+                        </th>
+                      )}
+                      {columns.quantization && (
+                        <th
+                          className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
+                          onClick={() => sortTable("quantization_level")}
+                        >
+                          Quantization
+                        </th>
+                      )}
+                      {columns.contextLength && (
+                        <th
+                          className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
+                          onClick={() => sortTable("context_length")}
+                        >
+                          Context Length
+                        </th>
+                      )}
+                      {columns.size && (
+                        <th
+                          className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
+                          onClick={() => sortTable("size")}
+                        >
+                          Size
+                        </th>
+                      )}
+                      {columns.status && (
+                        <th
+                          className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
+                          onClick={() => sortTable("status")}
+                        >
+                          API Status
+                        </th>
+                      )}
+                      {columns.capabilities && (
+                        <th className="p-4">Capabilities</th>
+                      )}
+                      {columns.modifiedAt && (
+                        <th
+                          className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
+                          onClick={() => sortTable("modified_at")}
+                        >
+                          Modified At
+                        </th>
+                      )}
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-800/40">
+                    {filteredModels.length === 0 ? (
+                      <tr>
+                        <td
+                          colSpan="8"
+                          className="p-8 text-center text-slate-500"
+                        >
+                          沒有符合過濾條件的模型
+                        </td>
+                      </tr>
+                    ) : (
+                      filteredModels.map((m) => {
+                        const isRemote =
+                          m.size === "remote" ||
+                          m.details?.format === "api" ||
+                          !!m.remote_model;
+                        const quantUpper = m.details?.quantization_level
+                          ? m.details.quantization_level.toUpperCase()
+                          : "-";
+
+                        return (
+                          <tr
+                            key={m.name}
+                            onClick={() => setSelectedModel(m)}
+                            className={`hover:bg-slate-800/50 cursor-pointer transition-colors ${
+                              selectedModel?.name === m.name
+                                ? "bg-cyan-950/40 border-l-4 border-l-cyan-400"
+                                : ""
+                            }`}
+                          >
+                            {columns.name && (
+                              <td className="p-4 font-semibold text-slate-200 flex items-center gap-2">
+                                {m.name}
+                                {isRemote && (
+                                  <span className="px-1.5 py-0.5 bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-[10px] rounded">
+                                    Cloud
+                                  </span>
+                                )}
+                              </td>
+                            )}
+                            {columns.family && (
+                              <td className="p-4 text-slate-400">
+                                {m.details?.family || "-"}
+                              </td>
+                            )}
+                            {columns.parameterSize && (
+                              <td className="p-4">
+                                <span className="px-2 py-0.5 bg-slate-800 rounded-md text-xs font-mono text-slate-300">
+                                  {formatParameterSize(
+                                    m.details?.parameter_size,
+                                  )}
+                                </span>
+                              </td>
+                            )}
+                            {columns.quantization && (
+                              <td className="p-4 font-mono text-slate-300">
+                                <span className="px-2 py-0.5 bg-slate-950 rounded border border-slate-800">
+                                  {quantUpper}
+                                </span>
+                              </td>
+                            )}
+                            {columns.contextLength && (
+                              <td className="p-4 font-mono text-xs text-slate-400">
+                                {(
+                                  m.details?.context_length || 0
+                                ).toLocaleString()}
+                              </td>
+                            )}
+                            {columns.size && (
+                              <td className="p-4 font-mono text-xs">
+                                {isRemote ? (
+                                  <span className="inline-flex items-center gap-1.5 text-indigo-400 bg-indigo-950/40 px-2 py-1 rounded-md border border-indigo-800/40">
+                                    <Cloud className="w-3.5 h-3.5" /> Cloud API
+                                  </span>
+                                ) : (
+                                  <span className="inline-flex items-center gap-1.5 text-emerald-400 bg-emerald-950/40 px-2 py-1 rounded-md border border-emerald-800/40">
+                                    <HardDrive className="w-3.5 h-3.5" />{" "}
+                                    {formatBytes(m.size)}
+                                  </span>
+                                )}
+                              </td>
+                            )}
+                            {columns.status && (
+                              <td className="p-4 font-mono text-xs">
+                                {testResults[m.name] ? (
+                                  <span
+                                    className={`px-2 py-1 rounded-md text-[10px] border ${
+                                      testResults[m.name].status === "ok"
+                                        ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
+                                        : "bg-rose-500/20 text-rose-400 border-rose-500/30"
+                                    }`}
+                                  >
+                                    {testResults[m.name].msg}
+                                  </span>
+                                ) : (
+                                  <span className="text-slate-600">-</span>
+                                )}
+                              </td>
+                            )}
+                            {columns.capabilities && (
+                              <td className="p-4">
+                                <div className="flex gap-1 flex-wrap">
+                                  {(m.capabilities || []).map((cap) => (
+                                    <span
+                                      key={cap}
+                                      className="px-2 py-0.5 bg-slate-800 rounded text-[10px] text-slate-300"
+                                    >
+                                      {cap}
+                                    </span>
+                                  ))}
+                                </div>
+                              </td>
+                            )}
+                            {columns.modifiedAt && (
+                              <td className="p-4 text-xs text-slate-500 font-mono">
+                                {m.modified_at
+                                  ? new Date(m.modified_at).toLocaleDateString()
+                                  : "-"}
+                              </td>
+                            )}
+                          </tr>
+                        );
+                      })
+                    )}
+                  </tbody>
+                </table>
               </div>
 
-              {/* Context 快捷超頻 */}
-              <div className="grid grid-cols-3 gap-2">
-                <button
-                  onClick={() => setContextSlider(2048)}
-                  className="px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 rounded-xl text-emerald-400 text-xs font-bold transition-colors"
-                >
-                  🚀 極速 (2K)
-                </button>
-                <button
-                  onClick={() => setContextSlider(8192)}
-                  className="px-3 py-1.5 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 rounded-xl text-cyan-400 text-xs font-bold transition-colors"
-                >
-                  ⚖ 均衡 (8K)
-                </button>
-                <button
-                  onClick={() =>
-                    setContextSlider(
-                      selectedModel.details?.context_length || 32768,
-                    )
-                  }
-                  className="px-3 py-1.5 bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 rounded-xl text-indigo-400 text-xs font-bold transition-colors"
-                >
-                  📚 極限 Context
-                </button>
-              </div>
-
-              {/* Context 滑桿 */}
-              <div>
-                <div className="flex justify-between text-xs font-semibold text-slate-300 mb-2">
-                  <span>Context 深度配置</span>
-                  <span className="text-cyan-400 font-mono font-bold">
-                    {contextSlider.toLocaleString()} Tokens
+              {/* 表格 Footer 統計列 */}
+              <div className="bg-slate-950 p-4 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-slate-400">
+                <div className="flex items-center gap-4">
+                  <span>
+                    顯示模型:{" "}
+                    <strong className="text-white">
+                      {filteredModels.length}
+                    </strong>{" "}
+                    個
+                  </span>
+                  <span className="h-3 w-px bg-slate-800"></span>
+                  <span>
+                    本地模型佔用:{" "}
+                    <strong className="text-emerald-400 font-mono">
+                      {formatBytes(totalLocalSize)}
+                    </strong>
                   </span>
                 </div>
-                <input
-                  type="range"
-                  min="2048"
-                  max={selectedModel.details?.context_length || 131072}
-                  step="2048"
-                  value={contextSlider}
-                  onChange={(e) => setContextSlider(Number(e.target.value))}
-                  className="w-full accent-cyan-500 h-2 bg-slate-950 rounded-lg cursor-pointer"
-                />
-              </div>
 
-              {/* 雙層液態溢流進度條 (Spillover Matrix) */}
-              <div className="space-y-4 pt-4 border-t border-slate-800">
-                {(() => {
-                  const perf = calculatePerformance(
-                    contextSlider,
-                    hardware.vram,
-                    hardware.ram,
-                    selectedModel.details?.parameter_size,
-                    selectedModel.details?.quantization_level,
-                  );
-
-                  const vramPercent =
-                    hardware.vram > 0
-                      ? Math.min((perf.vramUsed / hardware.vram) * 100, 100)
-                      : 0;
-                  const ramPercent = Math.min(
-                    (perf.ramUsed / hardware.ram) * 100,
-                    100,
-                  );
-
-                  return (
-                    <>
-                      {/* VRAM 狀態條 */}
-                      <div>
-                        <div className="flex justify-between text-xs mb-1.5">
-                          <span className="text-slate-400 flex items-center gap-1.5">
-                            <Cpu className="w-3.5 h-3.5 text-emerald-400" /> GPU
-                            VRAM 核心 (專用)
-                          </span>
-                          <span className="font-mono text-slate-200">
-                            {perf.vramUsed} / {hardware.vram} GB
-                          </span>
-                        </div>
-                        <div className="h-3 w-full bg-slate-950 rounded-full overflow-hidden border border-slate-800 p-0.5">
-                          <div
-                            style={{ width: `${vramPercent}%` }}
-                            className={`h-full rounded-full transition-all duration-300 bg-gradient-to-r ${
-                              vramPercent >= 100
-                                ? "from-amber-500 to-rose-500 animate-pulse"
-                                : "from-emerald-500 to-cyan-400"
-                            }`}
-                          />
-                        </div>
-                      </div>
-
-                      {/* System RAM 溢流狀態條 */}
-                      <div
-                        className={`transition-opacity duration-300 ${perf.ramUsed > 0 ? "opacity-100" : "opacity-50"}`}
-                      >
-                        <div className="flex justify-between text-xs mb-1.5">
-                          <span className="text-slate-400 flex items-center gap-1.5">
-                            <HardDrive className="w-3.5 h-3.5 text-amber-400" />{" "}
-                            系統 RAM (溢流分流)
-                            {perf.ramUsed > 0 && (
-                              <span className="text-[10px] bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded border border-amber-500/30">
-                                PCIe 匯流排分流中
-                              </span>
-                            )}
-                          </span>
-                          <span className="font-mono text-slate-200">
-                            {perf.ramUsed} / {hardware.ram} GB
-                          </span>
-                        </div>
-                        <div className="h-3 w-full bg-slate-950 rounded-full overflow-hidden border border-slate-800 p-0.5">
-                          <div
-                            style={{ width: `${ramPercent}%` }}
-                            className={`h-full rounded-full transition-all duration-300 bg-gradient-to-r ${
-                              perf.isOverloaded
-                                ? "from-rose-600 to-red-600 animate-pulse"
-                                : "from-amber-500 to-orange-500"
-                            }`}
-                          />
-                        </div>
-                      </div>
-                    </>
-                  );
-                })()}
-              </div>
-            </div>
-
-            {/* 右側：黃金推論區 Recharts 視覺圖表 */}
-            <div className="flex-1 min-h-[280px] bg-slate-950/60 rounded-xl border border-slate-800 p-4 flex flex-col justify-between">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-xs font-bold text-slate-400 flex items-center gap-1.5">
-                  <Sliders className="w-3.5 h-3.5 text-cyan-400" /> Context vs.
-                  記憶體與推論速度 (t/s)
-                </span>
-                <span className="text-[10px] text-emerald-400 bg-emerald-950/50 border border-emerald-800/40 px-2 py-0.5 rounded">
-                  ✨ 綠色區域：黃金推論區
-                </span>
-              </div>
-
-              <div className="h-56 w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart
-                    data={chartData}
-                    margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                <div className="flex items-center gap-3">
+                  {testLogs.length > 0 && (
+                    <button
+                      onClick={() => setShowLogs(true)}
+                      className="flex items-center gap-2 px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-xl transition-colors text-xs font-semibold"
+                    >
+                      <Terminal className="w-3.5 h-3.5" /> 檢視測試日誌
+                    </button>
+                  )}
+                  <button
+                    onClick={handleBatchTest}
+                    disabled={isTesting}
+                    className="flex items-center gap-2 px-4 py-1.5 bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-300 border border-indigo-500/30 rounded-xl transition-colors text-xs font-semibold disabled:opacity-50"
                   >
-                    <defs>
-                      <linearGradient
-                        id="colorMemory"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                      >
-                        <stop
-                          offset="5%"
-                          stopColor="#10b981"
-                          stopOpacity={0.3}
-                        />
-                        <stop
-                          offset="95%"
-                          stopColor="#10b981"
-                          stopOpacity={0.0}
-                        />
-                      </linearGradient>
-                      <linearGradient
-                        id="colorSpeed"
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                      >
-                        <stop
-                          offset="5%"
-                          stopColor="#3b82f6"
-                          stopOpacity={0.2}
-                        />
-                        <stop
-                          offset="95%"
-                          stopColor="#3b82f6"
-                          stopOpacity={0.0}
-                        />
-                      </linearGradient>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                    <XAxis
-                      dataKey="contextNum"
-                      type="number"
-                      domain={["dataMin", "dataMax"]}
-                      tickFormatter={(v) =>
-                        v >= 1024 ? `${Math.round(v / 1024)}K` : `${v}`
-                      }
-                      stroke="#64748b"
-                      fontSize={10}
-                      tickLine={false}
-                    />
-                    <YAxis
-                      yAxisId="left"
-                      stroke="#10b981"
-                      fontSize={10}
-                      tickLine={false}
-                      unit="GB"
-                    />
-                    <YAxis
-                      yAxisId="right"
-                      orientation="right"
-                      stroke="#3b82f6"
-                      fontSize={10}
-                      tickLine={false}
-                      unit=" t/s"
-                    />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: "#0f172a",
-                        borderColor: "#334155",
-                        borderRadius: "12px",
-                        color: "#fff",
-                        fontSize: "11px",
-                      }}
-                      labelFormatter={(val) =>
-                        val >= 1024
-                          ? `Context: ${Math.round(val / 1024)}K`
-                          : `Context: ${val}`
-                      }
-                    />
-
-                    {/* 黃金推論區標示 ( ReferenceArea ) */}
-                    <ReferenceArea
-                      yAxisId="left"
-                      x1={2048}
-                      x2={8192}
-                      fill="#10b981"
-                      fillOpacity={0.06}
-                      stroke="#10b981"
-                      strokeDasharray="3 3"
-                      strokeOpacity={0.3}
-                    />
-
-                    {/* 當前 Context 配置標示線 */}
-                    <ReferenceLine
-                      yAxisId="left"
-                      x={contextSlider}
-                      stroke="#f59e0b"
-                      strokeWidth={1.5}
-                      strokeDasharray="4 4"
-                      label={{
-                        value: "當前配置",
-                        position: "insideTopLeft",
-                        fill: "#f59e0b",
-                        fontSize: 11,
-                      }}
-                    />
-
-                    <Area
-                      yAxisId="left"
-                      type="monotone"
-                      dataKey="memoryDemand"
-                      name="記憶體總需求"
-                      stroke="#10b981"
-                      strokeWidth={2}
-                      fillOpacity={1}
-                      fill="url(#colorMemory)"
-                    />
-                    <Area
-                      yAxisId="right"
-                      type="monotone"
-                      dataKey="tokensPerSecond"
-                      name="預估速度"
-                      stroke="#3b82f6"
-                      strokeWidth={2}
-                      fillOpacity={1}
-                      fill="url(#colorSpeed)"
-                    />
-                  </AreaChart>
-                </ResponsiveContainer>
+                    <Zap className="w-3.5 h-3.5" />
+                    {isTesting ? "批次測試中..." : "批次測試雲端 API 連線"}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        )}
+          </section>
+
+          {/* === 3. 戰略指揮艙 / 超頻預估器 (`#overclock`) === */}
+          <section id="overclock" className="scroll-mt-20">
+            {selectedModel && (
+              <div className="bg-slate-900/90 backdrop-blur-2xl border border-slate-700/60 rounded-2xl p-6 shadow-2xl flex flex-col lg:flex-row gap-8 relative overflow-hidden">
+                {/* 左側：推論控制與硬體溢流預估 */}
+                <div className="flex-1 space-y-6 relative z-10">
+                  <div className="flex justify-between items-start border-b border-slate-800 pb-4">
+                    <div>
+                      <h3 className="text-xl font-bold text-white flex items-center gap-2">
+                        {selectedModel.name}
+                      </h3>
+                      <p className="text-xs text-slate-400 mt-1">
+                        參數規模:{" "}
+                        {formatParameterSize(
+                          selectedModel.details?.parameter_size,
+                        )}{" "}
+                        | 量化:{" "}
+                        {selectedModel.details?.quantization_level?.toUpperCase() ||
+                          "UNKNOWN"}{" "}
+                        | 最大 Context:{" "}
+                        {(
+                          selectedModel.details?.context_length || 0
+                        ).toLocaleString()}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setSelectedModel(null)}
+                      className="p-1.5 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-400 hover:text-white transition-colors"
+                    >
+                      <XCircle className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  {/* Context 快捷超頻 */}
+                  <div className="grid grid-cols-3 gap-2">
+                    <button
+                      onClick={() => setContextSlider(2048)}
+                      className="px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 rounded-xl text-emerald-400 text-xs font-bold transition-colors"
+                    >
+                      🚀 極速 (2K)
+                    </button>
+                    <button
+                      onClick={() => setContextSlider(8192)}
+                      className="px-3 py-1.5 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 rounded-xl text-cyan-400 text-xs font-bold transition-colors"
+                    >
+                      ⚖ 均衡 (8K)
+                    </button>
+                    <button
+                      onClick={() =>
+                        setContextSlider(
+                          selectedModel.details?.context_length || 32768,
+                        )
+                      }
+                      className="px-3 py-1.5 bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 rounded-xl text-indigo-400 text-xs font-bold transition-colors"
+                    >
+                      📚 極限 Context
+                    </button>
+                  </div>
+
+                  {/* Context 滑桿 */}
+                  <div>
+                    <div className="flex justify-between text-xs font-semibold text-slate-300 mb-2">
+                      <span>Context 深度配置</span>
+                      <span className="text-cyan-400 font-mono font-bold">
+                        {contextSlider.toLocaleString()} Tokens
+                      </span>
+                    </div>
+                    <input
+                      type="range"
+                      min="2048"
+                      max={selectedModel.details?.context_length || 131072}
+                      step="2048"
+                      value={contextSlider}
+                      onChange={(e) => setContextSlider(Number(e.target.value))}
+                      className="w-full accent-cyan-500 h-2 bg-slate-950 rounded-lg cursor-pointer"
+                    />
+                  </div>
+
+                  {/* 雙層液態溢流進度條 (Spillover Matrix) */}
+                  <div className="space-y-4 pt-4 border-t border-slate-800">
+                    {(() => {
+                      const perf = calculatePerformance(
+                        contextSlider,
+                        hardware.vram,
+                        hardware.ram,
+                        selectedModel.details?.parameter_size,
+                        selectedModel.details?.quantization_level,
+                      );
+
+                      const vramPercent =
+                        hardware.vram > 0
+                          ? Math.min((perf.vramUsed / hardware.vram) * 100, 100)
+                          : 0;
+                      const ramPercent = Math.min(
+                        (perf.ramUsed / hardware.ram) * 100,
+                        100,
+                      );
+
+                      return (
+                        <>
+                          {/* VRAM 狀態條 */}
+                          <div>
+                            <div className="flex justify-between text-xs mb-1.5">
+                              <span className="text-slate-400 flex items-center gap-1.5">
+                                <Cpu className="w-3.5 h-3.5 text-emerald-400" />{" "}
+                                GPU VRAM 核心 (專用)
+                              </span>
+                              <span className="font-mono text-slate-200">
+                                {perf.vramUsed} / {hardware.vram} GB
+                              </span>
+                            </div>
+                            <div className="h-3 w-full bg-slate-950 rounded-full overflow-hidden border border-slate-800 p-0.5">
+                              <div
+                                style={{ width: `${vramPercent}%` }}
+                                className={`h-full rounded-full transition-all duration-300 bg-gradient-to-r ${
+                                  vramPercent >= 100
+                                    ? "from-amber-500 to-rose-500 animate-pulse"
+                                    : "from-emerald-500 to-cyan-400"
+                                }`}
+                              />
+                            </div>
+                          </div>
+
+                          {/* System RAM 溢流狀態條 */}
+                          <div
+                            className={`transition-opacity duration-300 ${perf.ramUsed > 0 ? "opacity-100" : "opacity-50"}`}
+                          >
+                            <div className="flex justify-between text-xs mb-1.5">
+                              <span className="text-slate-400 flex items-center gap-1.5">
+                                <HardDrive className="w-3.5 h-3.5 text-amber-400" />{" "}
+                                系統 RAM (溢流分流)
+                                {perf.ramUsed > 0 && (
+                                  <span className="text-[10px] bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded border border-amber-500/30">
+                                    PCIe 匯流排分流中
+                                  </span>
+                                )}
+                              </span>
+                              <span className="font-mono text-slate-200">
+                                {perf.ramUsed} / {hardware.ram} GB
+                              </span>
+                            </div>
+                            <div className="h-3 w-full bg-slate-950 rounded-full overflow-hidden border border-slate-800 p-0.5">
+                              <div
+                                style={{ width: `${ramPercent}%` }}
+                                className={`h-full rounded-full transition-all duration-300 bg-gradient-to-r ${
+                                  perf.isOverloaded
+                                    ? "from-rose-600 to-red-600 animate-pulse"
+                                    : "from-amber-500 to-orange-500"
+                                }`}
+                              />
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })()}
+                  </div>
+                </div>
+
+                {/* 右側：黃金推論區 Recharts 視覺圖表 */}
+                <div className="flex-1 min-h-[280px] bg-slate-950/60 rounded-xl border border-slate-800 p-4 flex flex-col justify-between">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-xs font-bold text-slate-400 flex items-center gap-1.5">
+                      <Sliders className="w-3.5 h-3.5 text-cyan-400" /> Context
+                      vs. 記憶體與推論速度 (t/s)
+                    </span>
+                    <span className="text-[10px] text-emerald-400 bg-emerald-950/50 border border-emerald-800/40 px-2 py-0.5 rounded">
+                      ✨ 綠色區域：黃金推論區
+                    </span>
+                  </div>
+
+                  <div className="h-56 w-full">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <AreaChart
+                        data={chartData}
+                        margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                      >
+                        <defs>
+                          <linearGradient
+                            id="colorMemory"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                          >
+                            <stop
+                              offset="5%"
+                              stopColor="#10b981"
+                              stopOpacity={0.3}
+                            />
+                            <stop
+                              offset="95%"
+                              stopColor="#10b981"
+                              stopOpacity={0.0}
+                            />
+                          </linearGradient>
+                          <linearGradient
+                            id="colorSpeed"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                          >
+                            <stop
+                              offset="5%"
+                              stopColor="#3b82f6"
+                              stopOpacity={0.2}
+                            />
+                            <stop
+                              offset="95%"
+                              stopColor="#3b82f6"
+                              stopOpacity={0.0}
+                            />
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+                        <XAxis
+                          dataKey="contextNum"
+                          type="number"
+                          domain={["dataMin", "dataMax"]}
+                          tickFormatter={(v) =>
+                            v >= 1024 ? `${Math.round(v / 1024)}K` : `${v}`
+                          }
+                          stroke="#64748b"
+                          fontSize={10}
+                          tickLine={false}
+                        />
+                        <YAxis
+                          yAxisId="left"
+                          stroke="#10b981"
+                          fontSize={10}
+                          tickLine={false}
+                          unit="GB"
+                        />
+                        <YAxis
+                          yAxisId="right"
+                          orientation="right"
+                          stroke="#3b82f6"
+                          fontSize={10}
+                          tickLine={false}
+                          unit=" t/s"
+                        />
+                        <Tooltip
+                          contentStyle={{
+                            backgroundColor: "#0f172a",
+                            borderColor: "#334155",
+                            borderRadius: "12px",
+                            color: "#fff",
+                            fontSize: "11px",
+                          }}
+                          labelFormatter={(val) =>
+                            val >= 1024
+                              ? `Context: ${Math.round(val / 1024)}K`
+                              : `Context: ${val}`
+                          }
+                        />
+
+                        {/* 黃金推論區標示 ( ReferenceArea ) */}
+                        <ReferenceArea
+                          yAxisId="left"
+                          x1={2048}
+                          x2={8192}
+                          fill="#10b981"
+                          fillOpacity={0.06}
+                          stroke="#10b981"
+                          strokeDasharray="3 3"
+                          strokeOpacity={0.3}
+                        />
+
+                        {/* 當前 Context 配置標示線 */}
+                        <ReferenceLine
+                          yAxisId="left"
+                          x={contextSlider}
+                          stroke="#f59e0b"
+                          strokeWidth={1.5}
+                          strokeDasharray="4 4"
+                          label={{
+                            value: "當前配置",
+                            position: "insideTopLeft",
+                            fill: "#f59e0b",
+                            fontSize: 11,
+                          }}
+                        />
+
+                        <Area
+                          yAxisId="left"
+                          type="monotone"
+                          dataKey="memoryDemand"
+                          name="記憶體總需求"
+                          stroke="#10b981"
+                          strokeWidth={2}
+                          fillOpacity={1}
+                          fill="url(#colorMemory)"
+                        />
+                        <Area
+                          yAxisId="right"
+                          type="monotone"
+                          dataKey="tokensPerSecond"
+                          name="預估速度"
+                          stroke="#3b82f6"
+                          strokeWidth={2}
+                          fillOpacity={1}
+                          fill="url(#colorSpeed)"
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </div>
+            )}
+          </section>
+        </main>
 
         {/* 浮動式批次測試日誌終端機 (Log Terminal Modal) */}
         {showLogs && (
