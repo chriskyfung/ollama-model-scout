@@ -643,10 +643,10 @@ export default function App() {
           <div className="flex items-center gap-3 w-full md:w-auto">
             <button
               onClick={() => setShowApiSettings(!showApiSettings)}
-              className="flex items-center justify-center gap-2 px-4 py-2 bg-slate-900 border border-slate-800 hover:border-cyan-500/50 rounded-xl transition-all text-sm font-medium text-slate-300 hover:text-white"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-cyan-950/40 hover:bg-cyan-900/50 border border-cyan-800/50 hover:border-cyan-500/50 rounded-xl text-xs font-medium text-cyan-300 transition-all shadow-sm shadow-cyan-950"
             >
-              <Settings className="w-4 h-4 text-cyan-400 animate-spin-slow" />
-              <span>伺服器與硬體設定</span>
+              <Settings className="w-3.5 h-3.5 text-cyan-400 animate-spin-slow" />
+              <span className="hidden sm:inline">伺服器與硬體</span>
               <ChevronDown
                 className={`w-3.5 h-3.5 transition-transform ${showApiSettings ? "rotate-180" : ""}`}
               />
