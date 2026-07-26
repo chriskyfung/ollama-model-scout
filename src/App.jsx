@@ -629,17 +629,28 @@ export default function App() {
       {/* 頂部列： Header & 連線按鈕 */}
       <div className="max-w-7xl mx-auto mb-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
-          <div>
-            <div className="flex gap-1">
-              <h1 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 flex items-center gap-3">
-                <SquareActivity className="w-8 h-8 text-cyan-400" />
-                Ollama 模型偵察中心
-              </h1>
-              <span className="text-xs text-slate-400">{VERSION}</span>
+          <div className="flex gap-1">
+            <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500/20 to-emerald-500/20 border border-cyan-500/30">
+              <SquareActivity className="w-5 h-5 text-cyan-400" />
+              <span
+                className={`absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ring-2 ring-slate-950 ${
+                  apiStatus.state === "success"
+                    ? "bg-emerald-400 animate-pulse"
+                    : apiStatus.isFallback
+                      ? "bg-amber-400"
+                      : "bg-rose-500"
+                }`}
+              />
             </div>
-            <p className="text-xs text-slate-400 mt-1">
-              遠端伺服器監控與硬體超頻推論評估系統
-            </p>
+
+            <div className="flex items-baseline gap-2">
+              <span className="font-extrabold text-lg md:text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400">
+                Ollama Model Scout
+              </span>
+              <span className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono bg-slate-800 border border-slate-700 text-slate-400 rounded-md">
+                {VERSION}
+              </span>
+            </div>
           </div>
 
           <div className="flex items-center gap-3 w-full md:w-auto">
