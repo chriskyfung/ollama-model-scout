@@ -434,6 +434,13 @@ export default function App() {
     }
   }, [selectedModel]);
 
+  const scrollToSection = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   const filteredModels = useMemo(() => {
     return models
       .filter((m) => {
