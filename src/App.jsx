@@ -325,7 +325,7 @@ export default function App() {
     localStorage.setItem("ollama_columns", JSON.stringify(columns));
   }, [columns]);
 
-  // --- 狀態：互動面板 ( Tactical Deck ) ---
+  // --- 狀態：戰略指揮艙面板 ---
   const [selectedModel, setSelectedModel] = useState(null);
   const [testResults, setTestResults] = useState({});
   const [testLogs, setTestLogs] = useState([]);
