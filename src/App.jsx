@@ -30,6 +30,9 @@ import {
   Terminal,
   X,
   Github,
+  ShieldCheck,
+  Layers,
+  Sparkles,
 } from "lucide-react";
 
 const VERSION = "v1.0.1";
@@ -1600,6 +1603,73 @@ export default function App() {
                 </p>
               </div>
             )}
+          </section>
+
+          {/* === 4. 產品核心亮點展示區 (`#features`) === */}
+          <section id="features" className="scroll-mt-20 pt-6">
+            <div className="text-center space-y-2 mb-8">
+              <h2 className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-emerald-400 inline-flex items-center gap-2">
+                <Sparkles className="w-6 h-6 text-cyan-400" /> 專為 LLM
+                玩家打造的核心技術
+              </h2>
+              <p className="text-xs text-slate-400">
+                結合 LLM 推論物理學與視覺化分析，協助您極致釋放本地硬體潛能
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="bg-slate-900/60 border border-slate-800 hover:border-cyan-500/40 transition-all rounded-2xl p-5 space-y-3 group">
+                <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
+                  <Sliders className="w-5 h-5" />
+                </div>
+                <h3 className="text-sm font-bold text-slate-200">
+                  物理級 KV Cache 動態估算
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  精確計算每拉長 1K Context 所產生的 Key-Value
+                  顯存需求，避免爆顯存（OOM）崩潰。
+                </p>
+              </div>
+
+              <div className="bg-slate-900/60 border border-slate-800 hover:border-emerald-500/40 transition-all rounded-2xl p-5 space-y-3 group">
+                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
+                  <Layers className="w-5 h-5" />
+                </div>
+                <h3 className="text-sm font-bold text-slate-200">
+                  雙層 RAM/VRAM 液態溢流
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  獨創液態溢流矩陣，即時呈現顯存不足時模型層數向系統 RAM 分流與
+                  PCIe 降速特徵。
+                </p>
+              </div>
+
+              <div className="bg-slate-900/60 border border-slate-800 hover:border-indigo-500/40 transition-all rounded-2xl p-5 space-y-3 group">
+                <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform">
+                  <Terminal className="w-5 h-5" />
+                </div>
+                <h3 className="text-sm font-bold text-slate-200">
+                  雲端 API 批次健康診斷
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  提供微秒級雲端代理與遠端 API 連線診斷，搭配即時多線程 Terminal
+                  測試日誌。
+                </p>
+              </div>
+
+              <div className="bg-slate-900/60 border border-slate-800 hover:border-teal-500/40 transition-all rounded-2xl p-5 space-y-3 group">
+                <div className="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 group-hover:scale-110 transition-transform">
+                  <ShieldCheck className="w-5 h-5" />
+                </div>
+                <h3 className="text-sm font-bold text-slate-200">
+                  100% 本地隱私無伺服器
+                </h3>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  純前端架構，API Keys 與伺服器路徑全數託管於本機
+                  LocalStorage，絕不上傳雲端。
+                </p>
+              </div>
+            </div>
           </section>
         </main>
       </div>
