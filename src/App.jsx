@@ -1749,6 +1749,35 @@ export default function App() {
 
       {/* === 6. 生產級 4 欄式頁尾 (Footer) === */}
       <footer className="bg-slate-950 border-t border-slate-800/80 text-slate-400 text-xs mt-12 relative z-20">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {/* Column 1: 品牌與專案簡介 */}
+          <div className="space-y-4">
+            <div className="flex items-center gap-2.5">
+              <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-cyan-500/20 border border-cyan-500/30">
+                <SquareActivity className="w-4 h-4 text-cyan-400" />
+              </div>
+              <span className="font-bold text-base text-white tracking-tight">
+                Ollama Model Scout
+              </span>
+            </div>
+            <p className="text-slate-400 leading-relaxed">
+              專為大語言模型玩家設計的遠端 Ollama 管理儀表板與物理超頻推估系統。
+            </p>
+            <div className="flex items-center gap-3">
+              <a
+                href={GITHUB_REPO}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-lg text-slate-300 hover:text-white transition-colors"
+              >
+                <Github className="w-3.5 h-3.5" />
+                <span>GitHub Repository</span>
+                <ExternalLink className="w-3 h-3 text-slate-500" />
+              </a>
+            </div>
+          </div>
+        </div>
+
         {/* 底部 CopyRight 列 */}
         <div className="border-t border-slate-900 bg-slate-950 py-4 text-center text-slate-500 text-[11px]">
           <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
