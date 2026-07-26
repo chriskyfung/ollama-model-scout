@@ -690,6 +690,35 @@ export default function App() {
               </div>
             </div>
 
+            {/* 錨點導覽選單 (Nav Menu) */}
+            <nav className="hidden md:flex items-center gap-1 text-xs font-semibold text-slate-400 bg-slate-900/60 p-1 rounded-xl border border-slate-800">
+              <button
+                onClick={() => scrollToSection("models")}
+                className="px-3 py-1.5 hover:text-white hover:bg-slate-800/80 rounded-lg transition-all"
+              >
+                模型陣列
+              </button>
+              <button
+                onClick={() => scrollToSection("overclock")}
+                className="px-3 py-1.5 hover:text-white hover:bg-slate-800/80 rounded-lg transition-all flex items-center gap-1.5"
+              >
+                <Zap className="w-3.5 h-3.5 text-amber-400" />
+                戰略推算艙
+              </button>
+              <button
+                onClick={() => scrollToSection("features")}
+                className="px-3 py-1.5 hover:text-white hover:bg-slate-800/80 rounded-lg transition-all"
+              >
+                核心特點
+              </button>
+              <button
+                onClick={() => scrollToSection("faq")}
+                className="px-3 py-1.5 hover:text-white hover:bg-slate-800/80 rounded-lg transition-all"
+              >
+                常見問題
+              </button>
+            </nav>
+
             {/* 右側工具按鈕區 */}
             <div className="flex items-center gap-2 md:gap-3">
               <a
