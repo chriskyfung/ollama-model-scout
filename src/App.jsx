@@ -1776,6 +1776,47 @@ export default function App() {
               </a>
             </div>
           </div>
+
+          {/* Column 2: 核心功能 */}
+          <div className="space-y-3">
+            <h4 className="font-bold text-slate-200 text-sm flex items-center gap-1.5">
+              <Zap className="w-4 h-4 text-cyan-400" /> 核心功能
+            </h4>
+            <ul className="space-y-2 text-slate-400">
+              <li>
+                <button
+                  onClick={() => scrollToSection("overclock")}
+                  className="hover:text-cyan-300 transition-colors"
+                >
+                  • VRAM / RAM 溢流實時預算
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => scrollToSection("models")}
+                  className="hover:text-cyan-300 transition-colors"
+                >
+                  • 智慧多維度過濾與動態排序
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => scrollToSection("models")}
+                  className="hover:text-cyan-300 transition-colors"
+                >
+                  • 雲端 API 批次連線診斷
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => scrollToSection("overclock")}
+                  className="hover:text-cyan-300 transition-colors"
+                >
+                  • Context 黃金推論區圖表
+                </button>
+              </li>
+            </ul>
+          </div>
         </div>
 
         {/* 底部 CopyRight 列 */}
