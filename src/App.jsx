@@ -17,6 +17,7 @@ import {
   Cpu,
   SquareActivity,
   ChevronDown,
+  ChevronUp,
   Filter,
   HardDrive,
   Zap,
@@ -220,6 +221,25 @@ const calculatePerformance = (
   };
 };
 
+const FAQ_ITEMS = [
+  {
+    q: "顯存 (VRAM) 溢流至系統記憶體 (RAM) 時會發生什麼事？",
+    a: "當 LLM 模型的權重與 KV Cache 總和超越顯示卡專屬 VRAM 容量時，Ollama 會透過 PCIe 匯流排將剩餘層數託管於系統 RAM。由於 DDR4/DDR5 的頻寬（約 40-80 GB/s）遠低於 GPU 專用顯存（約 500-1000 GB/s），這會導致推論速度（Tokens/s）呈現諧振式斷崖下跌，通常下降 80% 至 95%。",
+  },
+  {
+    q: "系統如何精密計算不同 Context 下的 KV Cache 需求？",
+    a: "本儀表板內建 LLM 推論物理學推算模型。公式考量了模型參數規模（估計網絡隱藏層數 Layers）、嵌入層維度（Embedding Dim）、以及 Grouped-Query Attention (GQA) 的 1/8 鍵值對壓縮比，動態預測每拉長 1,024 Tokens 所額外消耗的顯存量。",
+  },
+  {
+    q: "連線設定與 API Key 會傳送到第三方伺服器嗎？",
+    a: "絕不傳送。本系統為 100% 純前端 Web App，所有 API 配置、自訂 Headers 以及硬體參數設定僅儲存於您瀏覽器的本地端 (LocalStorage)。所有 Fetch 請求均由您的瀏覽器直接向您指定的 Ollama API 發送。",
+  },
+  {
+    q: "為什麼部分雲端模型的體積大小顯示為 'Cloud'？",
+    a: "對於遠端 API 模型（例如 GPT-4o 或第三方 API 代理），模型的實際權重託管於遠端雲端集群，本地並不佔用硬體硬碟空間與 VRAM，因此系統將其獨立歸類標記為 Cloud API 模型。",
+  },
+];
+
 export default function App() {
   // --- 狀態：API 連線設定與狀態 ---
   const [apiConfig, setApiConfig] = useState(() => {
@@ -235,6 +255,9 @@ export default function App() {
     isFallback: false,
   });
   const [allowMockFallback, setAllowMockFallback] = useState(true);
+
+  // --- 狀態：FAQ 展開 ---
+  const [openFaq, setOpenFaq] = useState(0);
 
   // --- 狀態：資料與過濾 ---
   const DEFAULT_FILTER_STATE = {
@@ -1669,6 +1692,49 @@ export default function App() {
                   LocalStorage，絕不上傳雲端。
                 </p>
               </div>
+            </div>
+          </section>
+
+          {/* === 5. 常見問題 FAQ 區塊 (`#faq`) === */}
+          <section id="faq" className="scroll-mt-20 pt-6">
+            <div className="text-center space-y-2 mb-8">
+              <h2 className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-teal-300 to-cyan-400 inline-flex items-center gap-2">
+                <HelpCircle className="w-6 h-6 text-teal-400" /> 常見問題 (FAQ)
+              </h2>
+              <p className="text-xs text-slate-400">
+                關於模型管理、VRAM 計算與隱私安全的核心解答
+              </p>
+            </div>
+
+            <div className="max-w-3xl mx-auto space-y-3">
+              {FAQ_ITEMS.map((item, index) => {
+                const isOpen = openFaq === index;
+                return (
+                  <div
+                    key={index}
+                    className="bg-slate-900/80 border border-slate-800 rounded-2xl overflow-hidden transition-all"
+                  >
+                    <button
+                      onClick={() => setOpenFaq(isOpen ? null : index)}
+                      className="w-full p-4 text-left flex justify-between items-center gap-4 hover:bg-slate-800/40 transition-colors"
+                    >
+                      <span className="text-sm font-bold text-slate-200">
+                        {item.q}
+                      </span>
+                      {isOpen ? (
+                        <ChevronUp className="w-4 h-4 text-cyan-400 shrink-0" />
+                      ) : (
+                        <ChevronDown className="w-4 h-4 text-slate-500 shrink-0" />
+                      )}
+                    </button>
+                    {isOpen && (
+                      <div className="px-4 pb-4 text-xs text-slate-400 leading-relaxed border-t border-slate-800/60 pt-3 animate-in fade-in">
+                        {item.a}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </section>
         </main>
