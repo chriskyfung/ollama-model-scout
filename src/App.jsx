@@ -31,9 +31,11 @@ import {
   Terminal,
   X,
   Github,
+  ExternalLink,
   ShieldCheck,
   Layers,
   Sparkles,
+  BookOpen,
 } from "lucide-react";
 
 const VERSION = "v1.0.1";
@@ -1814,6 +1816,58 @@ export default function App() {
                 >
                   • Context 黃金推論區圖表
                 </button>
+              </li>
+            </ul>
+          </div>
+
+          {/* Column 3: 常用外部資源 */}
+          <div className="space-y-3">
+            <h4 className="font-bold text-slate-200 text-sm flex items-center gap-1.5">
+              <BookOpen className="w-4 h-4 text-emerald-400" /> 實用社群資源
+            </h4>
+            <ul className="space-y-2 text-slate-400">
+              <li>
+                <a
+                  href="https://ollama.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-emerald-300 transition-colors flex items-center gap-1"
+                >
+                  • Ollama 官方網站 <ExternalLink className="w-2.5 h-2.5" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://huggingface.co/models"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-emerald-300 transition-colors flex items-center gap-1"
+                >
+                  • Hugging Face GGUF 模型庫{" "}
+                  <ExternalLink className="w-2.5 h-2.5" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://lmarena.ai/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-emerald-300 transition-colors flex items-center gap-1"
+                >
+                  • LMSYS Chatbot Arena 競技場{" "}
+                  <ExternalLink className="w-2.5 h-2.5" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://github.com/ollama/ollama"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-emerald-300 transition-colors flex items-center gap-1"
+                >
+                  • Ollama GitHub 官方專案{" "}
+                  <ExternalLink className="w-2.5 h-2.5" />
+                </a>
               </li>
             </ul>
           </div>
