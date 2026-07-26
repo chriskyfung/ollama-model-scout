@@ -29,9 +29,11 @@ import {
   HelpCircle,
   Terminal,
   X,
+  Github,
 } from "lucide-react";
 
 const VERSION = "v1.0.1";
+const GITHUB_REPO = "https://github.com/chriskyfung/ollama-model-scout";
 
 const MOCK_MODELS = [
   {
@@ -641,6 +643,17 @@ export default function App() {
           </div>
 
           <div className="flex items-center gap-3 w-full md:w-auto">
+            <a
+              href={GITHUB_REPO}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 rounded-xl text-xs font-medium text-slate-300 hover:text-white transition-all group"
+              title="GitHub 專案原始碼"
+            >
+              <Github className="w-4 h-4 text-slate-400 group-hover:text-white transition-colors" />
+              <span className="hidden sm:inline">GitHub</span>
+            </a>
+
             <button
               onClick={() => setShowApiSettings(!showApiSettings)}
               className="flex items-center gap-1.5 px-3 py-1.5 bg-cyan-950/40 hover:bg-cyan-900/50 border border-cyan-800/50 hover:border-cyan-500/50 rounded-xl text-xs font-medium text-cyan-300 transition-all shadow-sm shadow-cyan-950"
