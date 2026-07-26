@@ -1871,6 +1871,21 @@ export default function App() {
               </li>
             </ul>
           </div>
+
+          {/* Column 4: 免責聲明與版權 */}
+          <div className="space-y-3">
+            <h4 className="font-bold text-slate-200 text-sm flex items-center gap-1.5">
+              <ShieldCheck className="w-4 h-4 text-indigo-400" /> 免責聲明與隱私
+            </h4>
+            <p className="text-slate-400 leading-relaxed text-[11px]">
+              本工具提供的 Tokens/sec 及 VRAM 估算為依據通用 GQA 與 KV Cache
+              理論模型之數值預測，實際推論速度將因 GPU
+              架構與系統匯流排頻寬有所差異。
+            </p>
+            <div className="text-[11px] text-slate-500">
+              100% Client-side. No user data is transmitted to external servers.
+            </div>
+          </div>
         </div>
 
         {/* 底部 CopyRight 列 */}
