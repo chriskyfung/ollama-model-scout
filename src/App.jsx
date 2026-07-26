@@ -31,7 +31,7 @@ import {
   X,
 } from "lucide-react";
 
-const VERSION = "v1.0.0";
+const VERSION = "v1.0.1";
 
 const MOCK_MODELS = [
   {
