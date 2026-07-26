@@ -1280,7 +1280,7 @@ export default function App() {
 
           {/* === 3. 戰略指揮艙 / 超頻預估器 (`#overclock`) === */}
           <section id="overclock" className="scroll-mt-20">
-            {selectedModel && (
+            {selectedModel ? (
               <div className="bg-slate-900/90 backdrop-blur-2xl border border-slate-700/60 rounded-2xl p-6 shadow-2xl flex flex-col lg:flex-row gap-8 relative overflow-hidden">
                 {/* 左側：推論控制與硬體溢流預估 */}
                 <div className="flex-1 space-y-6 relative z-10">
@@ -1585,6 +1585,19 @@ export default function App() {
                     </ResponsiveContainer>
                   </div>
                 </div>
+              </div>
+            ) : (
+              <div className="bg-slate-900/50 border border-slate-800/80 rounded-2xl p-8 text-center space-y-3">
+                <div className="inline-flex p-3 rounded-2xl bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 mb-1">
+                  <Zap className="w-6 h-6" />
+                </div>
+                <h3 className="text-base font-bold text-slate-200">
+                  請從上方模型矩陣中點擊任一模型
+                </h3>
+                <p className="text-xs text-slate-400 max-w-md mx-auto">
+                  點擊模型後將立即展開「戰略推算艙」，為您模擬在不同 Context
+                  深度下的 VRAM/RAM 記憶體分配與推論速度衰退曲線。
+                </p>
               </div>
             )}
           </section>
