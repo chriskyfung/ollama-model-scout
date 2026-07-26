@@ -400,7 +400,6 @@ export default function App() {
       }
     } catch (err) {
       if (fallback) {
-        console.warn("無法連線至真實 Ollama，啟動 Mock/備援資料", err);
         setModels(MOCK_MODELS);
         setApiStatus({
           state: "error",
@@ -408,7 +407,6 @@ export default function App() {
           isFallback: true,
         });
       } else {
-        console.warn("連線失敗，且已停用 Mock 資料", err);
         setModels([]);
         setApiStatus({
           state: "error",
