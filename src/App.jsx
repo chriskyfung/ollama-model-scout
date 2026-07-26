@@ -37,7 +37,7 @@ import {
   BookOpen,
 } from "lucide-react";
 
-const VERSION = "v1.0.1";
+const VERSION = "v1.1.0";
 const GITHUB_REPO = "https://github.com/chriskyfung/ollama-model-scout";
 
 // SVG Component for GitHub Icon to ensure zero import conflicts
