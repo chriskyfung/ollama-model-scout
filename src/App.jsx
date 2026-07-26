@@ -1740,6 +1740,21 @@ export default function App() {
         </main>
       </div>
 
+      {/* === 6. 生產級 4 欄式頁尾 (Footer) === */}
+      <footer className="bg-slate-950 border-t border-slate-800/80 text-slate-400 text-xs mt-12 relative z-20">
+        {/* 底部 CopyRight 列 */}
+        <div className="border-t border-slate-900 bg-slate-950 py-4 text-center text-slate-500 text-[11px]">
+          <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div>© 2026 Ollama Model Scout. Open-source under MIT License.</div>
+            <div className="text-slate-400 flex items-center gap-1">
+              Crafted with{" "}
+              <Zap className="w-3 h-3 text-amber-400 fill-amber-400" /> for
+              Local AI Enthusiasts.
+            </div>
+          </div>
+        </div>
+      </footer>
+
       {/* 浮動式批次測試日誌終端機 (Log Terminal Modal) */}
       {showLogs && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
