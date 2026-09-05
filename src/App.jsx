@@ -40,6 +40,7 @@ import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import FaqSection from "@/components/dashboard/FaqSection";
 import TestLogModal from "@/components/dashboard/TestLogModal";
+import ConnectionBanner from "@/components/dashboard/ConnectionBanner";
 import { MOCK_MODELS } from "@/data/models";
 import {
   GITHUB_REPO,
@@ -563,49 +564,12 @@ export default function App() {
 
         <main className="max-w-7xl mx-auto px-4 md:px-6 pt-6 pb-16 space-y-8">
           {/* 連線狀態 Banner */}
-          {apiStatus.message && (
-            <div
-              className={`p-3.5 rounded-xl border flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-xs md:text-sm animate-in fade-in ${
-                apiStatus.state === "error" || apiStatus.isFallback
-                  ? "bg-amber-950/40 border-amber-800/60 text-amber-200"
-                  : "bg-emerald-950/40 border-emerald-800/60 text-emerald-200"
-              }`}
-            >
-              <div className="flex items-center gap-2.5">
-                {apiStatus.isFallback ? (
-                  <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
-                ) : apiStatus.state === "error" ? (
-                  <XCircle className="w-4 h-4 text-rose-400 shrink-0" />
-                ) : (
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                )}
-                <span>{apiStatus.message}</span>
-              </div>
-              <div className="flex items-center gap-4 shrink-0">
-                {apiStatus.state === "error" && (
-                  <label className="flex items-center gap-2 text-xs cursor-pointer hover:text-white transition-colors">
-                    <input
-                      type="checkbox"
-                      checked={allowMockFallback}
-                      onChange={(e) => {
-                        const newVal = e.target.checked;
-                        setAllowMockFallback(newVal);
-                        fetchModels(newVal);
-                      }}
-                      className="accent-cyan-500 rounded cursor-pointer"
-                    />
-                    <span>啟用 Mock 資料</span>
-                  </label>
-                )}
-                <button
-                  onClick={() => fetchModels()}
-                  className="flex items-center gap-1 text-xs px-2.5 py-1 bg-slate-900/80 hover:bg-slate-800 rounded-lg border border-slate-700 transition-colors"
-                >
-                  <RefreshCw className="w-3 h-3" /> 重試
-                </button>
-              </div>
-            </div>
-          )}
+          <ConnectionBanner
+            apiStatus={apiStatus}
+            allowMockFallback={allowMockFallback}
+            onToggleFallback={(v) => { setAllowMockFallback(v); fetchModels(v); }}
+            onRetry={() => fetchModels()}
+            />
 
           {/* 展開式 API & 硬體規格設定面板 */}
           {showApiSettings && (
