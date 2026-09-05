@@ -185,17 +185,24 @@ export default function App() {
     }
   };
 
+      // fetchModels orchestrates API + mock-fallback and writes several slices of
+  // state at once; calling it here on mount is intentional app behavior.
+  // TODO(architectural): replace with React Query / an init flag when the data
+  //   layer is promoted out of App.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- fetchModels is the data-sync boundary on mount
     fetchModels();
   }, []);
 
-  // 選取模型時，重設 Context 滑桿
+  // When the user selects a model, reset the context slider to a balanced
+  // default. Intentional synchronous setState inside a change-driven effect.
   useEffect(() => {
     if (selectedModel) {
       const defaultCtx = Math.min(
         8192,
         selectedModel.details?.context_length || 8192,
       );
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- derived default sync
       setContextSlider(defaultCtx);
     }
   }, [selectedModel]);
