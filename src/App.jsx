@@ -36,6 +36,10 @@ import {
   Sparkles,
   BookOpen,
 } from "lucide-react";
+import {
+  formatBytes,
+  formatParameterSize,
+} from "@/lib/format";
 
 const VERSION = "v1.1.0";
 const GITHUB_REPO = "https://github.com/chriskyfung/ollama-model-scout";
@@ -128,30 +132,6 @@ const MOCK_MODELS = [
     capabilities: ["completion", "vision", "tools", "thinking"],
   },
 ];
-
-function isDigit(val) {
-  return val !== null && val !== undefined && /^\d+$/.test(String(val));
-}
-
-// 修正 size 單位：加入 KB
-const formatBytes = (bytes) => {
-  if (bytes === "remote") return "Cloud";
-  if (!bytes || isNaN(bytes)) return "0 B";
-  const k = 1024;
-  const sizes = ["B", "KB", "MB", "GB", "TB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
-};
-
-// 格式化 Parameter Size 呈現
-const formatParameterSize = (paramStr) => {
-  // return paramStr;
-  if (!paramStr) return "-";
-  if (!isDigit(paramStr)) return paramStr;
-  const sizes = ["", "K", "M", "B", "T"];
-  const i = Math.floor(Math.log10(paramStr) / 3);
-  return parseFloat((paramStr / Math.pow(10, 3 * i)).toFixed(2)) + sizes[i];
-};
 
 const getBitsPerParam = (quantization) => {
   if (!quantization) return 4.5;
