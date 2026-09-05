@@ -36,29 +36,15 @@ import {
   Sparkles,
   BookOpen,
 } from "lucide-react";
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
+import {
+  GITHUB_REPO,
+} from "@/lib/constants";
 import {
   formatBytes,
   formatParameterSize,
 } from "@/lib/format";
-
-const VERSION = "v1.1.0";
-const GITHUB_REPO = "https://github.com/chriskyfung/ollama-model-scout";
-
-// SVG Component for GitHub Icon to ensure zero import conflicts
-const GithubIcon = (props) => (
-  <svg
-    className={props.className || "w-4 h-4"}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-    <path d="M9 18c-4.51 2-5-2-7-2" />
-  </svg>
-);
 
 const MOCK_MODELS = [
   {
@@ -656,88 +642,12 @@ export default function App() {
     <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-cyan-500/30 flex flex-col justify-between scroll-smooth">
       <div>
         {/* === 1. 生產級懸浮 Header === */}
-        <header className="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-xl border-b border-slate-800/80 shadow-2xl">
-          <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between gap-4">
-            {/* Logo 與狀態指示燈 */}
-            <div className="flex items-center gap-3">
-              <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500/20 to-emerald-500/20 border border-cyan-500/30">
-                <SquareActivity className="w-5 h-5 text-cyan-400" />
-                <span
-                  className={`absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ring-2 ring-slate-950 ${
-                    apiStatus.state === "success"
-                      ? "bg-emerald-400 animate-pulse"
-                      : apiStatus.isFallback
-                        ? "bg-amber-400"
-                        : "bg-rose-500"
-                  }`}
-                />
-              </div>
-
-              <div className="flex items-baseline gap-2">
-                <span className="font-extrabold text-lg md:text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400">
-                  Ollama Model Scout
-                </span>
-                <span className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono bg-slate-800 border border-slate-700 text-slate-400 rounded-md">
-                  {VERSION}
-                </span>
-              </div>
-            </div>
-
-            {/* 錨點導覽選單 (Nav Menu) */}
-            <nav className="hidden md:flex items-center gap-1 text-xs font-semibold text-slate-400 bg-slate-900/60 p-1 rounded-xl border border-slate-800">
-              <button
-                onClick={() => scrollToSection("models")}
-                className="px-3 py-1.5 hover:text-white hover:bg-slate-800/80 rounded-lg transition-all"
-              >
-                模型陣列
-              </button>
-              <button
-                onClick={() => scrollToSection("overclock")}
-                className="px-3 py-1.5 hover:text-white hover:bg-slate-800/80 rounded-lg transition-all flex items-center gap-1.5"
-              >
-                <Zap className="w-3.5 h-3.5 text-amber-400" />
-                戰略推算艙
-              </button>
-              <button
-                onClick={() => scrollToSection("features")}
-                className="px-3 py-1.5 hover:text-white hover:bg-slate-800/80 rounded-lg transition-all"
-              >
-                核心特點
-              </button>
-              <button
-                onClick={() => scrollToSection("faq")}
-                className="px-3 py-1.5 hover:text-white hover:bg-slate-800/80 rounded-lg transition-all"
-              >
-                常見問題
-              </button>
-            </nav>
-
-            {/* 右側工具按鈕區 */}
-            <div className="flex items-center gap-2 md:gap-3">
-              <a
-                href={GITHUB_REPO}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 rounded-xl text-xs font-medium text-slate-300 hover:text-white transition-all group"
-                title="GitHub 專案原始碼"
-              >
-                <GithubIcon className="w-4 h-4 text-slate-400 group-hover:text-white transition-colors" />
-                <span className="hidden sm:inline">GitHub</span>
-              </a>
-
-              <button
-                onClick={() => setShowApiSettings(!showApiSettings)}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-cyan-950/40 hover:bg-cyan-900/50 border border-cyan-800/50 hover:border-cyan-500/50 rounded-xl text-xs font-medium text-cyan-300 transition-all shadow-sm shadow-cyan-950"
-              >
-                <Settings className="w-3.5 h-3.5 text-cyan-400 animate-spin-slow" />
-                <span className="hidden sm:inline">伺服器與硬體</span>
-                <ChevronDown
-                  className={`w-3.5 h-3.5 transition-transform ${showApiSettings ? "rotate-180" : ""}`}
-                />
-              </button>
-            </div>
-          </div>
-        </header>
+        <Header
+  apiStatus={apiStatus}
+  showApiSettings={showApiSettings}
+  onToggleApiSettings={() => setShowApiSettings(!showApiSettings)}
+  onNavigate={scrollToSection}
+/>
 
         <main className="max-w-7xl mx-auto px-4 md:px-6 pt-6 pb-16 space-y-8">
           {/* 連線狀態 Banner */}
@@ -1772,156 +1682,7 @@ export default function App() {
       </div>
 
       {/* === 6. 生產級 4 欄式頁尾 (Footer) === */}
-      <footer className="bg-slate-950 border-t border-slate-800/80 text-slate-400 text-xs mt-12 relative z-20">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Column 1: 品牌與專案簡介 */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2.5">
-              <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-cyan-500/20 border border-cyan-500/30">
-                <SquareActivity className="w-4 h-4 text-cyan-400" />
-              </div>
-              <span className="font-bold text-base text-white tracking-tight">
-                Ollama Model Scout
-              </span>
-            </div>
-            <p className="text-slate-400 leading-relaxed">
-              專為大語言模型玩家設計的遠端 Ollama 管理儀表板與物理超頻推估系統。
-            </p>
-            <div className="flex items-center gap-3">
-              <a
-                href={GITHUB_REPO}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-lg text-slate-300 hover:text-white transition-colors"
-              >
-                <GithubIcon className="w-3.5 h-3.5" />
-                <span>GitHub Repository</span>
-                <ExternalLink className="w-3 h-3 text-slate-500" />
-              </a>
-            </div>
-          </div>
-
-          {/* Column 2: 核心功能 */}
-          <div className="space-y-3">
-            <h4 className="font-bold text-slate-200 text-sm flex items-center gap-1.5">
-              <Zap className="w-4 h-4 text-cyan-400" /> 核心功能
-            </h4>
-            <ul className="space-y-2 text-slate-400">
-              <li>
-                <button
-                  onClick={() => scrollToSection("overclock")}
-                  className="hover:text-cyan-300 transition-colors"
-                >
-                  • VRAM / RAM 溢流實時預算
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection("models")}
-                  className="hover:text-cyan-300 transition-colors"
-                >
-                  • 智慧多維度過濾與動態排序
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection("models")}
-                  className="hover:text-cyan-300 transition-colors"
-                >
-                  • 雲端 API 批次連線診斷
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection("overclock")}
-                  className="hover:text-cyan-300 transition-colors"
-                >
-                  • Context 黃金推論區圖表
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 3: 常用外部資源 */}
-          <div className="space-y-3">
-            <h4 className="font-bold text-slate-200 text-sm flex items-center gap-1.5">
-              <BookOpen className="w-4 h-4 text-emerald-400" /> 實用社群資源
-            </h4>
-            <ul className="space-y-2 text-slate-400">
-              <li>
-                <a
-                  href="https://ollama.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-emerald-300 transition-colors flex items-center gap-1"
-                >
-                  • Ollama 官方網站 <ExternalLink className="w-2.5 h-2.5" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://huggingface.co/models"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-emerald-300 transition-colors flex items-center gap-1"
-                >
-                  • Hugging Face GGUF 模型庫{" "}
-                  <ExternalLink className="w-2.5 h-2.5" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://lmarena.ai/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-emerald-300 transition-colors flex items-center gap-1"
-                >
-                  • LMSYS Chatbot Arena 競技場{" "}
-                  <ExternalLink className="w-2.5 h-2.5" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/ollama/ollama"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-emerald-300 transition-colors flex items-center gap-1"
-                >
-                  • Ollama GitHub 官方專案{" "}
-                  <ExternalLink className="w-2.5 h-2.5" />
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 4: 免責聲明與版權 */}
-          <div className="space-y-3">
-            <h4 className="font-bold text-slate-200 text-sm flex items-center gap-1.5">
-              <ShieldCheck className="w-4 h-4 text-indigo-400" /> 免責聲明與隱私
-            </h4>
-            <p className="text-slate-400 leading-relaxed text-[11px]">
-              本工具提供的 Tokens/sec 及 VRAM 估算為依據通用 GQA 與 KV Cache
-              理論模型之數值預測，實際推論速度將因 GPU
-              架構與系統匯流排頻寬有所差異。
-            </p>
-            <div className="text-[11px] text-slate-500">
-              100% Client-side. No user data is transmitted to external servers.
-            </div>
-          </div>
-        </div>
-
-        {/* 底部 CopyRight 列 */}
-        <div className="border-t border-slate-900 bg-slate-950 py-4 text-center text-slate-500 text-[11px]">
-          <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
-            <div>© 2026 Ollama Model Scout. Open-source under MIT License.</div>
-            <div className="text-slate-400 flex items-center gap-1">
-              Crafted with{" "}
-              <Zap className="w-3 h-3 text-amber-400 fill-amber-400" /> for
-              Local AI Enthusiasts.
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer githubRepo={GITHUB_REPO} onNavigate={scrollToSection} />
 
       {/* 浮動式批次測試日誌終端機 (Log Terminal Modal) */}
       {showLogs && (
