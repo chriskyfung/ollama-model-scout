@@ -15,7 +15,8 @@
     "lucide-react": "^1.37.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "recharts": "^3.10.1"
+    "recharts": "^3.10.1",
+    "usehooks-ts": "^3.1.1"
   },
   "devDependencies": {
     "@babel/core": "^8.0.1",
