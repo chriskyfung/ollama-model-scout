@@ -1,0 +1,7 @@
+contact_links:
+  - name: Q&A Discussions
+    url: https://github.com/chriskyfung/ollama-model-scout/discussions
+    about: Ask questions and discuss with the community in GitHub Discussions
+  - name: Report a security vulnerability
+    url: https://github.com/chriskyfung/ollama-model-scout/blob/main/.github/SECURITY.md
+    about: Please review the security policy for reporting vulnerabilities
