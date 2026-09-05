@@ -1,6 +1,10 @@
 /**
  * Centralized application constants.
  *
+ * Single source of truth for:
+ *  - storage keys (previously scattered as magic strings across useEffects)
+ *  - default state objects (used by useState initializers)
+ *
  * App version is derived from package.json so it never drifts out of sync
  * with the published package version.
  */
@@ -13,6 +17,37 @@ export const APP_VERSION = `v${pkg.version ?? "0.0.0"}`;
 export const GITHUB_REPO =
   "https://github.com/chriskyfung/ollama-model-scout";
 
+// --- Storage keys (was: 5 duplicated string literals) ---
+export const STORAGE_KEYS = Object.freeze({
+  apiConfig: "ollama_api_config",
+  hardware: "ollama_hardware_settings",
+  sortConfig: "ollama_sort_config",
+  columns: "ollama_columns",
+  language: "ollama_dashboard_lng", // reserved for i18n language switcher
+});
+
+// --- Domain defaults (previously inline in useState initializers) ---
+export const DEFAULT_API_CONFIG = Object.freeze({
+  url: "http://localhost:11434",
+  key: "",
+  headers: "",
+});
+
+export const DEFAULT_HARDWARE = Object.freeze({ vram: 24, ram: 64 });
+
+export const DEFAULT_COLUMNS = Object.freeze({
+  name: true,
+  family: true,
+  parameterSize: true,
+  quantization: true,
+  contextLength: true,
+  size: true,
+  status: true,
+  capabilities: true,
+  modifiedAt: true,
+});
+
+export const DEFAULT_SORT_CONFIG = Object.freeze({ key: "name", direction: "asc" });
 
 // --- Performance-model constants (the "LLM inference physics" magic numbers) ---
 export const PERF = Object.freeze({

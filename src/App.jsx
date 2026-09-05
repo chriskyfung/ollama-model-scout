@@ -45,22 +45,25 @@ import ApiSettingsPanel from "@/components/dashboard/ApiSettingsPanel";
 import { MOCK_MODELS } from "@/data/models";
 import {
   GITHUB_REPO,
+  STORAGE_KEYS,
+  DEFAULT_API_CONFIG,
+  DEFAULT_HARDWARE,
+  DEFAULT_COLUMNS,
+  DEFAULT_SORT_CONFIG,
 } from "@/lib/constants";
 import {
   formatBytes,
   formatParameterSize,
 } from "@/lib/format";
 import { calculatePerformance } from "@/lib/perf";
-
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 export default function App() {
-  // --- 狀態：API 連線設定與狀態 ---
-  const [apiConfig, setApiConfig] = useState(() => {
-    const saved = localStorage.getItem("ollama_api_config");
-    return saved
-      ? JSON.parse(saved)
-      : { url: "http://localhost:11434", key: "", headers: "" };
-  });
+  // --- State: API connection settings & status ---
+  const [apiConfig, setApiConfig] = useLocalStorage(
+    STORAGE_KEYS.apiConfig,
+    DEFAULT_API_CONFIG,
+  );
   const [showApiSettings, setShowApiSettings] = useState(false);
   const [apiStatus, setApiStatus] = useState({
     state: "idle",
@@ -89,54 +92,24 @@ export default function App() {
     setFilters(DEFAULT_FILTER_STATE);
   };
 
-  // --- 狀態：硬體規格輸入 (VRAM / RAM) ---
-  const [hardware, setHardware] = useState(() => {
-    const saved = localStorage.getItem("ollama_hardware_settings");
-    return saved ? JSON.parse(saved) : { vram: 24, ram: 64 };
-  });
+  // --- State: hardware specs (VRAM / RAM) ---
+  const [hardware, setHardware] = useLocalStorage(
+    STORAGE_KEYS.hardware,
+    DEFAULT_HARDWARE,
+  );
 
-  // --- 本地儲存：API 與硬體設定寫入 ---
-  useEffect(() => {
-    localStorage.setItem("ollama_api_config", JSON.stringify(apiConfig));
-  }, [apiConfig]);
-
-  useEffect(() => {
-    localStorage.setItem("ollama_hardware_settings", JSON.stringify(hardware));
-  }, [hardware]);
-
-  // --- 狀態：表格 UI 與欄位設定 ---
-  const [sortConfig, setSortConfig] = useState(() => {
-    const saved = localStorage.getItem("ollama_sort_config");
-    return saved ? JSON.parse(saved) : { key: "name", direction: "asc" };
-  });
+  // --- State: table UI & column settings ---
+  const [sortConfig, setSortConfig] = useLocalStorage(
+    STORAGE_KEYS.sortConfig,
+    DEFAULT_SORT_CONFIG,
+  );
   const [showColumnMenu, setShowColumnMenu] = useState(false);
-  const [columns, setColumns] = useState(() => {
-    const saved = localStorage.getItem("ollama_columns");
-    return saved
-      ? JSON.parse(saved)
-      : {
-          name: true,
-          family: true,
-          parameterSize: true,
-          quantization: true,
-          contextLength: true,
-          size: true,
-          status: true,
-          capabilities: true,
-          modifiedAt: true,
-        };
-  });
+  const [columns, setColumns] = useLocalStorage(
+    STORAGE_KEYS.columns,
+    DEFAULT_COLUMNS,
+  );
 
-  // --- 本地儲存：表格 UI 與欄位設定寫入 ---
-  useEffect(() => {
-    localStorage.setItem("ollama_sort_config", JSON.stringify(sortConfig));
-  }, [sortConfig]);
-
-  useEffect(() => {
-    localStorage.setItem("ollama_columns", JSON.stringify(columns));
-  }, [columns]);
-
-  // --- 狀態：戰略指揮艙面板 ---
+  // --- State: Tactical Command Center panel ---
   const [selectedModel, setSelectedModel] = useState(null);
   const [testResults, setTestResults] = useState({});
   const [testLogs, setTestLogs] = useState([]);
