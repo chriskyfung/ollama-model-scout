@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   AreaChart,
   Area,
@@ -12,29 +12,18 @@ import {
 } from "recharts";
 import {
   Search,
-  Settings,
   Cloud,
   Cpu,
-  SquareActivity,
   ChevronDown,
-  ChevronUp,
   Filter,
   HardDrive,
   Zap,
-  AlertTriangle,
-  RefreshCw,
-  CheckCircle2,
   XCircle,
   Sliders,
-  Server,
-  HelpCircle,
   Terminal,
-  X,
-  ExternalLink,
   ShieldCheck,
   Layers,
   Sparkles,
-  BookOpen,
 } from "lucide-react";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
@@ -146,7 +135,7 @@ export default function App() {
       if (apiConfig.headers) {
         try {
           customHeaders = JSON.parse(apiConfig.headers);
-        } catch (e) {
+        } catch {
           throw new Error("Headers JSON 格式不正確");
         }
       }
