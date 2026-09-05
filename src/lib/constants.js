@@ -47,6 +47,14 @@ export const DEFAULT_COLUMNS = Object.freeze({
   modifiedAt: true,
 });
 
+export const DEFAULT_FILTER_STATE = Object.freeze({
+  type: "all",
+  capabilities: [],
+  families: [],
+  quantizations: [],
+  testStatus: "all",
+});
+
 export const DEFAULT_SORT_CONFIG = Object.freeze({ key: "name", direction: "asc" });
 
 // --- Performance-model constants (the "LLM inference physics" magic numbers) ---

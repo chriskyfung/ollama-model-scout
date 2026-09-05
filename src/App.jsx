@@ -49,6 +49,7 @@ import {
   DEFAULT_API_CONFIG,
   DEFAULT_HARDWARE,
   DEFAULT_COLUMNS,
+  DEFAULT_FILTER_STATE,
   DEFAULT_SORT_CONFIG,
 } from "@/lib/constants";
 import {
@@ -72,18 +73,10 @@ export default function App() {
   });
   const [allowMockFallback, setAllowMockFallback] = useState(true);
 
-  // --- 狀態：FAQ 展開 ---
+  // --- State: FAQ expansion ---
   const [openFaq, setOpenFaq] = useState(0);
 
-  // --- 狀態：資料與過濾 ---
-  const DEFAULT_FILTER_STATE = {
-    type: "all",
-    capabilities: [],
-    families: [],
-    quantizations: [],
-    testStatus: "all",
-  };
-
+  // --- State: data & filters ---
   const [models, setModels] = useState(MOCK_MODELS);
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState(DEFAULT_FILTER_STATE);
