@@ -4,6 +4,8 @@
  * Single source of truth for:
  *  - storage keys (previously scattered as magic strings across useEffects)
  *  - default state objects (used by useState initializers)
+ *  - domain constants for the performance model
+ *  - UI presets
  *
  * App version is derived from package.json so it never drifts out of sync
  * with the published package version.
@@ -71,3 +73,13 @@ export const PERF = Object.freeze({
   TPS_CEILING: 120,
   TPS_EFFICIENCY: 0.85,
 });
+
+// --- UI presets ---
+export const CONTEXT_PRESETS = Object.freeze({
+  fast: { label: "⚡ Fast (2K)", value: 2048 },
+  balanced: { label: "⚖ Balanced (8K)", value: 8192 },
+});
+export const CONTEXT_STEP = 2048;
+
+// Legacy export kept so existing imports are unaffected during transition.
+export const DEFAULT_FILTER_STATE_LEGACY = DEFAULT_FILTER_STATE;
