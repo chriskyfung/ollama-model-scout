@@ -443,6 +443,20 @@ export default function App() {
 
         <main className="max-w-7xl mx-auto px-4 md:px-6 pt-6 pb-16 space-y-8">
           {/* 連線狀態 Banner */}
+          {/*
+            PERF NOTE (toggle/retry handlers): the inline arrows below (onToggleFallback,
+            onRetry) are recreated on every render. This is intentional and NOT worth
+            memoizing yet:
+              - `ConnectionBanner` is not wrapped in React.memo, so useCallback would not
+                skip its re-render — the wrapper would just add indirection.
+              - `onToggleFallback` closes over `fetchModels`, which itself closes over
+                `apiConfig` + `allowMockFallback`; stabilizing the handler would force
+                `fetchModels` into the mount `useEffect` deps and change the "fetch once on
+                mount" behavior. Avoid unless a real profiling run demands it.
+            Revisit ONLY if profiling shows ConnectionBanner/ApiSettingsPanel re-render cost
+            at the top of the flame graph (then wrap ConnectionBanner in React.memo AND
+            stabilize fetchModels with useCallback, scoped to a dedicated PR).
+          */}
           <ConnectionBanner
             apiStatus={apiStatus}
             allowMockFallback={allowMockFallback}
