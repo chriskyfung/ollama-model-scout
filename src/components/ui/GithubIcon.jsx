@@ -3,10 +3,17 @@
  * Kept as an inline SVG component (rather than importing a glyph library) to
  * guarantee zero import conflicts across the codebase. Used in the Header and
  * Footer.
+ *
+ * The SVG itself is always decorative — the surrounding link/button supplies
+ * the accessible name — so it is `aria-hidden` by default. Callers may pass
+ * `className` (and it forwards the remaining props onto the <svg> element).
  */
 export const GithubIcon = (props) => (
   <svg
+    {...props}
     className={props.className || "w-4 h-4"}
+    aria-hidden="true"
+    focusable="false"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
