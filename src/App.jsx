@@ -185,7 +185,7 @@ export default function App() {
     }
   };
 
-      // fetchModels orchestrates API + mock-fallback and writes several slices of
+  // fetchModels orchestrates API + mock-fallback and writes several slices of
   // state at once; calling it here on mount is intentional app behavior.
   // TODO(architectural): replace with React Query / an init flag when the data
   //   layer is promoted out of App.
@@ -435,11 +435,11 @@ export default function App() {
       <div>
         {/* === 1. 生產級懸浮 Header === */}
         <Header
-  apiStatus={apiStatus}
-  showApiSettings={showApiSettings}
-  onToggleApiSettings={() => setShowApiSettings(!showApiSettings)}
-  onNavigate={scrollToSection}
-/>
+          apiStatus={apiStatus}
+          showApiSettings={showApiSettings}
+          onToggleApiSettings={() => setShowApiSettings(!showApiSettings)}
+          onNavigate={scrollToSection}
+        />
 
         <main className="max-w-7xl mx-auto px-4 md:px-6 pt-6 pb-16 space-y-8">
           {/* 連線狀態 Banner */}
