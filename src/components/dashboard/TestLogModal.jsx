@@ -28,9 +28,9 @@ export default function TestLogModal({ open, logs, isTesting, onClose }) {
           <button
             onClick={onClose}
             className="p-1 text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition-colors"
-            aria-label="關閉"
+            aria-label="關閉測試日誌"
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5" aria-hidden="true" />
           </button>
         </div>
 
