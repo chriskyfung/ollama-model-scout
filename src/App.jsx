@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   AreaChart,
   Area,
@@ -12,259 +12,48 @@ import {
 } from "recharts";
 import {
   Search,
-  Settings,
   Cloud,
   Cpu,
-  SquareActivity,
   ChevronDown,
-  ChevronUp,
   Filter,
   HardDrive,
   Zap,
-  AlertTriangle,
-  RefreshCw,
-  CheckCircle2,
   XCircle,
   Sliders,
-  Server,
-  HelpCircle,
   Terminal,
-  X,
-  ExternalLink,
   ShieldCheck,
   Layers,
   Sparkles,
-  BookOpen,
 } from "lucide-react";
-
-const VERSION = "v1.1.0";
-const GITHUB_REPO = "https://github.com/chriskyfung/ollama-model-scout";
-
-// SVG Component for GitHub Icon to ensure zero import conflicts
-const GithubIcon = (props) => (
-  <svg
-    className={props.className || "w-4 h-4"}
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-  >
-    <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-    <path d="M9 18c-4.51 2-5-2-7-2" />
-  </svg>
-);
-
-const MOCK_MODELS = [
-  {
-    name: "glm-ocr:latest",
-    model: "glm-ocr:latest",
-    modified_at: "2026-07-18T03:42:45.566Z",
-    size: 2219299168,
-    details: {
-      format: "gguf",
-      family: "glmocr",
-      parameter_size: "1.1B",
-      quantization_level: "F16",
-      context_length: 131072,
-    },
-    capabilities: ["vision", "completion", "tools"],
-  },
-  {
-    name: "minicpm-v4.6:latest",
-    model: "minicpm-v4.6:latest",
-    modified_at: "2026-06-10T15:57:22.996Z",
-    size: 1637848812,
-    details: {
-      format: "gguf",
-      family: "qwen35",
-      parameter_size: "752.16M",
-      quantization_level: "Q4_K_M",
-      context_length: 262144,
-    },
-    capabilities: ["completion", "vision"],
-  },
-  {
-    name: "llama3.3:70b-instruct-q4_K_M",
-    model: "llama3.3:70b-instruct-q4_K_M",
-    modified_at: "2026-07-20T11:20:10.123Z",
-    size: 42500000000,
-    details: {
-      format: "gguf",
-      family: "llama",
-      parameter_size: "70B",
-      quantization_level: "Q4_K_M",
-      context_length: 131072,
-    },
-    capabilities: ["completion", "tools", "thinking"],
-  },
-  {
-    name: "deepseek-r1:14b",
-    model: "deepseek-r1:14b",
-    modified_at: "2026-07-15T09:12:00.000Z",
-    size: 9000000000,
-    details: {
-      format: "gguf",
-      family: "qwen2",
-      parameter_size: "14B",
-      quantization_level: "Q4_K_M",
-      context_length: 65536,
-    },
-    capabilities: ["completion", "thinking"],
-  },
-  {
-    name: "gpt-4o-proxy:remote",
-    model: "gpt-4o",
-    modified_at: "2026-08-01T10:00:00.000Z",
-    size: "remote", // 雲端 API 模型
-    details: {
-      format: "api",
-      family: "openai",
-      parameter_size: "Cloud",
-      quantization_level: "CLOUD",
-      context_length: 128000,
-    },
-    capabilities: ["completion", "vision", "tools", "thinking"],
-  },
-];
-
-function isDigit(val) {
-  return val !== null && val !== undefined && /^\d+$/.test(String(val));
-}
-
-// 修正 size 單位：加入 KB
-const formatBytes = (bytes) => {
-  if (bytes === "remote") return "Cloud";
-  if (!bytes || isNaN(bytes)) return "0 B";
-  const k = 1024;
-  const sizes = ["B", "KB", "MB", "GB", "TB"];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
-};
-
-// 格式化 Parameter Size 呈現
-const formatParameterSize = (paramStr) => {
-  // return paramStr;
-  if (!paramStr) return "-";
-  if (!isDigit(paramStr)) return paramStr;
-  const sizes = ["", "K", "M", "B", "T"];
-  const i = Math.floor(Math.log10(paramStr) / 3);
-  return parseFloat((paramStr / Math.pow(10, 3 * i)).toFixed(2)) + sizes[i];
-};
-
-const getBitsPerParam = (quantization) => {
-  if (!quantization) return 4.5;
-  const q = quantization.toUpperCase();
-  if (q.includes("F16") || q.includes("16B")) return 16;
-  if (q.includes("F32")) return 32;
-  if (q.includes("Q8")) return 8.5;
-  if (q.includes("Q6")) return 6.5;
-  if (q.includes("Q5")) return 5.5;
-  if (q.includes("Q4")) return 4.5;
-  if (q.includes("Q3")) return 3.5;
-  if (q.includes("Q2")) return 2.8;
-  return 4.5;
-};
-
-const parseParamSizeToNum = (paramStr) => {
-  if (!paramStr || paramStr === "Cloud") return 7;
-  const match = paramStr.match(/^([\d.]+)\s*([BMbm])?$/);
-  if (!match) return 7;
-  const val = parseFloat(match[1]);
-  const unit = (match[2] || "B").toUpperCase();
-  return unit === "B" ? val : val / 1000;
-};
-
-const calculatePerformance = (
-  context,
-  vramTotal,
-  ramTotal,
-  paramSizeStr,
-  quantStr,
-) => {
-  const paramNum = parseParamSizeToNum(paramSizeStr);
-  const bits = getBitsPerParam(quantStr);
-
-  // 1. 模型基本權重 (GB)
-  const modelWeightGB = paramNum * (bits / 8) * 1.15;
-
-  // 2. KV Cache (GB) - 模擬 GQA 架構
-  const estimatedLayers = Math.max(
-    16,
-    Math.round(24 * Math.log2(paramNum + 1)),
-  );
-  const kvCacheGB = (2 * estimatedLayers * 4096 * 2 * context * (1 / 8)) / 1e9;
-  const totalDemand = modelWeightGB + kvCacheGB;
-
-  // 3. 記憶體分配與溢流計算
-  let vramUsed = 0;
-  let ramUsed = 0;
-  let vramRatio = 0;
-
-  if (vramTotal === 0) {
-    // 純 CPU 模式
-    ramUsed = Math.min(totalDemand, ramTotal);
-    vramRatio = 0;
-  } else {
-    vramUsed = Math.min(totalDemand, vramTotal);
-    ramUsed = Math.max(0, totalDemand - vramUsed);
-    vramRatio = totalDemand > 0 ? vramUsed / totalDemand : 0;
-  }
-
-  // 4. 速度推估 (Tokens/sec) - 諧振平均數 (Harmonic Mean)
-  const gpuSpeed = 500 / Math.max(0.5, modelWeightGB); // GPU 頻寬 500 GB/s
-  const cpuSpeed = 60 / Math.max(0.5, modelWeightGB); // CPU 頻寬 60 GB/s
-
-  let estimatedTps = 0;
-  if (vramTotal === 0) {
-    estimatedTps = cpuSpeed;
-  } else if (vramRatio >= 1) {
-    estimatedTps = gpuSpeed;
-  } else if (vramRatio <= 0) {
-    estimatedTps = cpuSpeed;
-  } else {
-    estimatedTps = 1 / (vramRatio / gpuSpeed + (1 - vramRatio) / cpuSpeed);
-  }
-
-  const tokensPerSecond = Math.max(0.5, Math.min(estimatedTps * 0.85, 120));
-
-  return {
-    memoryDemand: parseFloat(totalDemand.toFixed(2)),
-    vramUsed: parseFloat(vramUsed.toFixed(2)),
-    ramUsed: parseFloat(ramUsed.toFixed(2)),
-    tokensPerSecond: parseFloat(tokensPerSecond.toFixed(1)),
-    isOverloaded: totalDemand > (vramTotal > 0 ? vramTotal : ramTotal),
-  };
-};
-
-const FAQ_ITEMS = [
-  {
-    q: "顯存 (VRAM) 溢流至系統記憶體 (RAM) 時會發生什麼事？",
-    a: "當 LLM 模型的權重與 KV Cache 總和超越顯示卡專屬 VRAM 容量時，Ollama 會透過 PCIe 匯流排將剩餘層數託管於系統 RAM。由於 DDR4/DDR5 的頻寬（約 40-80 GB/s）遠低於 GPU 專用顯存（約 500-1000 GB/s），這會導致推論速度（Tokens/s）呈現諧振式斷崖下跌，通常下降 80% 至 95%。",
-  },
-  {
-    q: "系統如何精密計算不同 Context 下的 KV Cache 需求？",
-    a: "本儀表板內建 LLM 推論物理學推算模型。公式考量了模型參數規模（估計網絡隱藏層數 Layers）、嵌入層維度（Embedding Dim）、以及 Grouped-Query Attention (GQA) 的 1/8 鍵值對壓縮比，動態預測每拉長 1,024 Tokens 所額外消耗的顯存量。",
-  },
-  {
-    q: "連線設定與 API Key 會傳送到第三方伺服器嗎？",
-    a: "絕不傳送。本系統為 100% 純前端 Web App，所有 API 配置、自訂 Headers 以及硬體參數設定僅儲存於您瀏覽器的本地端 (LocalStorage)。所有 Fetch 請求均由您的瀏覽器直接向您指定的 Ollama API 發送。",
-  },
-  {
-    q: "為什麼部分雲端模型的體積大小顯示為 'Cloud'？",
-    a: "對於遠端 API 模型（例如 GPT-4o 或第三方 API 代理），模型的實際權重託管於遠端雲端集群，本地並不佔用硬體硬碟空間與 VRAM，因此系統將其獨立歸類標記為 Cloud API 模型。",
-  },
-];
+import Footer from "@/components/layout/Footer";
+import Header from "@/components/layout/Header";
+import FaqSection from "@/components/dashboard/FaqSection";
+import TestLogModal from "@/components/dashboard/TestLogModal";
+import ConnectionBanner from "@/components/dashboard/ConnectionBanner";
+import ApiSettingsPanel from "@/components/dashboard/ApiSettingsPanel";
+import { MOCK_MODELS } from "@/data/models";
+import {
+  GITHUB_REPO,
+  STORAGE_KEYS,
+  DEFAULT_API_CONFIG,
+  DEFAULT_HARDWARE,
+  DEFAULT_COLUMNS,
+  DEFAULT_FILTER_STATE,
+  DEFAULT_SORT_CONFIG,
+} from "@/lib/constants";
+import {
+  formatBytes,
+  formatParameterSize,
+} from "@/lib/format";
+import { calculatePerformance } from "@/lib/perf";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 export default function App() {
-  // --- 狀態：API 連線設定與狀態 ---
-  const [apiConfig, setApiConfig] = useState(() => {
-    const saved = localStorage.getItem("ollama_api_config");
-    return saved
-      ? JSON.parse(saved)
-      : { url: "http://localhost:11434", key: "", headers: "" };
-  });
+  // --- State: API connection settings & status ---
+  const [apiConfig, setApiConfig] = useLocalStorage(
+    STORAGE_KEYS.apiConfig,
+    DEFAULT_API_CONFIG,
+  );
   const [showApiSettings, setShowApiSettings] = useState(false);
   const [apiStatus, setApiStatus] = useState({
     state: "idle",
@@ -273,18 +62,10 @@ export default function App() {
   });
   const [allowMockFallback, setAllowMockFallback] = useState(true);
 
-  // --- 狀態：FAQ 展開 ---
+  // --- State: FAQ expansion ---
   const [openFaq, setOpenFaq] = useState(0);
 
-  // --- 狀態：資料與過濾 ---
-  const DEFAULT_FILTER_STATE = {
-    type: "all",
-    capabilities: [],
-    families: [],
-    quantizations: [],
-    testStatus: "all",
-  };
-
+  // --- State: data & filters ---
   const [models, setModels] = useState(MOCK_MODELS);
   const [searchQuery, setSearchQuery] = useState("");
   const [filters, setFilters] = useState(DEFAULT_FILTER_STATE);
@@ -293,54 +74,24 @@ export default function App() {
     setFilters(DEFAULT_FILTER_STATE);
   };
 
-  // --- 狀態：硬體規格輸入 (VRAM / RAM) ---
-  const [hardware, setHardware] = useState(() => {
-    const saved = localStorage.getItem("ollama_hardware_settings");
-    return saved ? JSON.parse(saved) : { vram: 24, ram: 64 };
-  });
+  // --- State: hardware specs (VRAM / RAM) ---
+  const [hardware, setHardware] = useLocalStorage(
+    STORAGE_KEYS.hardware,
+    DEFAULT_HARDWARE,
+  );
 
-  // --- 本地儲存：API 與硬體設定寫入 ---
-  useEffect(() => {
-    localStorage.setItem("ollama_api_config", JSON.stringify(apiConfig));
-  }, [apiConfig]);
-
-  useEffect(() => {
-    localStorage.setItem("ollama_hardware_settings", JSON.stringify(hardware));
-  }, [hardware]);
-
-  // --- 狀態：表格 UI 與欄位設定 ---
-  const [sortConfig, setSortConfig] = useState(() => {
-    const saved = localStorage.getItem("ollama_sort_config");
-    return saved ? JSON.parse(saved) : { key: "name", direction: "asc" };
-  });
+  // --- State: table UI & column settings ---
+  const [sortConfig, setSortConfig] = useLocalStorage(
+    STORAGE_KEYS.sortConfig,
+    DEFAULT_SORT_CONFIG,
+  );
   const [showColumnMenu, setShowColumnMenu] = useState(false);
-  const [columns, setColumns] = useState(() => {
-    const saved = localStorage.getItem("ollama_columns");
-    return saved
-      ? JSON.parse(saved)
-      : {
-          name: true,
-          family: true,
-          parameterSize: true,
-          quantization: true,
-          contextLength: true,
-          size: true,
-          status: true,
-          capabilities: true,
-          modifiedAt: true,
-        };
-  });
+  const [columns, setColumns] = useLocalStorage(
+    STORAGE_KEYS.columns,
+    DEFAULT_COLUMNS,
+  );
 
-  // --- 本地儲存：表格 UI 與欄位設定寫入 ---
-  useEffect(() => {
-    localStorage.setItem("ollama_sort_config", JSON.stringify(sortConfig));
-  }, [sortConfig]);
-
-  useEffect(() => {
-    localStorage.setItem("ollama_columns", JSON.stringify(columns));
-  }, [columns]);
-
-  // --- 狀態：戰略指揮艙面板 ---
+  // --- State: Tactical Command Center panel ---
   const [selectedModel, setSelectedModel] = useState(null);
   const [testResults, setTestResults] = useState({});
   const [testLogs, setTestLogs] = useState([]);
@@ -384,7 +135,7 @@ export default function App() {
       if (apiConfig.headers) {
         try {
           customHeaders = JSON.parse(apiConfig.headers);
-        } catch (e) {
+        } catch {
           throw new Error("Headers JSON 格式不正確");
         }
       }
@@ -434,17 +185,24 @@ export default function App() {
     }
   };
 
+  // fetchModels orchestrates API + mock-fallback and writes several slices of
+  // state at once; calling it here on mount is intentional app behavior.
+  // TODO(architectural): replace with React Query / an init flag when the data
+  //   layer is promoted out of App.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- fetchModels is the data-sync boundary on mount
     fetchModels();
   }, []);
 
-  // 選取模型時，重設 Context 滑桿
+  // When the user selects a model, reset the context slider to a balanced
+  // default. Intentional synchronous setState inside a change-driven effect.
   useEffect(() => {
     if (selectedModel) {
       const defaultCtx = Math.min(
         8192,
         selectedModel.details?.context_length || 8192,
       );
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- derived default sync
       setContextSlider(defaultCtx);
     }
   }, [selectedModel]);
@@ -676,270 +434,45 @@ export default function App() {
     <div className="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-cyan-500/30 flex flex-col justify-between scroll-smooth">
       <div>
         {/* === 1. 生產級懸浮 Header === */}
-        <header className="sticky top-0 z-50 bg-slate-950/80 backdrop-blur-xl border-b border-slate-800/80 shadow-2xl">
-          <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between gap-4">
-            {/* Logo 與狀態指示燈 */}
-            <div className="flex items-center gap-3">
-              <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500/20 to-emerald-500/20 border border-cyan-500/30">
-                <SquareActivity className="w-5 h-5 text-cyan-400" />
-                <span
-                  className={`absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ring-2 ring-slate-950 ${
-                    apiStatus.state === "success"
-                      ? "bg-emerald-400 animate-pulse"
-                      : apiStatus.isFallback
-                        ? "bg-amber-400"
-                        : "bg-rose-500"
-                  }`}
-                />
-              </div>
-
-              <div className="flex items-baseline gap-2">
-                <span className="font-extrabold text-lg md:text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400">
-                  Ollama Model Scout
-                </span>
-                <span className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono bg-slate-800 border border-slate-700 text-slate-400 rounded-md">
-                  {VERSION}
-                </span>
-              </div>
-            </div>
-
-            {/* 錨點導覽選單 (Nav Menu) */}
-            <nav className="hidden md:flex items-center gap-1 text-xs font-semibold text-slate-400 bg-slate-900/60 p-1 rounded-xl border border-slate-800">
-              <button
-                onClick={() => scrollToSection("models")}
-                className="px-3 py-1.5 hover:text-white hover:bg-slate-800/80 rounded-lg transition-all"
-              >
-                模型陣列
-              </button>
-              <button
-                onClick={() => scrollToSection("overclock")}
-                className="px-3 py-1.5 hover:text-white hover:bg-slate-800/80 rounded-lg transition-all flex items-center gap-1.5"
-              >
-                <Zap className="w-3.5 h-3.5 text-amber-400" />
-                戰略推算艙
-              </button>
-              <button
-                onClick={() => scrollToSection("features")}
-                className="px-3 py-1.5 hover:text-white hover:bg-slate-800/80 rounded-lg transition-all"
-              >
-                核心特點
-              </button>
-              <button
-                onClick={() => scrollToSection("faq")}
-                className="px-3 py-1.5 hover:text-white hover:bg-slate-800/80 rounded-lg transition-all"
-              >
-                常見問題
-              </button>
-            </nav>
-
-            {/* 右側工具按鈕區 */}
-            <div className="flex items-center gap-2 md:gap-3">
-              <a
-                href={GITHUB_REPO}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 rounded-xl text-xs font-medium text-slate-300 hover:text-white transition-all group"
-                title="GitHub 專案原始碼"
-              >
-                <GithubIcon className="w-4 h-4 text-slate-400 group-hover:text-white transition-colors" />
-                <span className="hidden sm:inline">GitHub</span>
-              </a>
-
-              <button
-                onClick={() => setShowApiSettings(!showApiSettings)}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-cyan-950/40 hover:bg-cyan-900/50 border border-cyan-800/50 hover:border-cyan-500/50 rounded-xl text-xs font-medium text-cyan-300 transition-all shadow-sm shadow-cyan-950"
-              >
-                <Settings className="w-3.5 h-3.5 text-cyan-400 animate-spin-slow" />
-                <span className="hidden sm:inline">伺服器與硬體</span>
-                <ChevronDown
-                  className={`w-3.5 h-3.5 transition-transform ${showApiSettings ? "rotate-180" : ""}`}
-                />
-              </button>
-            </div>
-          </div>
-        </header>
+        <Header
+          apiStatus={apiStatus}
+          showApiSettings={showApiSettings}
+          onToggleApiSettings={() => setShowApiSettings(!showApiSettings)}
+          onNavigate={scrollToSection}
+        />
 
         <main className="max-w-7xl mx-auto px-4 md:px-6 pt-6 pb-16 space-y-8">
           {/* 連線狀態 Banner */}
-          {apiStatus.message && (
-            <div
-              className={`p-3.5 rounded-xl border flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-xs md:text-sm animate-in fade-in ${
-                apiStatus.state === "error" || apiStatus.isFallback
-                  ? "bg-amber-950/40 border-amber-800/60 text-amber-200"
-                  : "bg-emerald-950/40 border-emerald-800/60 text-emerald-200"
-              }`}
-            >
-              <div className="flex items-center gap-2.5">
-                {apiStatus.isFallback ? (
-                  <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0" />
-                ) : apiStatus.state === "error" ? (
-                  <XCircle className="w-4 h-4 text-rose-400 shrink-0" />
-                ) : (
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                )}
-                <span>{apiStatus.message}</span>
-              </div>
-              <div className="flex items-center gap-4 shrink-0">
-                {apiStatus.state === "error" && (
-                  <label className="flex items-center gap-2 text-xs cursor-pointer hover:text-white transition-colors">
-                    <input
-                      type="checkbox"
-                      checked={allowMockFallback}
-                      onChange={(e) => {
-                        const newVal = e.target.checked;
-                        setAllowMockFallback(newVal);
-                        fetchModels(newVal);
-                      }}
-                      className="accent-cyan-500 rounded cursor-pointer"
-                    />
-                    <span>啟用 Mock 資料</span>
-                  </label>
-                )}
-                <button
-                  onClick={() => fetchModels()}
-                  className="flex items-center gap-1 text-xs px-2.5 py-1 bg-slate-900/80 hover:bg-slate-800 rounded-lg border border-slate-700 transition-colors"
-                >
-                  <RefreshCw className="w-3 h-3" /> 重試
-                </button>
-              </div>
-            </div>
-          )}
+          {/*
+            PERF NOTE (toggle/retry handlers): the inline arrows below (onToggleFallback,
+            onRetry) are recreated on every render. This is intentional and NOT worth
+            memoizing yet:
+              - `ConnectionBanner` is not wrapped in React.memo, so useCallback would not
+                skip its re-render — the wrapper would just add indirection.
+              - `onToggleFallback` closes over `fetchModels`, which itself closes over
+                `apiConfig` + `allowMockFallback`; stabilizing the handler would force
+                `fetchModels` into the mount `useEffect` deps and change the "fetch once on
+                mount" behavior. Avoid unless a real profiling run demands it.
+            Revisit ONLY if profiling shows ConnectionBanner/ApiSettingsPanel re-render cost
+            at the top of the flame graph (then wrap ConnectionBanner in React.memo AND
+            stabilize fetchModels with useCallback, scoped to a dedicated PR).
+          */}
+          <ConnectionBanner
+            apiStatus={apiStatus}
+            allowMockFallback={allowMockFallback}
+            onToggleFallback={(v) => { setAllowMockFallback(v); fetchModels(v); }}
+            onRetry={() => fetchModels()}
+            />
 
           {/* 展開式 API & 硬體規格設定面板 */}
-          {showApiSettings && (
-            <div className="bg-slate-900/90 backdrop-blur-md border border-slate-800 rounded-2xl p-6 grid grid-cols-1 md:grid-cols-3 gap-6 shadow-2xl animate-in slide-in-from-top-4">
-              {/* API 連線區 */}
-              <div className="md:col-span-2 space-y-4 border-b md:border-b-0 md:border-r border-slate-800 pb-4 md:pb-0 md:pr-6">
-                <h3 className="text-sm font-bold text-cyan-400 flex items-center gap-2">
-                  <Server className="w-4 h-4" /> 遠端 Ollama API 配置
-                </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-400 mb-1.5">
-                      Base URL
-                    </label>
-                    <input
-                      type="text"
-                      value={apiConfig.url}
-                      onChange={(e) =>
-                        setApiConfig({ ...apiConfig, url: e.target.value })
-                      }
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-slate-200 focus:border-cyan-500 outline-none"
-                      placeholder="http://localhost:11434"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-semibold text-slate-400 mb-1.5">
-                      Bearer API Key (選填)
-                    </label>
-                    <input
-                      type="password"
-                      value={apiConfig.key}
-                      onChange={(e) =>
-                        setApiConfig({ ...apiConfig, key: e.target.value })
-                      }
-                      className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm text-slate-200 focus:border-cyan-500 outline-none"
-                      placeholder="sk-..."
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1.5">
-                    Custom Headers (JSON 格式)
-                  </label>
-                  <textarea
-                    value={apiConfig.headers}
-                    onChange={(e) =>
-                      setApiConfig({ ...apiConfig, headers: e.target.value })
-                    }
-                    rows={3}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm font-mono text-slate-300 focus:border-cyan-500 outline-none resize-y min-h-[80px]"
-                    placeholder={`{\n  "X-Custom-Header": "Value"\n}`}
-                  />
-                </div>
-              </div>
-
-              {/* 本地硬體規格設定區 (解決使用者輸入 VRAM/RAM 需求) */}
-              <div className="space-y-4">
-                <h3 className="text-sm font-bold text-emerald-400 flex items-center gap-2">
-                  <Cpu className="w-4 h-4" /> 本地硬體規格模擬 (VRAM / RAM)
-                </h3>
-                <div>
-                  <label className="flex justify-between text-xs font-semibold text-slate-400 mb-1.5">
-                    <span>GPU VRAM 顯存</span>
-                    <span className="text-emerald-400 font-mono font-bold">
-                      {hardware.vram} GB
-                    </span>
-                  </label>
-                  <input
-                    type="number"
-                    min="0"
-                    max="128"
-                    value={hardware.vram}
-                    onChange={(e) =>
-                      setHardware({
-                        ...hardware,
-                        vram: Math.max(0, Number(e.target.value)),
-                      })
-                    }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-1.5 text-sm font-mono text-slate-200 focus:border-emerald-500 outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="flex justify-between text-xs font-semibold text-slate-400 mb-1.5">
-                    <span>系統 RAM 記憶體</span>
-                    <span className="text-cyan-400 font-mono font-bold">
-                      {hardware.ram} GB
-                    </span>
-                  </label>
-                  <input
-                    type="number"
-                    min="4"
-                    max="512"
-                    value={hardware.ram}
-                    onChange={(e) =>
-                      setHardware({
-                        ...hardware,
-                        ram: Math.max(4, Number(e.target.value)),
-                      })
-                    }
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-1.5 text-sm font-mono text-slate-200 focus:border-cyan-500 outline-none"
-                  />
-                </div>
-
-                {/* 快捷預設按鈕 */}
-                <div className="pt-1 flex flex-wrap gap-2">
-                  <button
-                    onClick={() => setHardware({ vram: 0, ram: 32 })}
-                    className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-[11px] rounded-lg text-slate-300"
-                  >
-                    純 CPU (32G)
-                  </button>
-                  <button
-                    onClick={() => setHardware({ vram: 16, ram: 32 })}
-                    className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-[11px] rounded-lg text-slate-300"
-                  >
-                    MacBook (16G)
-                  </button>
-                  <button
-                    onClick={() => setHardware({ vram: 24, ram: 64 })}
-                    className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-[11px] rounded-lg text-slate-300"
-                  >
-                    RTX 4090 (24G)
-                  </button>
-                </div>
-              </div>
-
-              <div className="md:col-span-3 flex justify-end pt-2 border-t border-slate-800">
-                <button
-                  onClick={fetchModels}
-                  className="px-6 py-2 bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-500 hover:to-emerald-500 text-white rounded-xl text-sm font-semibold transition-all shadow-lg shadow-cyan-950/50"
-                >
-                  套用設定並重新載入
-                </button>
-              </div>
-            </div>
-          )}
+          <ApiSettingsPanel
+            open={showApiSettings}
+            apiConfig={apiConfig}
+            setApiConfig={setApiConfig}
+            hardware={hardware}
+            setHardware={setHardware}
+            onApply={fetchModels}
+            />
 
           {/* === 2. 模型搜尋與診斷矩陣區塊 (`#models`) === */}
           <section id="models" className="scroll-mt-20">
@@ -1747,266 +1280,15 @@ export default function App() {
           </section>
 
           {/* === 5. 常見問題 FAQ 區塊 (`#faq`) === */}
-          <section id="faq" className="scroll-mt-20 pt-6">
-            <div className="text-center space-y-2 mb-8">
-              <h2 className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-teal-300 to-cyan-400 inline-flex items-center gap-2">
-                <HelpCircle className="w-6 h-6 text-teal-400" /> 常見問題 (FAQ)
-              </h2>
-              <p className="text-xs text-slate-400">
-                關於模型管理、VRAM 計算與隱私安全的核心解答
-              </p>
-            </div>
-
-            <div className="max-w-3xl mx-auto space-y-3">
-              {FAQ_ITEMS.map((item, index) => {
-                const isOpen = openFaq === index;
-                return (
-                  <div
-                    key={index}
-                    className="bg-slate-900/80 border border-slate-800 rounded-2xl overflow-hidden transition-all"
-                  >
-                    <button
-                      onClick={() => setOpenFaq(isOpen ? null : index)}
-                      className="w-full p-4 text-left flex justify-between items-center gap-4 hover:bg-slate-800/40 transition-colors"
-                    >
-                      <span className="text-sm font-bold text-slate-200">
-                        {item.q}
-                      </span>
-                      {isOpen ? (
-                        <ChevronUp className="w-4 h-4 text-cyan-400 shrink-0" />
-                      ) : (
-                        <ChevronDown className="w-4 h-4 text-slate-500 shrink-0" />
-                      )}
-                    </button>
-                    {isOpen && (
-                      <div className="px-4 pb-4 text-xs text-slate-400 leading-relaxed border-t border-slate-800/60 pt-3 animate-in fade-in">
-                        {item.a}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </section>
+          <FaqSection openIndex={openFaq} onToggle={setOpenFaq} />
         </main>
       </div>
 
       {/* === 6. 生產級 4 欄式頁尾 (Footer) === */}
-      <footer className="bg-slate-950 border-t border-slate-800/80 text-slate-400 text-xs mt-12 relative z-20">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Column 1: 品牌與專案簡介 */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2.5">
-              <div className="flex items-center justify-center w-8 h-8 rounded-xl bg-cyan-500/20 border border-cyan-500/30">
-                <SquareActivity className="w-4 h-4 text-cyan-400" />
-              </div>
-              <span className="font-bold text-base text-white tracking-tight">
-                Ollama Model Scout
-              </span>
-            </div>
-            <p className="text-slate-400 leading-relaxed">
-              專為大語言模型玩家設計的遠端 Ollama 管理儀表板與物理超頻推估系統。
-            </p>
-            <div className="flex items-center gap-3">
-              <a
-                href={GITHUB_REPO}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-lg text-slate-300 hover:text-white transition-colors"
-              >
-                <GithubIcon className="w-3.5 h-3.5" />
-                <span>GitHub Repository</span>
-                <ExternalLink className="w-3 h-3 text-slate-500" />
-              </a>
-            </div>
-          </div>
-
-          {/* Column 2: 核心功能 */}
-          <div className="space-y-3">
-            <h4 className="font-bold text-slate-200 text-sm flex items-center gap-1.5">
-              <Zap className="w-4 h-4 text-cyan-400" /> 核心功能
-            </h4>
-            <ul className="space-y-2 text-slate-400">
-              <li>
-                <button
-                  onClick={() => scrollToSection("overclock")}
-                  className="hover:text-cyan-300 transition-colors"
-                >
-                  • VRAM / RAM 溢流實時預算
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection("models")}
-                  className="hover:text-cyan-300 transition-colors"
-                >
-                  • 智慧多維度過濾與動態排序
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection("models")}
-                  className="hover:text-cyan-300 transition-colors"
-                >
-                  • 雲端 API 批次連線診斷
-                </button>
-              </li>
-              <li>
-                <button
-                  onClick={() => scrollToSection("overclock")}
-                  className="hover:text-cyan-300 transition-colors"
-                >
-                  • Context 黃金推論區圖表
-                </button>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 3: 常用外部資源 */}
-          <div className="space-y-3">
-            <h4 className="font-bold text-slate-200 text-sm flex items-center gap-1.5">
-              <BookOpen className="w-4 h-4 text-emerald-400" /> 實用社群資源
-            </h4>
-            <ul className="space-y-2 text-slate-400">
-              <li>
-                <a
-                  href="https://ollama.com/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-emerald-300 transition-colors flex items-center gap-1"
-                >
-                  • Ollama 官方網站 <ExternalLink className="w-2.5 h-2.5" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://huggingface.co/models"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-emerald-300 transition-colors flex items-center gap-1"
-                >
-                  • Hugging Face GGUF 模型庫{" "}
-                  <ExternalLink className="w-2.5 h-2.5" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://lmarena.ai/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-emerald-300 transition-colors flex items-center gap-1"
-                >
-                  • LMSYS Chatbot Arena 競技場{" "}
-                  <ExternalLink className="w-2.5 h-2.5" />
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://github.com/ollama/ollama"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-emerald-300 transition-colors flex items-center gap-1"
-                >
-                  • Ollama GitHub 官方專案{" "}
-                  <ExternalLink className="w-2.5 h-2.5" />
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 4: 免責聲明與版權 */}
-          <div className="space-y-3">
-            <h4 className="font-bold text-slate-200 text-sm flex items-center gap-1.5">
-              <ShieldCheck className="w-4 h-4 text-indigo-400" /> 免責聲明與隱私
-            </h4>
-            <p className="text-slate-400 leading-relaxed text-[11px]">
-              本工具提供的 Tokens/sec 及 VRAM 估算為依據通用 GQA 與 KV Cache
-              理論模型之數值預測，實際推論速度將因 GPU
-              架構與系統匯流排頻寬有所差異。
-            </p>
-            <div className="text-[11px] text-slate-500">
-              100% Client-side. No user data is transmitted to external servers.
-            </div>
-          </div>
-        </div>
-
-        {/* 底部 CopyRight 列 */}
-        <div className="border-t border-slate-900 bg-slate-950 py-4 text-center text-slate-500 text-[11px]">
-          <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center gap-2">
-            <div>© 2026 Ollama Model Scout. Open-source under MIT License.</div>
-            <div className="text-slate-400 flex items-center gap-1">
-              Crafted with{" "}
-              <Zap className="w-3 h-3 text-amber-400 fill-amber-400" /> for
-              Local AI Enthusiasts.
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer githubRepo={GITHUB_REPO} onNavigate={scrollToSection} />
 
       {/* 浮動式批次測試日誌終端機 (Log Terminal Modal) */}
-      {showLogs && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-3xl flex flex-col shadow-2xl overflow-hidden h-[60vh] max-h-[600px] animate-in zoom-in-95 duration-200">
-            {/* Terminal Header */}
-            <div className="flex justify-between items-center p-4 border-b border-slate-800 bg-slate-900/50">
-              <h3 className="text-sm font-bold flex items-center gap-2 text-slate-200">
-                <Terminal className="w-4 h-4 text-cyan-400" />
-                批次測試終端日誌 (Batch Test Logs)
-              </h3>
-              <button
-                onClick={() => setShowLogs(false)}
-                className="p-1 text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Terminal Log Area */}
-            <div className="flex-1 overflow-y-auto p-5 space-y-2.5 bg-slate-950 font-mono text-xs scroll-smooth">
-              {testLogs.map((log, i) => (
-                <div key={i} className="flex items-start gap-4">
-                  <span className="text-slate-600 shrink-0 select-none">
-                    {new Date(log.time).toLocaleTimeString("en-US", {
-                      hour12: false,
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      second: "2-digit",
-                      fractionalSecondDigits: 3,
-                    })}
-                  </span>
-                  <span
-                    className={`shrink-0 w-[140px] truncate ${log.model === "System" ? "text-indigo-400 font-bold" : "text-slate-400"}`}
-                  >
-                    [{log.model}]
-                  </span>
-                  <span
-                    className={`${
-                      log.status === "ok"
-                        ? "text-emerald-400"
-                        : log.status === "error"
-                          ? "text-rose-400"
-                          : "text-cyan-400"
-                    }`}
-                  >
-                    {log.message}
-                  </span>
-                </div>
-              ))}
-              {testLogs.length === 0 && (
-                <div className="text-slate-500 animate-pulse">
-                  等待測試開始...
-                </div>
-              )}
-              {isTesting && (
-                <div className="flex items-center gap-2 text-slate-500 mt-4">
-                  <span className="w-2 h-2 bg-indigo-500 rounded-full animate-ping"></span>
-                  執行中...
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+      <TestLogModal open={showLogs} logs={testLogs} isTesting={isTesting} onClose={() => setShowLogs(false)} />
     </div>
   );
 }
