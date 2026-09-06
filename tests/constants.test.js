@@ -5,6 +5,7 @@ import {
   STORAGE_KEYS,
   DEFAULT_API_CONFIG,
   DEFAULT_HARDWARE,
+  HARDWARE_PRESETS,
 } from "@/lib/constants";
 
 describe("centralized constants", () => {
@@ -26,5 +27,13 @@ describe("centralized constants", () => {
   it("freezes default objects so they stay immutable", () => {
     expect(Object.isFrozen(DEFAULT_API_CONFIG)).toBe(true);
     expect(Object.isFrozen(DEFAULT_HARDWARE)).toBe(true);
+  });
+  it("freezes the hardware presets and their entries", () => {
+    expect(Object.isFrozen(HARDWARE_PRESETS)).toBe(true);
+    HARDWARE_PRESETS.forEach((p) => expect(Object.isFrozen(p)).toBe(true));
+  });
+  it("exposes sane hardware presets", () => {
+    expect(HARDWARE_PRESETS).toHaveLength(3);
+    expect(HARDWARE_PRESETS[2]).toEqual({ label: "RTX 4090 (24G)", vram: 24, ram: 64 });
   });
 });

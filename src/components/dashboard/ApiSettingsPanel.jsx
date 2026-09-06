@@ -1,4 +1,5 @@
 import { Server, Cpu } from "lucide-react";
+import { HARDWARE_PRESETS } from "@/lib/constants";
 
 /**
  * Expandable "Remote API + Hardware" configuration panel.
@@ -18,12 +19,9 @@ export default function ApiSettingsPanel({
   setHardware,
   onApply,
 }) {
+  // Early-return before any render work: when collapsed we render nothing, so
+  // none of the inputs or the HARDWARE_PRESETS mapping below are allocated.
   if (!open) return null;
-  const presets = [
-    { label: "純 CPU (32G)", vram: 0, ram: 32 },
-    { label: "MacBook (16G)", vram: 16, ram: 32 },
-    { label: "RTX 4090 (24G)", vram: 24, ram: 64 },
-  ];
   return (
     <div className="bg-slate-900/90 backdrop-blur-md border border-slate-800 rounded-2xl p-6 grid grid-cols-1 md:grid-cols-3 gap-6 shadow-2xl animate-in slide-in-from-top-4">
       {/* API 連線區 */}
@@ -127,7 +125,7 @@ export default function ApiSettingsPanel({
 
         {/* 快捷預設按鈕 */}
         <div className="pt-1 flex flex-wrap gap-2">
-          {presets.map((p) => (
+          {HARDWARE_PRESETS.map((p) => (
             <button
               key={p.label}
               onClick={() => setHardware({ vram: p.vram, ram: p.ram })}

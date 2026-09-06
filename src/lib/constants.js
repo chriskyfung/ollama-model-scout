@@ -81,5 +81,17 @@ export const CONTEXT_PRESETS = Object.freeze({
 });
 export const CONTEXT_STEP = 2048;
 
+/**
+ * Quick hardware-setup presets for the API/hardware settings panel.
+ * Immutable module-level config (labels become localizable in the i18n phase);
+ * keeping presets centralized here means defaults live next to the other
+ * domain constants instead of inside the component.
+ */
+export const HARDWARE_PRESETS = Object.freeze([
+  Object.freeze({ label: "純 CPU (32G)", vram: 0, ram: 32 }),
+  Object.freeze({ label: "MacBook (16G)", vram: 16, ram: 32 }),
+  Object.freeze({ label: "RTX 4090 (24G)", vram: 24, ram: 64 }),
+]);
+
 // Legacy export kept so existing imports are unaffected during transition.
 export const DEFAULT_FILTER_STATE_LEGACY = DEFAULT_FILTER_STATE;
