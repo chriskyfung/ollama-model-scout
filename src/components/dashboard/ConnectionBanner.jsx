@@ -2,6 +2,7 @@ import { AlertTriangle, XCircle, CheckCircle2, RefreshCw } from "lucide-react";
 
 /**
  * Connection status banner shown below the header when a message exists.
+ * Announcement region: announced by screen readers on status change.
  *
  * Props:
  *   - apiStatus: { state, isFallback, message }
@@ -20,6 +21,9 @@ export default function ConnectionBanner({
     apiStatus.state === "error" || apiStatus.isFallback ? "warn" : "ok";
   return (
     <div
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
       className={`p-3.5 rounded-xl border flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-xs md:text-sm animate-in fade-in ${
         flag === "warn"
           ? "bg-amber-950/40 border-amber-800/60 text-amber-200"
