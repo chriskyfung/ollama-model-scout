@@ -29,7 +29,7 @@ export default function FaqSection({
           const isOpen = openIndex === index;
           return (
             <div
-              key={index}
+              key={item.id}
               className="bg-slate-900/80 border border-slate-800 rounded-2xl overflow-hidden transition-all"
             >
               <button
