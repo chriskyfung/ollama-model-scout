@@ -27,16 +27,20 @@ export default function FaqSection({
       <div className="max-w-3xl mx-auto space-y-3">
         {items.map((item, index) => {
           const isOpen = openIndex === index;
+          // Defensive: FAQ_ITEMS entries are expected to carry a stable `id`
+          // (enforced by tests/models.test.js), but guard against undefined/empty
+          // ids to avoid duplicate or invalid DOM identifiers.
+          const itemId = item.id || `faq-${index}`;
           return (
             <div
-              key={item.id}
+              key={itemId}
               className="bg-slate-900/80 border border-slate-800 rounded-2xl overflow-hidden transition-all"
             >
               <button
-                id={`faq-header-${item.id}`}
+                id={`faq-header-${itemId}`}
                 onClick={() => onToggle(isOpen ? null : index)}
                 aria-expanded={isOpen}
-                aria-controls={`faq-panel-${item.id}`}
+                aria-controls={`faq-panel-${itemId}`}
                 className="w-full p-4 text-left flex justify-between items-center gap-4 hover:bg-slate-800/40 transition-colors"
               >
                 <span className="text-sm font-bold text-slate-200">
@@ -56,9 +60,9 @@ export default function FaqSection({
               </button>
               {isOpen && (
                 <div
-                  id={`faq-panel-${item.id}`}
+                  id={`faq-panel-${itemId}`}
                   role="region"
-                  aria-labelledby={`faq-header-${item.id}`}
+                  aria-labelledby={`faq-header-${itemId}`}
                   className="px-4 pb-4 text-xs text-slate-400 leading-relaxed border-t border-slate-800/60 pt-3 animate-in fade-in"
                 >
                   {item.a}
