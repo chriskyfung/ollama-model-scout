@@ -30,6 +30,52 @@
     "mockEnabled": "Enable Mock Data",
     "retry": "Retry"
   },
+  "models": {
+    "searchPlaceholder": "Search models, capabilities, family...",
+    "columnCustomize": "Customize Columns",
+    "columnToggleTitle": "Column Visibility",
+    "emptyState": "No models match the current filters",
+    "cloudBadge": "Cloud",
+    "cloudApiBadge": "Cloud API",
+    "statusDash": "-",
+    "filters": {
+      "type": "Type:",
+      "caps": "Caps:",
+      "family": "Family:",
+      "quant": "Quant:",
+      "status": "Status:",
+      "types": {
+        "all": "ALL",
+        "local": "LOCAL",
+        "remote": "CLOUD (REMOTE)"
+      },
+      "statuses": {
+        "all": "All Status",
+        "success": "Connected",
+        "error": "Connection Failed",
+        "untested": "Untested"
+      }
+    },
+    "tableHeaders": {
+      "name": "Model Name",
+      "family": "Family",
+      "parameters": "Parameters",
+      "quantization": "Quantization",
+      "contextLength": "Context Length",
+      "size": "Size",
+      "status": "API Status",
+      "capabilities": "Capabilities",
+      "modifiedAt": "Modified At"
+    },
+    "footer": {
+      "count": "Models shown:",
+      "countUnit": "",
+      "localUsed": "Local disk usage:",
+      "viewLogs": "View Test Logs",
+      "batchTest": "Batch Test Cloud APIs",
+      "batchTesting": "Testing..."
+    }
+  },
   "footer": {
     "tagline": "A remote Ollama management dashboard and physics-based overclock estimation system designed for LLM players.",
     "sloganCrafted": "Crafted with",

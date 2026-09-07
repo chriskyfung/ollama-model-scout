@@ -30,6 +30,52 @@
     "mockEnabled": "启用 Mock 数据",
     "retry": "重试"
   },
+  "models": {
+    "searchPlaceholder": "搜索模型名称、能力、家族、量化等级...",
+    "columnCustomize": "自定义列",
+    "columnToggleTitle": "显示列开关",
+    "emptyState": "没有符合过滤条件的模型",
+    "cloudBadge": "Cloud",
+    "cloudApiBadge": "Cloud API",
+    "statusDash": "-",
+    "filters": {
+      "type": "类型：",
+      "caps": "能力：",
+      "family": "家族：",
+      "quant": "量化：",
+      "status": "状态：",
+      "types": {
+        "all": "全部",
+        "local": "本地",
+        "remote": "云端（远程）"
+      },
+      "statuses": {
+        "all": "所有状态",
+        "success": "连接成功",
+        "error": "连接失败",
+        "untested": "尚未测试"
+      }
+    },
+    "tableHeaders": {
+      "name": "模型名称",
+      "family": "家族",
+      "parameters": "参数",
+      "quantization": "量化",
+      "contextLength": "上下文长度",
+      "size": "大小",
+      "status": "API 状态",
+      "capabilities": "能力",
+      "modifiedAt": "修改时间"
+    },
+    "footer": {
+      "count": "显示模型:",
+      "countUnit": " 个",
+      "localUsed": "本地模型占用:",
+      "viewLogs": "查看测试日志",
+      "batchTest": "批量测试云端 API 连接",
+      "batchTesting": "批量测试中..."
+    }
+  },
   "footer": {
     "tagline": "专为大语言模型玩家设计的远程 Ollama 管理仪表板与物理超频推估系统。",
     "sloganCrafted": "精心打造",

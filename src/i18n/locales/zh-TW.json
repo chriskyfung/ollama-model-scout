@@ -30,6 +30,52 @@
     "mockEnabled": "啟用 Mock 資料",
     "retry": "重試"
   },
+  "models": {
+    "searchPlaceholder": "搜尋模型名稱、能力、家族、量化等級...",
+    "columnCustomize": "欄位自訂",
+    "columnToggleTitle": "顯示欄位開關",
+    "emptyState": "沒有符合過濾條件的模型",
+    "cloudBadge": "Cloud",
+    "cloudApiBadge": "Cloud API",
+    "statusDash": "-",
+    "filters": {
+      "type": "類型：",
+      "caps": "能力：",
+      "family": "家族：",
+      "quant": "量化：",
+      "status": "狀態：",
+      "types": {
+        "all": "全部",
+        "local": "本機",
+        "remote": "雲端（遠端）"
+      },
+      "statuses": {
+        "all": "所有狀態",
+        "success": "連線成功",
+        "error": "連線失敗",
+        "untested": "尚未測試"
+      }
+    },
+    "tableHeaders": {
+      "name": "模型名稱",
+      "family": "家族",
+      "parameters": "參數",
+      "quantization": "量化",
+      "contextLength": "內容長度",
+      "size": "大小",
+      "status": "API 狀態",
+      "capabilities": "能力",
+      "modifiedAt": "修改時間"
+    },
+    "footer": {
+      "count": "顯示模型:",
+      "countUnit": " 個",
+      "localUsed": "本地模型佔用:",
+      "viewLogs": "檢視測試日誌",
+      "batchTest": "批次測試雲端 API 連線",
+      "batchTesting": "批次測試中..."
+    }
+  },
   "footer": {
     "tagline": "專為大語言模型玩家設計的遠端 Ollama 管理儀表板與物理超頻推估系統。",
     "sloganCrafted": "以匠心打造",

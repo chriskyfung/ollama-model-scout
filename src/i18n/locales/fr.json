@@ -30,6 +30,52 @@
     "mockEnabled": "Activer les données simulées",
     "retry": "Réessayer"
   },
+  "models": {
+    "searchPlaceholder": "Rechercher des modèles, capacités, famille...",
+    "columnCustomize": "Personnaliser les colonnes",
+    "columnToggleTitle": "Visibilité des colonnes",
+    "emptyState": "Aucun modèle ne correspond aux filtres",
+    "cloudBadge": "Cloud",
+    "cloudApiBadge": "Cloud API",
+    "statusDash": "-",
+    "filters": {
+      "type": "Type :",
+      "caps": "Caps. :",
+      "family": "Famille :",
+      "quant": "Quant. :",
+      "status": "Statut :",
+      "types": {
+        "all": "TOUS",
+        "local": "LOCAL",
+        "remote": "CLOUD (DISTANT)"
+      },
+      "statuses": {
+        "all": "Tous les statuts",
+        "success": "Connecté",
+        "error": "Connexion échouée",
+        "untested": "Non testé"
+      }
+    },
+    "tableHeaders": {
+      "name": "Nom du modèle",
+      "family": "Famille",
+      "parameters": "Paramètres",
+      "quantization": "Quantification",
+      "contextLength": "Longueur de contexte",
+      "size": "Taille",
+      "status": "Statut API",
+      "capabilities": "Capacités",
+      "modifiedAt": "Modifié le"
+    },
+    "footer": {
+      "count": "Modèles affichés :",
+      "countUnit": "",
+      "localUsed": "Utilisation du disque local :",
+      "viewLogs": "Afficher les journaux",
+      "batchTest": "Test de connexion par lots",
+      "batchTesting": "Test en cours..."
+    }
+  },
   "footer": {
     "tagline": "Un tableau de bord de gestion Ollama à distance et un système d'estimation d'overclock basé sur la physique, conçu pour les joueurs LLM.",
     "sloganCrafted": "Conçu avec",

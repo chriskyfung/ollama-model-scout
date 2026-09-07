@@ -30,6 +30,52 @@
     "mockEnabled": "Mock-Daten aktivieren",
     "retry": "Wiederholen"
   },
+  "models": {
+    "searchPlaceholder": "Modelle, Fähigkeiten, Familie suchen...",
+    "columnCustomize": "Spalten anpassen",
+    "columnToggleTitle": "Spaltensichtbarkeit",
+    "emptyState": "Keine Modelle entsprechen den Filtern",
+    "cloudBadge": "Cloud",
+    "cloudApiBadge": "Cloud API",
+    "statusDash": "-",
+    "filters": {
+      "type": "Typ:",
+      "caps": "Cap.:",
+      "family": "Familie:",
+      "quant": "Quant.:",
+      "status": "Status:",
+      "types": {
+        "all": "ALLE",
+        "local": "LOKAL",
+        "remote": "CLOUD (REMOTE)"
+      },
+      "statuses": {
+        "all": "Alle Status",
+        "success": "Verbunden",
+        "error": "Verbindung fehlgeschlagen",
+        "untested": "Nicht getestet"
+      }
+    },
+    "tableHeaders": {
+      "name": "Modellname",
+      "family": "Familie",
+      "parameters": "Parameter",
+      "quantization": "Quantifizierung",
+      "contextLength": "Kontextlänge",
+      "size": "Größe",
+      "status": "API-Status",
+      "capabilities": "Fähigkeiten",
+      "modifiedAt": "Geändert am"
+    },
+    "footer": {
+      "count": "Modelle angezeigt:",
+      "countUnit": " Stück",
+      "localUsed": "Lokaler Speicherverbrauch:",
+      "viewLogs": "Testprotokolle anzeigen",
+      "batchTest": "Batch-Test der Cloud-APIs",
+      "batchTesting": "Teste im Batch..."
+    }
+  },
   "footer": {
     "tagline": "Ein Remote-Ollama-Verwaltungs-Dashboard und physikbasiertes Overclock-Schätzsystem, entwickelt für LLM-Player.",
     "sloganCrafted": "Mit Sorgfalt erstellt",

@@ -30,6 +30,52 @@
     "mockEnabled": "Mock データを有効化",
     "retry": "再試行"
   },
+  "models": {
+    "searchPlaceholder": "モデル名、機能、ファミリーを検索...",
+    "columnCustomize": "列のカスタマイズ",
+    "columnToggleTitle": "列の表示切替",
+    "emptyState": "条件に一致するモデルがありません",
+    "cloudBadge": "Cloud",
+    "cloudApiBadge": "Cloud API",
+    "statusDash": "-",
+    "filters": {
+      "type": "種別：",
+      "caps": "能力：",
+      "family": "ファミリー：",
+      "quant": "量子化：",
+      "status": "ステータス：",
+      "types": {
+        "all": "すべて",
+        "local": "ローカル",
+        "remote": "クラウド（リモート）"
+      },
+      "statuses": {
+        "all": "すべてのステータス",
+        "success": "接続成功",
+        "error": "接続失敗",
+        "untested": "未テスト"
+      }
+    },
+    "tableHeaders": {
+      "name": "モデル名",
+      "family": "ファミリー",
+      "parameters": "パラメータ",
+      "quantization": "量子化",
+      "contextLength": "コンテキスト長",
+      "size": "サイズ",
+      "status": "API ステータス",
+      "capabilities": "能力",
+      "modifiedAt": "更新日時"
+    },
+    "footer": {
+      "count": "表示モデル:",
+      "countUnit": " 個",
+      "localUsed": "ローカル使用量:",
+      "viewLogs": "テストログを表示",
+      "batchTest": "クラウド API 接続をバッチテスト",
+      "batchTesting": "バッチテスト中..."
+    }
+  },
   "footer": {
     "tagline": "LLM プレイヤーのために設計されたリモート Ollama 管理ダッシュボードと物理ベースのオーバークロック推定システム。",
     "sloganCrafted": "愛を込めて制作",

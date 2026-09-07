@@ -30,6 +30,52 @@
     "mockEnabled": "Mock 데이터 사용",
     "retry": "다시 시도"
   },
+  "models": {
+    "searchPlaceholder": "모델, 기능, 패밀리 검색...",
+    "columnCustomize": "열 사용자 지정",
+    "columnToggleTitle": "열 표시 전환",
+    "emptyState": "현재 필터에 맞는 모델이 없습니다",
+    "cloudBadge": "Cloud",
+    "cloudApiBadge": "Cloud API",
+    "statusDash": "-",
+    "filters": {
+      "type": "유형:",
+      "caps": "기능:",
+      "family": "패밀리:",
+      "quant": "양자화:",
+      "status": "상태:",
+      "types": {
+        "all": "전체",
+        "local": "로컬",
+        "remote": "클라우드(원격)"
+      },
+      "statuses": {
+        "all": "모든 상태",
+        "success": "연결 성공",
+        "error": "연결 실패",
+        "untested": "미테스트"
+      }
+    },
+    "tableHeaders": {
+      "name": "모델 이름",
+      "family": "패밀리",
+      "parameters": "파라미터",
+      "quantization": "양자화",
+      "contextLength": "컨텍스트 길이",
+      "size": "크기",
+      "status": "API 상태",
+      "capabilities": "기능",
+      "modifiedAt": "수정일"
+    },
+    "footer": {
+      "count": "표시 모델:",
+      "countUnit": " 개",
+      "localUsed": "로컬 디스크 사용량:",
+      "viewLogs": "테스트 로그 보기",
+      "batchTest": "클라우드 API 연결 일괄 테스트",
+      "batchTesting": "일괄 테스트 중..."
+    }
+  },
   "footer": {
     "tagline": "LLM 플레이어를 위해 설계된 원격 Ollama 관리 대시보드 및 물리 기반 오버클럭 추정 시스템.",
     "sloganCrafted": "정성으로 만든",

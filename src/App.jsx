@@ -484,7 +484,7 @@ export default function App() {
                   <Search className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
                   <input
                     type="text"
-                    placeholder="搜尋模型名稱、能力、家族、量化等級..."
+                    placeholder={t("models.searchPlaceholder")}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-200 focus:border-cyan-500 outline-none transition-colors"
@@ -498,13 +498,13 @@ export default function App() {
                     className="w-full md:w-auto flex items-center justify-between gap-2 px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 text-sm font-medium text-slate-300"
                   >
                     <Filter className="w-4 h-4 text-cyan-400" />
-                    <span>欄位自訂</span>
+                    <span>{t("models.columnCustomize")}</span>
                     <ChevronDown className="w-3.5 h-3.5" />
                   </button>
                   {showColumnMenu && (
                     <div className="absolute right-0 mt-2 w-52 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl z-50 p-3 space-y-1">
                       <div className="text-xs font-bold text-slate-400 px-2 pb-2 border-b border-slate-800">
-                        顯示欄位開關
+                        {t("models.columnToggleTitle")}
                       </div>
                       {Object.keys(columns).map((col) => (
                         <label
@@ -534,19 +534,19 @@ export default function App() {
                 {/* 1. 類型 (Type) */}
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
-                    Type:
+                    {t("models.filters.type")}
                   </span>
-                  {["all", "local", "remote"].map((t) => (
+                  {["all", "local", "remote"].map((type) => (
                     <button
-                      key={t}
-                      onClick={() => setFilters((p) => ({ ...p, type: t }))}
+                      key={type}
+                      onClick={() => setFilters((p) => ({ ...p, type }))}
                       className={`px-3 py-1 rounded-lg font-semibold transition-all border ${
-                        filters.type === t
+                        filters.type === type
                           ? "bg-cyan-500/20 border-cyan-500 text-cyan-300 shadow-sm shadow-cyan-950"
                           : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
                       }`}
                     >
-                      {t === "remote" ? "CLOUD (REMOTE)" : t.toUpperCase()}
+                      {type === "remote" ? t("models.filters.types.remote") : t("models.filters.types." + type)}
                     </button>
                   ))}
                 </div>
@@ -555,7 +555,7 @@ export default function App() {
                 {availableCapabilities.length > 0 && (
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
-                      Caps:
+                      {t("models.filters.caps")}
                     </span>
                     {availableCapabilities.map((c) => (
                       <button
@@ -577,7 +577,7 @@ export default function App() {
                 {availableFamilies.length > 0 && (
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
-                      Family:
+                      {t("models.filters.family")}
                     </span>
                     {availableFamilies.map((f) => (
                       <button
@@ -599,7 +599,7 @@ export default function App() {
                 {availableQuantizations.length > 0 && (
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
-                      Quant:
+                      {t("models.filters.quant")}
                     </span>
                     {availableQuantizations.map((q) => (
                       <button
@@ -620,13 +620,13 @@ export default function App() {
                 {/* 5. 測試狀態 (Test Status) */}
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
-                    Status:
+                    {t("models.filters.status")}
                   </span>
                   {[
-                    { id: "all", label: "所有狀態" },
-                    { id: "success", label: "連線成功" },
-                    { id: "error", label: "連線失敗" },
-                    { id: "untested", label: "尚未測試" },
+                    { id: "all", label: t("models.filters.statuses.all") },
+                    { id: "success", label: t("models.filters.statuses.success") },
+                    { id: "error", label: t("models.filters.statuses.error") },
+                    { id: "untested", label: t("models.filters.statuses.untested") },
                   ].map((st) => (
                     <button
                       key={st.id}
@@ -657,7 +657,7 @@ export default function App() {
                           className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
                           onClick={() => sortTable("name")}
                         >
-                          Model Name
+                          {t("models.tableHeaders.name")}
                         </th>
                       )}
                       {columns.family && (
@@ -665,7 +665,7 @@ export default function App() {
                           className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
                           onClick={() => sortTable("family")}
                         >
-                          Family
+                          {t("models.tableHeaders.family")}
                         </th>
                       )}
                       {columns.parameterSize && (
@@ -673,7 +673,7 @@ export default function App() {
                           className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
                           onClick={() => sortTable("parameter_size")}
                         >
-                          Parameters
+                          {t("models.tableHeaders.parameters")}
                         </th>
                       )}
                       {columns.quantization && (
@@ -681,7 +681,7 @@ export default function App() {
                           className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
                           onClick={() => sortTable("quantization_level")}
                         >
-                          Quantization
+                          {t("models.tableHeaders.quantization")}
                         </th>
                       )}
                       {columns.contextLength && (
@@ -689,7 +689,7 @@ export default function App() {
                           className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
                           onClick={() => sortTable("context_length")}
                         >
-                          Context Length
+                          {t("models.tableHeaders.contextLength")}
                         </th>
                       )}
                       {columns.size && (
@@ -697,7 +697,7 @@ export default function App() {
                           className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
                           onClick={() => sortTable("size")}
                         >
-                          Size
+                          {t("models.tableHeaders.size")}
                         </th>
                       )}
                       {columns.status && (
@@ -705,18 +705,18 @@ export default function App() {
                           className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
                           onClick={() => sortTable("status")}
                         >
-                          API Status
+                          {t("models.tableHeaders.status")}
                         </th>
                       )}
                       {columns.capabilities && (
-                        <th className="p-4">Capabilities</th>
+                        <th className="p-4">{t("models.tableHeaders.capabilities")}</th>
                       )}
                       {columns.modifiedAt && (
                         <th
                           className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
                           onClick={() => sortTable("modified_at")}
                         >
-                          Modified At
+                          {t("models.tableHeaders.modifiedAt")}
                         </th>
                       )}
                     </tr>
@@ -728,7 +728,7 @@ export default function App() {
                           colSpan="8"
                           className="p-8 text-center text-slate-500"
                         >
-                          沒有符合過濾條件的模型
+                          {t("models.emptyState")}
                         </td>
                       </tr>
                     ) : (
@@ -756,7 +756,7 @@ export default function App() {
                                 {m.name}
                                 {isRemote && (
                                   <span className="px-1.5 py-0.5 bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-[10px] rounded">
-                                    Cloud
+                                    {t("models.cloudBadge")}
                                   </span>
                                 )}
                               </td>
@@ -793,7 +793,7 @@ export default function App() {
                               <td className="p-4 font-mono text-xs">
                                 {isRemote ? (
                                   <span className="inline-flex items-center gap-1.5 text-indigo-400 bg-indigo-950/40 px-2 py-1 rounded-md border border-indigo-800/40">
-                                    <Cloud className="w-3.5 h-3.5" /> Cloud API
+                                    <Cloud className="w-3.5 h-3.5" /> {t("models.cloudApiBadge")}
                                   </span>
                                 ) : (
                                   <span className="inline-flex items-center gap-1.5 text-emerald-400 bg-emerald-950/40 px-2 py-1 rounded-md border border-emerald-800/40">
@@ -816,7 +816,7 @@ export default function App() {
                                     {testResults[m.name].msg}
                                   </span>
                                 ) : (
-                                  <span className="text-slate-600">-</span>
+                                  <span className="text-slate-600">{t("models.statusDash")}</span>
                                 )}
                               </td>
                             )}
@@ -838,7 +838,7 @@ export default function App() {
                               <td className="p-4 text-xs text-slate-500 font-mono">
                                 {m.modified_at
                                   ? new Date(m.modified_at).toLocaleDateString()
-                                  : "-"}
+                                  : t("models.statusDash")}
                               </td>
                             )}
                           </tr>
@@ -853,15 +853,15 @@ export default function App() {
               <div className="bg-slate-950 p-4 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-slate-400">
                 <div className="flex items-center gap-4">
                   <span>
-                    顯示模型:{" "}
+                    {t("models.footer.count")}{" "}
                     <strong className="text-white">
                       {filteredModels.length}
                     </strong>{" "}
-                    個
+                    {t("models.footer.countUnit")}
                   </span>
                   <span className="h-3 w-px bg-slate-800"></span>
                   <span>
-                    本地模型佔用:{" "}
+                    {t("models.footer.localUsed")}{" "}
                     <strong className="text-emerald-400 font-mono">
                       {formatBytes(totalLocalSize)}
                     </strong>
@@ -874,7 +874,7 @@ export default function App() {
                       onClick={() => setShowLogs(true)}
                       className="flex items-center gap-2 px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-xl transition-colors text-xs font-semibold"
                     >
-                      <Terminal className="w-3.5 h-3.5" /> 檢視測試日誌
+                      <Terminal className="w-3.5 h-3.5" /> {t("models.footer.viewLogs")}
                     </button>
                   )}
                   <button
@@ -883,7 +883,7 @@ export default function App() {
                     className="flex items-center gap-2 px-4 py-1.5 bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-300 border border-indigo-500/30 rounded-xl transition-colors text-xs font-semibold disabled:opacity-50"
                   >
                     <Zap className="w-3.5 h-3.5" />
-                    {isTesting ? "批次測試中..." : "批次測試雲端 API 連線"}
+                    {isTesting ? t("models.footer.batchTesting") : t("models.footer.batchTest")}
                   </button>
                 </div>
               </div>
