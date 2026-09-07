@@ -194,5 +194,13 @@
     "modalTitle": "バッチテストログ",
     "closeAria": "テストログを閉じる",
     "srDesc": "バッチテストのリアルタイムログ。Escape キーを押すか閉じるボタンをクリックして閉じます。"
+  },
+  "terminology": {
+    "liquidOverclock": "リキッドオーバークロックリアクター",
+    "spillover": "スピルオーバー",
+    "harmonicMean": "調和平均推定",
+    "sweetSpot": "スイートスポット",
+    "oom": "メモリ不足 (OOM)",
+    "pcieRouting": "PCIe バスルーティング"
   }
 }

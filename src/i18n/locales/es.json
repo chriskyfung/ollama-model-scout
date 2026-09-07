@@ -194,5 +194,13 @@
     "modalTitle": "Logs de pruebas por lotes",
     "closeAria": "Cerrar logs de prueba",
     "srDesc": "Registro en tiempo real del proceso de prueba por lotes. Presione Escape o haga clic en el botón de cerrar para descartar."
+  },
+  "terminology": {
+    "liquidOverclock": "Reactor de refrigeración overclock",
+    "spillover": "Desbordamiento",
+    "harmonicMean": "Estimación de la media armónica",
+    "sweetSpot": "Punto óptimo",
+    "oom": "Memoria agotada (OOM)",
+    "pcieRouting": "Enrutamiento de bus PCIe"
   }
 }

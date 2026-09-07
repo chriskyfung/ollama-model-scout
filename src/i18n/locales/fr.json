@@ -194,5 +194,13 @@
     "modalTitle": "Journaux de test par lots",
     "closeAria": "Fermer les journaux de test",
     "srDesc": "Journal en temps réel du processus de test par lots. Appuyez sur Échap ou cliquez sur le bouton de fermeture pour fermer."
+  },
+  "terminology": {
+    "liquidOverclock": "Réacteur d'overclock liquide",
+    "spillover": "Débordement",
+    "harmonicMean": "Estimation de la moyenne harmonique",
+    "sweetSpot": "Point optimal",
+    "oom": "Mémoire saturée (OOM)",
+    "pcieRouting": "Routage du bus PCIe"
   }
 }

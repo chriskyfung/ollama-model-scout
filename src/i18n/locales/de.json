@@ -194,5 +194,13 @@
     "modalTitle": "Batch-Testprotokolle",
     "closeAria": "Testprotokolle schließen",
     "srDesc": "Echtzeitprotokoll des Batch-Testvorgangs. Drücken Sie Escape oder klicken Sie auf die Schaltfläche zum Schließen."
+  },
+  "terminology": {
+    "liquidOverclock": "Flüssigkeits-Overclock-Reaktor",
+    "spillover": "Spillover",
+    "harmonicMean": "Harmonischer Mittelwert",
+    "sweetSpot": "Sweet Spot",
+    "oom": "Speicher erschöpft (OOM)",
+    "pcieRouting": "PCIe-Bus-Routing"
   }
 }

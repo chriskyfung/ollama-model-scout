@@ -1023,7 +1023,7 @@ export default function App() {
                                 {t("overclock.ramSpillover")}
                                 {perf.ramUsed > 0 && (
                                   <span className="text-[10px] bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded border border-amber-500/30">
-                                    PCIe 匯流排分流中
+                                    {t("terminology.pcieRouting")}
                                   </span>
                                 )}
                               </span>

@@ -194,5 +194,13 @@
     "modalTitle": "批次測試終端日誌 (Batch Test Logs)",
     "closeAria": "關閉測試日誌",
     "srDesc": "批次測試執行過程的即時日誌。按下 Escape 或點擊關閉按鈕可關閉此視窗。"
+  },
+  "terminology": {
+    "liquidOverclock": "Liquid Overclock Reactor",
+    "spillover": "Spillover",
+    "harmonicMean": "Harmonic Mean Estimation",
+    "sweetSpot": "Sweet Spot",
+    "oom": "OOM (Out of Memory)",
+    "pcieRouting": "PCIe 匯流排分流"
   }
 }

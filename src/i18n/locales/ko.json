@@ -194,5 +194,13 @@
     "modalTitle": "일괄 테스트 로그",
     "closeAria": "테스트 로그 닫기",
     "srDesc": "일괄 테스트의 실시간 로그입니다. Esc 키를 누르거나 닫기 버튼을 클릭하여 닫습니다."
+  },
+  "terminology": {
+    "liquidOverclock": "리키드 오버클럭 리액터",
+    "spillover": "스필오버",
+    "harmonicMean": "조화 평균 추정",
+    "sweetSpot": "스위트스팟",
+    "oom": "메모리 부족 (OOM)",
+    "pcieRouting": "PCIe 버스 라우팅"
   }
 }

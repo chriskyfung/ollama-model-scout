@@ -194,5 +194,14 @@
     "modalTitle": "Batch Test Logs",
     "closeAria": "Close test logs",
     "srDesc": "Real-time log of the batch test process. Press Escape or click the close button to dismiss."
+  },
+  "terminology": {
+    "liquidOverclock": "Liquid Overclock Reactor",
+    "spillover": "Spillover",
+    "harmonicMean": "Harmonic Mean Estimation",
+    "sweetSpot": "Sweet Spot",
+    "oom": "OOM (Out of Memory)",
+    "pcieRouting": "PCIe Bus Routing",
+    "pcieRouting": "PCIe Bus Routing"
   }
 }
