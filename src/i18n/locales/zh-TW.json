@@ -26,6 +26,10 @@
       "rtx4090": "RTX 4090 (24G)"
     }
   },
+  "connectionBanner": {
+    "mockEnabled": "啟用 Mock 資料",
+    "retry": "重試"
+  },
   "langSwitcher": {
     "label": "語言切換",
     "toggleAria": "切換語言"

@@ -26,6 +26,10 @@
       "rtx4090": "RTX 4090 (24G)"
     }
   },
+  "connectionBanner": {
+    "mockEnabled": "Mock データを有効化",
+    "retry": "再試行"
+  },
   "langSwitcher": {
     "label": "言語切替",
     "toggleAria": "言語を切り替える"

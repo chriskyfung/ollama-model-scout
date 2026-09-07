@@ -26,6 +26,10 @@
       "rtx4090": "RTX 4090 (24G)"
     }
   },
+  "connectionBanner": {
+    "mockEnabled": "Activer les données simulées",
+    "retry": "Réessayer"
+  },
   "langSwitcher": {
     "label": "Changer de langue",
     "toggleAria": "Changer de langue"
