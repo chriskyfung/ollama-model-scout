@@ -124,6 +124,26 @@
       }
     ]
   },
+  "faq": {
+    "title": "Questions Fréquentes (FAQ)",
+    "subtitle": "Réponses clés sur la gestion des modèles, le calcul VRAM et la confidentialité",
+    "item1": {
+      "q": "Que se passe-t-il lorsque la VRAM déborde dans la RAM système ?",
+      "a": "Lorsque le poids combiné du modèle LLM et du KV Cache dépasse la capacité de VRAM dédiée du GPU, Ollama décharge les couches restantes dans la RAM système via le bus PCIe. Étant donné que la bande passante DDR4/DDR5 (~40-80 Go/s) est bien inférieure à celle de la VRAM dédiée du GPU (~500-1000 Go/s), cela provoque une chute abrupte de la vitesse d'inférence (Tokens/s), diminuant généralement de 80% à 95%."
+    },
+    "item2": {
+      "q": "Comment le système calcule-t-il précisément les exigences de KV Cache pour différentes longueurs de contexte ?",
+      "a": "Ce tableau de bord intègre un modèle d'estimation de la physique d'inférence LLM. La formule prend en compte la taille des paramètres du model (couches cachées estimées du réseau), la dimension d'intégration et le taux de compression KV de 1/8 de Grouped-Query Attention (GQA), prédisant dynamiquement la VRAM supplémentaire consommée par 1 024 Tokens d'extension de contexte."
+    },
+    "item3": {
+      "q": "Les paramètres de connexion et les clés API sont-ils envoyés à des serveurs tiers ?",
+      "a": "Jamais. Il s'agit d'une application web 100% frontend pur. Toutes les configurations d'API, en-têtes personnalisés et paramètres matériels sont stockés exclusivement dans le LocalStorage de votre navigateur. Toutes les requêtes fetch sont envoyées directement depuis votre navigateur à l'API Ollama spécifiée."
+    },
+    "item4": {
+      "q": "Pourquoi certains modèles cloud affichent-ils 'Cloud' comme taille ?",
+      "a": "Pour les modèles d'API distante (tels que GPT-4o ou les proxies API tiers), les poids réels du modèle sont hébergés dans des clusters cloud distants et n'occupent pas l'espace disque local ni la VRAM, le système les catégorise donc et les étiquette indépendamment comme modèles API cloud."
+    }
+  },
   "footer": {
     "tagline": "Un tableau de bord de gestion Ollama à distance et un système d'estimation d'overclock basé sur la physique, conçu pour les joueurs LLM.",
     "sloganCrafted": "Conçu avec",

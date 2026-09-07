@@ -1,14 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { MOCK_MODELS, FAQ_ITEMS } from "@/data/models";
-
-describe("FAQ_ITEMS", () => {
-  it("every item has a stable, unique id", () => {
-    const ids = FAQ_ITEMS.map((item) => item.id);
-    expect(ids.length).toBeGreaterThan(0);
-    expect(new Set(ids).size).toBe(ids.length);
-    ids.forEach((id) => expect(typeof id).toBe("string"));
-  });
-});
+import { MOCK_MODELS } from "@/data/models";
 
 describe("MOCK_MODELS", () => {
   it("exposes the expected fields used by the UI", () => {

@@ -124,6 +124,26 @@
       }
     ]
   },
+  "faq": {
+    "title": "Häufige Fragen (FAQ)",
+    "subtitle": "Kernantworten zu Modellverwaltung, VRAM-Berechnung und Datenschutz",
+    "item1": {
+      "q": "Was passiert, wenn VRAM in den System-RAM überläuft?",
+      "a": "Wenn das kombinierte Modellgewicht und der KV-Cache die dedizierte VRAM-Kapazität der GPU überschreiten, lädt Ollama die restlichen Schichten über den PCIe-Bus in den System-RAM aus. Da die DDR4/DDR5-Bandbreite (~40-80 GB/s) weit unter der dedizierten GPU-VRAM (~500-1000 GB/s) liegt, führt dies zu einem steilen Rückgang der Inferenzgeschwindigkeit (Tokens/s), der typischerweise um 80% bis 95% sinkt."
+    },
+    "item2": {
+      "q": "Wie berechnet das System präzise die KV-Cache-Anforderungen für verschiedene Kontextlängen?",
+      "a": "Dieses Dashboard verfügt über ein eingebettetes LLM-Inferenzphysik-Schätzmodel. Die Formel berücksichtigt die Modellparametergröße (geschätzte versteckte Netzwerkschichten), die Embedding-Dimension und das KV-Kompressionsverhältnis von 1/8 von Grouped-Query Attention (GQA) und sagt dynamisch den zusätzlichen VRAM voraus, der pro 1.024 Tokens Kontexterweiterung verbraucht wird."
+    },
+    "item3": {
+      "q": "Verbindungseinstellungen und API-Keys an Drittanbieter-Server gesendet?",
+      "a": "Niemals. Dies ist eine 100% reine Frontend-Webanwendung. Alle API-Konfigurationen, benutzerdefinierten Header und Hardwareeinstellungen werden ausschließlich im LocalStorage Ihres Browsers gespeichert. Alle Fetch-Anfragen werden direkt von Ihrem Browser an die angegebene Ollama-API gesendet."
+    },
+    "item4": {
+      "q": "Warum wird bei einigen Cloud-Modellen 'Cloud' als Größe angezeigt?",
+      "a": "Bei Remote-API-Modellen (wie GPT-4o oder Drittanbieter-API-Proxys) werden die tatsächlichen Modellgewichte in entfernten Cloud-Clustern gehostet und belegen keinen lokalen Festplattenspeicher oder VRAM, daher kategorisiert das System sie unabhängig als Cloud-API-Modelle und kennzeichnet sie entsprechend."
+    }
+  },
   "footer": {
     "tagline": "Ein Remote-Ollama-Verwaltungs-Dashboard und physikbasiertes Overclock-Schätzsystem, entwickelt für LLM-Player.",
     "sloganCrafted": "Mit Sorgfalt erstellt",

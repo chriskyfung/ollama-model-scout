@@ -1,5 +1,5 @@
 import { HelpCircle, ChevronUp, ChevronDown } from "lucide-react";
-import { FAQ_ITEMS } from "@/data/models";
+import { useTranslation } from "react-i18next";
 
 /**
  * FAQ accordion.
@@ -9,18 +9,25 @@ import { FAQ_ITEMS } from "@/data/models";
  * touching `data/models.js`.
  */
 export default function FaqSection({
-  items = FAQ_ITEMS,
   openIndex,
   onToggle,
 }) {
+  const { t } = useTranslation();
+  // Build FAQ items dynamically from locale JSON.
+  const items = [
+    { id: "vram-overflow", q: t("faq.item1.q"), a: t("faq.item1.a") },
+    { id: "kv-cache-calculation", q: t("faq.item2.q"), a: t("faq.item2.a") },
+    { id: "privacy-keys", q: t("faq.item3.q"), a: t("faq.item3.a") },
+    { id: "cloud-size-display", q: t("faq.item4.q"), a: t("faq.item4.a") },
+  ];
   return (
     <section id="faq" className="scroll-mt-20 pt-6">
       <div className="text-center space-y-2 mb-8">
         <h2 className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-teal-300 to-cyan-400 inline-flex items-center gap-2">
-          <HelpCircle className="w-6 h-6 text-teal-400" /> 常見問題 (FAQ)
+          <HelpCircle className="w-6 h-6 text-teal-400" /> {t("faq.title")}
         </h2>
         <p className="text-xs text-slate-400">
-          關於模型管理、VRAM 計算與隱私安全的核心解答
+          {t("faq.subtitle")}
         </p>
       </div>
 
