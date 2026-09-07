@@ -102,6 +102,28 @@
       "sweetSpot": "Punto Óptimo"
     }
   },
+  "features": {
+    "title": "Tecnología central para jugadores de LLM",
+    "subtitle": "Combina la física de inferencia de LLM con análisis visual para liberar al máximo tu hardware local.",
+    "items": [
+      {
+        "title": "Estimador de KV Cache de nivel físico",
+        "desc": "Calcula con precisión el coste de VRAM de cada ventana de contexto +1K para evitar caídas por OOM."
+      },
+      {
+        "title": "Derrame RAM/VRAM de doble capa",
+        "desc": "La matriz de derrame líquido de propiedad exclusiva visualiza en tiempo real el offload de capas a RAM del sistema y el limitado de ancho de banda PCIe bajo presión de VRAM."
+      },
+      {
+        "title": "Diagnóstico de salud por lotes de API cloud",
+        "desc": "Proxies cloud de precisión de microsegundos y comprobaciones de conectividad de API remota con logs de terminal multihilo en tiempo real."
+      },
+      {
+        "title": "100% local y privado",
+        "desc": "Arquitectura puramente frontend: las claves API y los endpoints viven solo en el LocalStorage de tu navegador."
+      }
+    ]
+  },
   "footer": {
     "tagline": "Un tablero de gestión remota de Ollama y sistema de estimación de overclock basado en física, diseñado para jugadores de LLM.",
     "sloganCrafted": "Creado con",

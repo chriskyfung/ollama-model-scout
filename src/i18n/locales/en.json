@@ -102,6 +102,28 @@
       "currentConfig": "Current"
     }
   },
+  "features": {
+    "title": "Core Tech Built for LLM Players",
+    "subtitle": "Combining LLM inference physics with visual analytics to unleash your local hardware.",
+    "items": [
+      {
+        "title": "Physical-grade KV Cache Estimator",
+        "desc": "Precisely computes the VRAM cost of each +1K context window to prevent OOM crashes."
+      },
+      {
+        "title": "Dual-layer RAM/VRAM Spillover",
+        "desc": "Proprietary liquid-spillover matrix visualizes layer off-loading to system RAM and PCIe bandwidth throttling under VRAM pressure."
+      },
+      {
+        "title": "Cloud API Batch Health Diagnostics",
+        "desc": "Microsecond-grade cloud proxies and remote API connectivity checks with real-time multi-threaded terminal logs."
+      },
+      {
+        "title": "100% Local & Private",
+        "desc": "Pure-frontend architecture — API keys and endpoints live only in your browser's LocalStorage."
+      }
+    ]
+  },
   "footer": {
     "tagline": "A remote Ollama management dashboard and physics-based overclock estimation system designed for LLM players.",
     "sloganCrafted": "Crafted with",

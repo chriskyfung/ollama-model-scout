@@ -102,6 +102,28 @@
       "currentConfig": "当前配置"
     }
   },
+  "features": {
+    "title": "专为 LLM 玩家打造的核心技术",
+    "subtitle": "结合 LLM 推论物理学与可视化分析，助您极致释放本地硬件潜能",
+    "items": [
+      {
+        "title": "物理级 KV Cache 动态估算",
+        "desc": "精确计算每拉长 1K Context 所产生的 Key-Value 显存需求，避免爆显存（OOM）崩溃。"
+      },
+      {
+        "title": "双层 RAM/VRAM 液态溢流",
+        "desc": "独创液态溢流矩阵，实时呈现显存不足时模型层数向系统 RAM 分流与 PCIe 降速特征。"
+      },
+      {
+        "title": "云端 API 批量健康诊断",
+        "desc": "提供微秒级云端代理与远程 API 连接诊断，搭配实时多线程 Terminal 测试日志。"
+      },
+      {
+        "title": "100% 本地隐私无服务器",
+        "desc": "纯前端架构，API Keys 与服务器路径全数托管于本地 LocalStorage，绝不上传云端。"
+      }
+    ]
+  },
   "footer": {
     "tagline": "专为大语言模型玩家设计的远程 Ollama 管理仪表板与物理超频推估系统。",
     "sloganCrafted": "精心打造",

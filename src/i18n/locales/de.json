@@ -102,6 +102,28 @@
       "sweetSpot": "Sweet Spot"
     }
   },
+  "features": {
+    "title": "Kern-Technologie für LLM-Player",
+    "subtitle": "LLM-Schließphysik mit Visualisierung kombiniert, um das volle Potenzial Ihrer lokalen Hardware auszuschöpfen.",
+    "items": [
+      {
+        "title": "Physikalische KV-Cache-Schätzung",
+        "desc": "Berechnet präzise den VRAM-Verbrauch pro +1K-Kontextfenster und verhindert OOM-Abstürze."
+      },
+      {
+        "title": "Zweischichtiger RAM/VRAM-Spülprozess",
+        "desc": "Eigenständige Flüssigkeits-Spillover-Matrix visualisiert in Echtzeit das Auslagern von Schichten auf System-RAM und die PCIe-Bandbreiten-Drosselung bei VRAM-Druck."
+      },
+      {
+        "title": "Cloud-API-Gesundheits-Diagnose per Batch",
+        "desc": "Mikrosekundengenaue Cloud-Proxys und Remote-API-Konnektivitätsprüfungen mit Echtzeit-Multithread-Terminal-Logs."
+      },
+      {
+        "title": "100% lokal & privat",
+        "desc": "Reine Frontend-Architektur: API-Keys und Endpunkte existieren ausschließlich im LocalStorage Ihres Browsers."
+      }
+    ]
+  },
   "footer": {
     "tagline": "Ein Remote-Ollama-Verwaltungs-Dashboard und physikbasiertes Overclock-Schätzsystem, entwickelt für LLM-Player.",
     "sloganCrafted": "Mit Sorgfalt erstellt",
