@@ -1,4 +1,15 @@
 {
+  "nav": {
+    "models": "Matriz de Modelos",
+    "overclock": "Mazo Táctico",
+    "features": "Funcionalidades",
+    "faq": "Preguntas Frecuentes",
+    "github": "GitHub"
+  },
+  "header": {
+    "apiSettingsBtn": "Servidor y hardware",
+    "apiSettingsAria": "Configuración de servidor y hardware"
+  },
   "langSwitcher": {
     "label": "Cambiar idioma",
     "toggleAria": "Cambiar idioma"

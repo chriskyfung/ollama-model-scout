@@ -1,4 +1,15 @@
 {
+  "nav": {
+    "models": "Modell-Matrix",
+    "overclock": "Taktisches Decks",
+    "features": "Kernfunktionen",
+    "faq": "Häufige Fragen",
+    "github": "GitHub"
+  },
+  "header": {
+    "apiSettingsBtn": "Server & Hardware",
+    "apiSettingsAria": "Server- & Hardwaresoftware"
+  },
   "langSwitcher": {
     "label": "Sprache wechseln",
     "toggleAria": "Sprache wechseln"

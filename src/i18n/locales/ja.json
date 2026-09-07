@@ -1,4 +1,15 @@
 {
+  "nav": {
+    "models": "モデルマトリックス",
+    "overclock": "戦略推計デッキ",
+    "features": "コア機能",
+    "faq": "よくある質問",
+    "github": "GitHub"
+  },
+  "header": {
+    "apiSettingsBtn": "サーバーとハードウェア",
+    "apiSettingsAria": "サーバーとハードウェア設定"
+  },
   "langSwitcher": {
     "label": "言語切替",
     "toggleAria": "言語を切り替える"

@@ -1,4 +1,15 @@
 {
+  "nav": {
+    "models": "모델 매트릭스",
+    "overclock": "전략 추산 덱",
+    "features": "핵심 기능",
+    "faq": "자주 묻는 질문",
+    "github": "GitHub"
+  },
+  "header": {
+    "apiSettingsBtn": "서버 및 하드웨어",
+    "apiSettingsAria": "서버 및 하드웨어 설정"
+  },
   "langSwitcher": {
     "label": "언어 전환",
     "toggleAria": "언어를 전환합니다"

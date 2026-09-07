@@ -1,4 +1,15 @@
 {
+  "nav": {
+    "models": "Matrice des modèles",
+    "overclock": "Deck tactique",
+    "features": "Fonctionnalités",
+    "faq": "Questions fréquentes",
+    "github": "GitHub"
+  },
+  "header": {
+    "apiSettingsBtn": "Serveur et matériel",
+    "apiSettingsAria": "Paramètres serveur et matériel"
+  },
   "langSwitcher": {
     "label": "Changer de langue",
     "toggleAria": "Changer de langue"

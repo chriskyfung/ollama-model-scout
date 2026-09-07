@@ -1,4 +1,15 @@
 {
+  "nav": {
+    "models": "模型陣列",
+    "overclock": "戰略推算艙",
+    "features": "核心特點",
+    "faq": "常見問題",
+    "github": "GitHub"
+  },
+  "header": {
+    "apiSettingsBtn": "伺服器與硬體",
+    "apiSettingsAria": "伺服器與硬體設定"
+  },
   "langSwitcher": {
     "label": "語言切換",
     "toggleAria": "切換語言"

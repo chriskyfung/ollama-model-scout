@@ -1,4 +1,15 @@
 {
+  "nav": {
+    "models": "模型矩阵",
+    "overclock": "战略推算舱",
+    "features": "核心功能",
+    "faq": "常见问题",
+    "github": "GitHub"
+  },
+  "header": {
+    "apiSettingsBtn": "服务器与硬件",
+    "apiSettingsAria": "服务器与硬件设置"
+  },
   "langSwitcher": {
     "label": "语言切换",
     "toggleAria": "切换语言"
