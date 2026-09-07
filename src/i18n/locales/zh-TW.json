@@ -30,6 +30,32 @@
     "mockEnabled": "啟用 Mock 資料",
     "retry": "重試"
   },
+  "footer": {
+    "tagline": "專為大語言模型玩家設計的遠端 Ollama 管理儀表板與物理超頻推估系統。",
+    "sloganCrafted": "以匠心打造",
+    "sloganEnthusiasts": "獻給本地 AI 愛好者。",
+    "copyright": "© 2026 Ollama Model Scout。以 MIT 授權條款開源發布。",
+    "clientSide": "100% 純前端運行。不會將任何使用者資料傳送至外部伺服器。",
+    "columns": {
+      "brand": "Ollama Model Scout",
+      "features": "核心功能",
+      "resources": "實用社群資源",
+      "disclaimer": "免責聲明與隱私",
+      "links": {
+        "ollama": "Ollama 官方網站",
+        "huggingface": "Hugging Face GGUF 模型庫",
+        "lmarena": "LMSYS Chatbot Arena 競技場",
+        "ollamaGithub": "Ollama GitHub 官方專案"
+      },
+      "featuresList": {
+        "vramBudget": "• VRAM / RAM 溢流實時預算",
+        "smartFilter": "• 智慧多維度過濾與動態排序",
+        "batchDiag": "• 雲端 API 批次連線診斷",
+        "sweetSpot": "• Context 黃金推論區圖表"
+      },
+      "disclaimerText": "本工具提供的 Tokens/sec 及 VRAM 估算為依據通用 GQA 與 KV Cache 理論模型之數值預測，實際推論速度將因 GPU 架構與系統匯流排頻寬有所差異。"
+    }
+  },
   "langSwitcher": {
     "label": "語言切換",
     "toggleAria": "切換語言"

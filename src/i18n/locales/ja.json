@@ -30,6 +30,32 @@
     "mockEnabled": "Mock データを有効化",
     "retry": "再試行"
   },
+  "footer": {
+    "tagline": "LLM プレイヤーのために設計されたリモート Ollama 管理ダッシュボードと物理ベースのオーバークロック推定システム。",
+    "sloganCrafted": "愛を込めて制作",
+    "sloganEnthusiasts": "ローカル AI 愛好家のために。",
+    "copyright": "© 2026 Ollama Model Scout。MIT ライセンスで公開。",
+    "clientSide": "100% クライアントサイド。ユーザーデータは外部サーバーに送信されません。",
+    "columns": {
+      "brand": "Ollama Model Scout",
+      "features": "コア機能",
+      "resources": "実用コミュニティリソース",
+      "disclaimer": "免責事項 & プライバシー",
+      "links": {
+        "ollama": "Ollama (公式サイト)",
+        "huggingface": "Hugging Face GGUF モデルハブ",
+        "lmarena": "LMSYS Chatbot Arena",
+        "ollamaGithub": "Ollama (GitHub)"
+      },
+      "featuresList": {
+        "vramBudget": "• VRAM / RAM スピルオーバー予算 (リアルタイム)",
+        "smartFilter": "• スマートな多次元フィルタリング & 動的ソート",
+        "batchDiag": "• クラウド API バッチ接続診断",
+        "sweetSpot": "• Context のスイートスポットチャート"
+      },
+      "disclaimerText": "本ツールの Tokens/sec および VRAM 推定値は一般的な GQA と KV Cache モデルに基づく予測値であり、実際の推論速度は GPU アーキテクチャとシステムバス帯域によって異なります。"
+    }
+  },
   "langSwitcher": {
     "label": "言語切替",
     "toggleAria": "言語を切り替える"

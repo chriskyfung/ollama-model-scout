@@ -30,6 +30,32 @@
     "mockEnabled": "Mock 데이터 사용",
     "retry": "다시 시도"
   },
+  "footer": {
+    "tagline": "LLM 플레이어를 위해 설계된 원격 Ollama 관리 대시보드 및 물리 기반 오버클럭 추정 시스템.",
+    "sloganCrafted": "정성으로 만든",
+    "sloganEnthusiasts": "로컬 AI 애호가를 위하여.",
+    "copyright": "© 2026 Ollama Model Scout. MIT 라이선스 오픈소스.",
+    "clientSide": "100% 클라이언트 사이드. 사용자 데이터는 외부 서버로 전송되지 않습니다.",
+    "columns": {
+      "brand": "Ollama Model Scout",
+      "features": "핵심 기능",
+      "resources": "실용 커뮤니티 리소스",
+      "disclaimer": "면책 조항 및 개인정보 보호",
+      "links": {
+        "ollama": "Ollama (공식 사이트)",
+        "huggingface": "Hugging Face GGUF 허브",
+        "lmarena": "LMSYS Chatbot Arena",
+        "ollamaGithub": "Ollama (GitHub)"
+      },
+      "featuresList": {
+        "vramBudget": "• VRAM / RAM 스필오버 예산 (실시간)",
+        "smartFilter": "• 스마트 다차원 필터링 및 동적 정렬",
+        "batchDiag": "• 클라우드 API 일괄 연결 진단",
+        "sweetSpot": "• Context 스위트스팟 차트"
+      },
+      "disclaimerText": "본 도구의 Tokens/sec 및 VRAM 추정치는 일반적인 GQA 및 KV Cache 모델을 기반으로 한 예측값이며, 실제 추론 속도는 GPU 아키텍처와 시스템 버스 대역폭에 따라 다릅니다."
+    }
+  },
   "langSwitcher": {
     "label": "언어 전환",
     "toggleAria": "언어를 전환합니다"

@@ -30,6 +30,32 @@
     "mockEnabled": "Mock-Daten aktivieren",
     "retry": "Wiederholen"
   },
+  "footer": {
+    "tagline": "Ein Remote-Ollama-Verwaltungs-Dashboard und physikbasiertes Overclock-Schätzsystem, entwickelt für LLM-Player.",
+    "sloganCrafted": "Mit Sorgfalt erstellt",
+    "sloganEnthusiasts": "für Local-AI-Enthusiasten.",
+    "copyright": "© 2026 Ollama Model Scout. Open Source unter der MIT-Lizenz.",
+    "clientSide": "100 % clientseitig. Es werden keine Nutzerdaten an externe Server übertragen.",
+    "columns": {
+      "brand": "Ollama Model Scout",
+      "features": "Kernfunktionen",
+      "resources": "Nützliche Community-Ressourcen",
+      "disclaimer": "Haftungsausschluss & Datenschutz",
+      "links": {
+        "ollama": "Ollama (offizielle Website)",
+        "huggingface": "Hugging Face GGUF Hub",
+        "lmarena": "LMSYS Chatbot Arena",
+        "ollamaGithub": "Ollama (GitHub)"
+      },
+      "featuresList": {
+        "vramBudget": "• Live VRAM/RAM-Spillover-Budget",
+        "smartFilter": "• Intelligentes Multi-Dimension-Filtern & dynamisches Sortieren",
+        "batchDiag": "• Cloud-API-Gesundheitsdiagnose per Stapel",
+        "sweetSpot": "• Context-Sweet-Spot-Diagramm"
+      },
+      "disclaimerText": "Tokens/s-Angaben und VRAM-Schätzungen sind Vorhersagen auf Basis eines generischen GQA- + KV-Cache-Modells; der reale Durchsatz variiert je nach GPU-Architektur und Systembusbreite."
+    }
+  },
   "langSwitcher": {
     "label": "Sprache wechseln",
     "toggleAria": "Sprache wechseln"

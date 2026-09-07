@@ -30,6 +30,32 @@
     "mockEnabled": "Activer les données simulées",
     "retry": "Réessayer"
   },
+  "footer": {
+    "tagline": "Un tableau de bord de gestion Ollama à distance et un système d'estimation d'overclock basé sur la physique, conçu pour les joueurs LLM.",
+    "sloganCrafted": "Conçu avec",
+    "sloganEnthusiasts": "pour les passionnés d'IA locale.",
+    "copyright": "© 2026 Ollama Model Scout. Open source sous licence MIT.",
+    "clientSide": "100 % côté client. Aucune donnée utilisateur n'est transmise à des serveurs externes.",
+    "columns": {
+      "brand": "Ollama Model Scout",
+      "features": "Fonctionnalités",
+      "resources": "Ressources communautaires utiles",
+      "disclaimer": "Avertissement & Confidentialité",
+      "links": {
+        "ollama": "Ollama (site officiel)",
+        "huggingface": "Hugging Face GGUF Hub",
+        "lmarena": "LMSYS Chatbot Arena",
+        "ollamaGithub": "Ollama (GitHub)"
+      },
+      "featuresList": {
+        "vramBudget": "• Budget de débordement VRAM/RAM en direct",
+        "smartFilter": "• Filtrage multi-dimensionnel intelligent & tri dynamique",
+        "batchDiag": "• Diagnostic de connexion par lots d'API cloud",
+        "sweetSpot": "• Graphique du point optimal du contexte"
+      },
+      "disclaimerText": "Les valeurs Tokens/s et les estimations de VRAM sont des prédictions basées sur un modèle générique de GQA + KV Cache ; le débit réel varie selon l'architecture du GPU et la bande passante du bus système."
+    }
+  },
   "langSwitcher": {
     "label": "Changer de langue",
     "toggleAria": "Changer de langue"
