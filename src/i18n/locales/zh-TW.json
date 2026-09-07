@@ -59,5 +59,26 @@
   "langSwitcher": {
     "label": "語言切換",
     "toggleAria": "切換語言"
+  },
+  "toast": {
+    "connecting": "正在連線至 Ollama 伺服器...",
+    "success": "連線成功！已載入 {{count}} 個模型",
+    "headersError": "Headers JSON 格式不正確",
+    "httpError": "HTTP 錯誤! 狀態碼: {{status}}",
+    "responseError": "回應格式不符，缺少 models 陣列",
+    "fallback": "無法連線 ({{error}})。已啟用備援 Mock 模型資料。",
+    "failed": "連線失敗 ({{error}})。請檢查伺服器設定。"
+  },
+  "logs": {
+    "noRemoteModels": "目前列表中沒有雲端 API 模型可供測試。",
+    "startTest": "開始批次測試 {{count}} 個雲端模型的連線狀態...",
+    "testOk": "200 OK (連線正常)",
+    "testFail": "ERR_CONNECTION_TIMEOUT",
+    "testDone": "批次測試執行完畢。",
+    "waiting": "等待測試開始...",
+    "executing": "執行中...",
+    "modalTitle": "批次測試終端日誌 (Batch Test Logs)",
+    "closeAria": "關閉測試日誌",
+    "srDesc": "批次測試執行過程的即時日誌。按下 Escape 或點擊關閉按鈕可關閉此視窗。"
   }
 }

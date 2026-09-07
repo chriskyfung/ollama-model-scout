@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   AreaChart,
   Area,
@@ -49,6 +50,7 @@ import { calculatePerformance } from "@/lib/perf";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 export default function App() {
+  const { t } = useTranslation();
   // --- State: API connection settings & status ---
   const [apiConfig, setApiConfig] = useLocalStorage(
     STORAGE_KEYS.apiConfig,
@@ -127,7 +129,7 @@ export default function App() {
         : allowMockFallback;
     setApiStatus({
       state: "loading",
-      message: "正在連線至 Ollama 伺服器...",
+      message: t("toast.connecting"),
       isFallback: false,
     });
     try {
@@ -136,7 +138,7 @@ export default function App() {
         try {
           customHeaders = JSON.parse(apiConfig.headers);
         } catch {
-          throw new Error("Headers JSON 格式不正確");
+          throw new Error(t("toast.headersError"));
         }
       }
 
@@ -151,32 +153,32 @@ export default function App() {
         headers,
       });
 
-      if (!res.ok) throw new Error(`HTTP 錯誤! 狀態碼: ${res.status}`);
+      if (!res.ok) throw new Error(t("toast.httpError", { status: res.status }));
 
       const data = await res.json();
       if (data && Array.isArray(data.models)) {
         setModels(data.models);
         setApiStatus({
           state: "success",
-          message: `連線成功！已載入 ${data.models.length} 個模型`,
+          message: t("toast.success", { count: data.models.length }),
           isFallback: false,
         });
       } else {
-        throw new Error("回應格式不符，缺少 models 陣列");
+        throw new Error(t("toast.responseError"));
       }
     } catch (err) {
       if (fallback) {
         setModels(MOCK_MODELS);
         setApiStatus({
           state: "error",
-          message: `無法連線 (${err.message})。已啟用備援 Mock 模型資料。`,
+          message: t("toast.fallback", { error: err.message }),
           isFallback: true,
         });
       } else {
         setModels([]);
         setApiStatus({
           state: "error",
-          message: `連線失敗 (${err.message})。請檢查伺服器設定。`,
+          message: t("toast.failed", { error: err.message }),
           isFallback: false,
         });
       }
@@ -334,7 +336,7 @@ export default function App() {
           time: new Date().toISOString(),
           model: "System",
           status: "info",
-          message: "目前列表中沒有雲端 API 模型可供測試。",
+          message: t("logs.noRemoteModels"),
         },
       ]);
       return;
@@ -346,7 +348,7 @@ export default function App() {
         time: new Date().toISOString(),
         model: "System",
         status: "info",
-        message: `開始批次測試 ${remoteModels.length} 個雲端模型的連線狀態...`,
+        message: t("logs.startTest", { count: remoteModels.length }),
       },
     ]);
 
@@ -354,7 +356,7 @@ export default function App() {
       setTimeout(
         () => {
           const success = Math.random() > 0.25;
-          const msg = success ? "200 OK (連線正常)" : "ERR_CONNECTION_TIMEOUT";
+          const msg = success ? t("logs.testOk") : t("logs.testFail");
           const status = success ? "ok" : "error";
 
           setTestResults((prev) => ({ ...prev, [m.name]: { status, msg } }));
@@ -378,7 +380,7 @@ export default function App() {
                 time: new Date().toISOString(),
                 model: "System",
                 status: "info",
-                message: "批次測試執行完畢。",
+                message: t("logs.testDone"),
               },
             ]);
           }

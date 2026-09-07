@@ -59,5 +59,26 @@
   "langSwitcher": {
     "label": "语言切换",
     "toggleAria": "切换语言"
+  },
+  "toast": {
+    "connecting": "正在连接至 Ollama 服务器...",
+    "success": "连接成功！已加载 {{count}} 个模型",
+    "headersError": "Headers JSON 格式不正确",
+    "httpError": "HTTP 错误! 状态码: {{status}}",
+    "responseError": "响应格式不符，缺少 models 数组",
+    "fallback": "无法连接 ({{error}})。已启用备援 Mock 模型数据。",
+    "failed": "连接失败 ({{error}})。请检查服务器设置。"
+  },
+  "logs": {
+    "noRemoteModels": "目前列表中没有云端 API 模型可供测试。",
+    "startTest": "开始批量测试 {{count}} 个云端模型的连接状态...",
+    "testOk": "200 OK (连接正常)",
+    "testFail": "ERR_CONNECTION_TIMEOUT",
+    "testDone": "批量测试执行完毕。",
+    "waiting": "等待测试开始...",
+    "executing": "执行中...",
+    "modalTitle": "批量测试终端日志 (Batch Test Logs)",
+    "closeAria": "关闭测试日志",
+    "srDesc": "批量测试执行过程的实时日志。按下 Escape 或点击关闭按钮可关闭此窗口。"
   }
 }

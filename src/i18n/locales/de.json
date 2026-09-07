@@ -59,5 +59,26 @@
   "langSwitcher": {
     "label": "Sprache wechseln",
     "toggleAria": "Sprache wechseln"
+  },
+  "toast": {
+    "connecting": "Verbindung zum Ollama-Server wird aufgebaut...",
+    "success": "Verbindung hergestellt! {{count}} Modelle geladen",
+    "headersError": "Ungültiges Headers-JSON",
+    "httpError": "HTTP-Fehler! Status: {{status}}",
+    "responseError": "Unerwartete Antwort: 'models'-Array fehlt",
+    "fallback": "Verbindung fehlgeschlagen ({{error}}). Verwende Mock-Daten.",
+    "failed": "Verbindung fehlgeschlagen ({{error}}). Bitte Server-Einstellungen prüfen."
+  },
+  "logs": {
+    "noRemoteModels": "Keine Cloud-API-Modelle in der aktuellen Liste zum Testen.",
+    "startTest": "Stapeltest der Verbindungen zu {{count}} Cloud-Modellen...",
+    "testOk": "200 OK (erreichbar)",
+    "testFail": "ERR_CONNECTION_TIMEOUT",
+    "testDone": "Stapeltests abgeschlossen.",
+    "waiting": "Warte auf Teststart...",
+    "executing": "Wird ausgeführt...",
+    "modalTitle": "Batch-Testprotokolle",
+    "closeAria": "Testprotokolle schließen",
+    "srDesc": "Echtzeitprotokoll des Batch-Testvorgangs. Drücken Sie Escape oder klicken Sie auf die Schaltfläche zum Schließen."
   }
 }

@@ -59,5 +59,26 @@
   "langSwitcher": {
     "label": "言語切替",
     "toggleAria": "言語を切り替える"
+  },
+  "toast": {
+    "connecting": "Ollama サーバーに接続中...",
+    "success": "接続成功！{{count}} 個のモデルを読み込みました",
+    "headersError": "Headers JSON が無効です",
+    "httpError": "HTTP エラー! ステータス: {{status}}",
+    "responseError": "予期しないレスポンス: 'models' 配列が見つかりません",
+    "fallback": "接続失敗 ({{error}})。Mock データにフォールバックしています。",
+    "failed": "接続失敗 ({{error}})。サーバー設定を確認してください。"
+  },
+  "logs": {
+    "noRemoteModels": "現在のリストにテスト可能なクラウド API モデルがありません。",
+    "startTest": "{{count}} 個のクラウドモデルの接続をバッチテスト中...",
+    "testOk": "200 OK (到達可能)",
+    "testFail": "ERR_CONNECTION_TIMEOUT",
+    "testDone": "バッチテスト完了。",
+    "waiting": "テスト開始を待機中...",
+    "executing": "実行中...",
+    "modalTitle": "バッチテストログ",
+    "closeAria": "テストログを閉じる",
+    "srDesc": "バッチテストのリアルタイムログ。Escape キーを押すか閉じるボタンをクリックして閉じます。"
   }
 }

@@ -59,5 +59,26 @@
   "langSwitcher": {
     "label": "Cambiar idioma",
     "toggleAria": "Cambiar idioma"
+  },
+  "toast": {
+    "connecting": "Conectando al servidor de Ollama...",
+    "success": "¡Conectado! Cargados {{count}} modelos",
+    "headersError": "JSON de encabezados no válido",
+    "httpError": "¡Error HTTP! Estado: {{status}}",
+    "responseError": "Respuesta inesperada: falta la matriz 'models'",
+    "fallback": "Conexión fallida ({{error}}). Usando datos simulados.",
+    "failed": "Conexión fallida ({{error}}). Compruebe la configuración del servidor."
+  },
+  "logs": {
+    "noRemoteModels": "No hay modelos API cloud en la lista para probar.",
+    "startTest": "Probando conexiones de {{count}} modelos cloud...",
+    "testOk": "200 OK (accesible)",
+    "testFail": "ERR_CONNECTION_TIMEOUT",
+    "testDone": "Pruebas por lotes completadas.",
+    "waiting": "Esperando a que comiencen las pruebas...",
+    "executing": "Ejecutando...",
+    "modalTitle": "Logs de pruebas por lotes",
+    "closeAria": "Cerrar logs de prueba",
+    "srDesc": "Registro en tiempo real del proceso de prueba por lotes. Presione Escape o haga clic en el botón de cerrar para descartar."
   }
 }

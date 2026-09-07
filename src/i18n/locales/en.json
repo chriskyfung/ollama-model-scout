@@ -59,5 +59,26 @@
   "langSwitcher": {
     "label": "Language",
     "toggleAria": "Switch language"
+  },
+  "toast": {
+    "connecting": "Connecting to the Ollama server...",
+    "success": "Connected! Loaded {{count}} models",
+    "headersError": "Invalid Headers JSON",
+    "httpError": "HTTP error! Status: {{status}}",
+    "responseError": "Unexpected response: missing 'models' array",
+    "fallback": "Connection failed ({{error}}). Falling back to Mock data.",
+    "failed": "Connection failed ({{error}}). Please check your server settings."
+  },
+  "logs": {
+    "noRemoteModels": "No cloud API models in the current list to test.",
+    "startTest": "Batch-testing connections for {{count}} cloud models...",
+    "testOk": "200 OK (reachable)",
+    "testFail": "ERR_CONNECTION_TIMEOUT",
+    "testDone": "Batch tests complete.",
+    "waiting": "Waiting for tests to start...",
+    "executing": "Executing...",
+    "modalTitle": "Batch Test Logs",
+    "closeAria": "Close test logs",
+    "srDesc": "Real-time log of the batch test process. Press Escape or click the close button to dismiss."
   }
 }

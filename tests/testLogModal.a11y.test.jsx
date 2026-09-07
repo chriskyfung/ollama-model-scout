@@ -27,7 +27,7 @@ describe("TestLogModal — dialog & a11y", () => {
     expect(document.getElementById("test-log-desc")).toBeInTheDocument();
 
     // Focus falls on the close button immediately upon open.
-    const closeBtn = screen.getByRole("button", { name: /關閉測試日誌/i });
+    const closeBtn = screen.getByRole("button", { name: /Close test logs/i });
     expect(closeBtn).toBeInTheDocument();
     expect(closeBtn).toHaveFocus();
   });
@@ -53,13 +53,13 @@ describe("TestLogModal — dialog & a11y", () => {
   it("closes when the close button is clicked", async () => {
     const handleClose = vi.fn();
     render(<TestLogModal open logs={DUMMY_LOGS} isTesting={false} onClose={handleClose} />);
-    await userEvent.click(screen.getByRole("button", { name: /關閉測試日誌/i }));
+    await userEvent.click(screen.getByRole("button", { name: /Close test logs/i }));
     expect(handleClose).toHaveBeenCalledTimes(1);
   });
 
   it("traps Tab within the dialog (single-focusable-element case)", () => {
     render(<TestLogModal open logs={DUMMY_LOGS} isTesting={false} onClose={() => {}} />);
-    const closeBtn = screen.getByRole("button", { name: /關閉測試日誌/i });
+    const closeBtn = screen.getByRole("button", { name: /Close test logs/i });
     closeBtn.focus();
     expect(closeBtn).toHaveFocus();
 

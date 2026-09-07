@@ -59,5 +59,26 @@
   "langSwitcher": {
     "label": "Changer de langue",
     "toggleAria": "Changer de langue"
+  },
+  "toast": {
+    "connecting": "Connexion au serveur Ollama...",
+    "success": "Connecté ! {{count}} modèles chargés",
+    "headersError": "JSON d'en-têtes non valide",
+    "httpError": "Erreur HTTP ! Statut : {{status}}",
+    "responseError": "Réponse inattendue : tableau 'models' manquant",
+    "fallback": "Échec de la connexion ({{error}}). Retour aux données simulées.",
+    "failed": "Échec de la connexion ({{error}}). Vérifiez la configuration du serveur."
+  },
+  "logs": {
+    "noRemoteModels": "Aucun modèle API cloud à tester dans la liste.",
+    "startTest": "Test des connexions de {{count}} modèles cloud...",
+    "testOk": "200 OK (atteignable)",
+    "testFail": "ERR_CONNECTION_TIMEOUT",
+    "testDone": "Tests par lots terminés.",
+    "waiting": "En attente du démarrage des tests...",
+    "executing": "Exécution...",
+    "modalTitle": "Journaux de test par lots",
+    "closeAria": "Fermer les journaux de test",
+    "srDesc": "Journal en temps réel du processus de test par lots. Appuyez sur Échap ou cliquez sur le bouton de fermeture pour fermer."
   }
 }
