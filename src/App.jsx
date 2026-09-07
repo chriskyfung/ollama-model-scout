@@ -519,8 +519,12 @@ export default function App() {
                             }
                             className="accent-cyan-500 rounded"
                           />
-                          <span className="capitalize">
-                            {col.replace(/([A-Z])/g, " $1")}
+                          <span>
+                            {t(
+                              `models.tableHeaders.${
+                                col === "parameterSize" ? "parameters" : col
+                              }`,
+                            )}
                           </span>
                         </label>
                       ))}
