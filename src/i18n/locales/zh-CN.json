@@ -76,6 +76,32 @@
       "batchTesting": "批量测试中..."
     }
   },
+  "overclock": {
+    "placeholderTitle": "请点击上方模型矩阵中的任意模型",
+    "placeholderDesc": "点击任意模型即可展开「战略推算舱」，为您模拟在不同 Context 深度下显存/RAM 分配与推论速度衰减曲线。",
+    "parameterSizeLabel": "参数规模:",
+    "quantizationLabel": "量化:",
+    "maxContextLabel": "最大 Context:",
+    "unknown": "UNKNOWN",
+    "contextLabel": "Context 深度配置",
+    "pcieRouting": "PCIe 总线分流",
+    "preset": {
+      "fast": "🚀 极速 (2K)",
+      "balanced": "⚖ 均衡 (8K)",
+      "max": "📚 极限 Context"
+    },
+    "vramCore": "GPU VRAM 核心 (专用)",
+    "ramSpillover": "系统 RAM (溢流分流)",
+    "chart": {
+      "title": "深度 vs. 内存 / 推论速度",
+      "sweetSpot": "黄金推理区",
+      "memoryDemand": "内存总需求",
+      "tokensPerSecond": "预估速度",
+      "unitGB": "GB",
+      "unitTPS": " t/s",
+      "currentConfig": "当前配置"
+    }
+  },
   "footer": {
     "tagline": "专为大语言模型玩家设计的远程 Ollama 管理仪表板与物理超频推估系统。",
     "sloganCrafted": "精心打造",

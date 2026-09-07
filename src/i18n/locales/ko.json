@@ -76,6 +76,32 @@
       "batchTesting": "일괄 테스트 중..."
     }
   },
+  "overclock": {
+    "placeholderTitle": "위 모델 매트릭스에서 원하는 모델을 선택하세요",
+    "placeholderDesc": "모델을 클릭하면 '전략 추산 덱'이 열리고, 다양한 Context 길이에 따른 VRAM/RAM 할당과 추론 처리량 감소 곡선을 시뮬레이션합니다.",
+    "parameterSizeLabel": "파라미터 규모:",
+    "pcieRouting": "PCIe 버스 라우팅",
+    "quantizationLabel": "양자화:",
+    "maxContextLabel": "최대 Context:",
+    "unknown": "UNKNOWN",
+    "contextLabel": "Context 깊이 설정",
+    "preset": {
+      "fast": "🚀 빠름 (2K)",
+      "balanced": "⚖ 균형 (8K)",
+      "max": "📚 최대 Context"
+    },
+    "vramCore": "GPU VRAM 코어 (전용)",
+    "ramSpillover": "시스템 RAM (스필오버)",
+    "chart": {
+      "title": "컨텍스트 깊이 vs 메모리 / 추론 속도",
+      "memoryDemand": "메모리 수요 총합",
+      "tokensPerSecond": "예상 처리량",
+      "unitGB": "GB",
+      "unitTPS": " t/s",
+      "currentConfig": "현재 설정",
+      "sweetSpot": "스위트 스폿"
+    }
+  },
   "footer": {
     "tagline": "LLM 플레이어를 위해 설계된 원격 Ollama 관리 대시보드 및 물리 기반 오버클럭 추정 시스템.",
     "sloganCrafted": "정성으로 만든",

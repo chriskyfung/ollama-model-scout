@@ -902,14 +902,14 @@ export default function App() {
                         {selectedModel.name}
                       </h3>
                       <p className="text-xs text-slate-400 mt-1">
-                        參數規模:{" "}
+                        {t("overclock.parameterSizeLabel")}{" "}
                         {formatParameterSize(
                           selectedModel.details?.parameter_size,
                         )}{" "}
-                        | 量化:{" "}
+                        | {t("overclock.quantizationLabel")}{" "}
                         {selectedModel.details?.quantization_level?.toUpperCase() ||
-                          "UNKNOWN"}{" "}
-                        | 最大 Context:{" "}
+                          t("overclock.unknown")}{" "}
+                        | {t("overclock.maxContextLabel")}{" "}
                         {(
                           selectedModel.details?.context_length || 0
                         ).toLocaleString()}
@@ -929,13 +929,13 @@ export default function App() {
                       onClick={() => setContextSlider(2048)}
                       className="px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 rounded-xl text-emerald-400 text-xs font-bold transition-colors"
                     >
-                      🚀 極速 (2K)
+                      {t("overclock.preset.fast")}
                     </button>
                     <button
                       onClick={() => setContextSlider(8192)}
                       className="px-3 py-1.5 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 rounded-xl text-cyan-400 text-xs font-bold transition-colors"
                     >
-                      ⚖ 均衡 (8K)
+                      {t("overclock.preset.balanced")}
                     </button>
                     <button
                       onClick={() =>
@@ -945,14 +945,14 @@ export default function App() {
                       }
                       className="px-3 py-1.5 bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 rounded-xl text-indigo-400 text-xs font-bold transition-colors"
                     >
-                      📚 極限 Context
+                      {t("overclock.preset.max")}
                     </button>
                   </div>
 
                   {/* Context 滑桿 */}
                   <div>
                     <div className="flex justify-between text-xs font-semibold text-slate-300 mb-2">
-                      <span>Context 深度配置</span>
+                      <span>{t("overclock.contextLabel")}</span>
                       <span className="text-cyan-400 font-mono font-bold">
                         {contextSlider.toLocaleString()} Tokens
                       </span>
@@ -995,7 +995,7 @@ export default function App() {
                             <div className="flex justify-between text-xs mb-1.5">
                               <span className="text-slate-400 flex items-center gap-1.5">
                                 <Cpu className="w-3.5 h-3.5 text-emerald-400" />{" "}
-                                GPU VRAM 核心 (專用)
+                                {t("overclock.vramCore")}
                               </span>
                               <span className="font-mono text-slate-200">
                                 {perf.vramUsed} / {hardware.vram} GB
@@ -1020,7 +1020,7 @@ export default function App() {
                             <div className="flex justify-between text-xs mb-1.5">
                               <span className="text-slate-400 flex items-center gap-1.5">
                                 <HardDrive className="w-3.5 h-3.5 text-amber-400" />{" "}
-                                系統 RAM (溢流分流)
+                                {t("overclock.ramSpillover")}
                                 {perf.ramUsed > 0 && (
                                   <span className="text-[10px] bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded border border-amber-500/30">
                                     PCIe 匯流排分流中
@@ -1052,11 +1052,11 @@ export default function App() {
                 <div className="flex-1 min-h-[280px] bg-slate-950/60 rounded-xl border border-slate-800 p-4 flex flex-col justify-between">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-xs font-bold text-slate-400 flex items-center gap-1.5">
-                      <Sliders className="w-3.5 h-3.5 text-cyan-400" /> Context
-                      vs. 記憶體與推論速度 (t/s)
+                      <Sliders className="w-3.5 h-3.5 text-cyan-400" />{" "}
+                      {t("overclock.chart.title")}
                     </span>
                     <span className="text-[10px] text-emerald-400 bg-emerald-950/50 border border-emerald-800/40 px-2 py-0.5 rounded">
-                      ✨ 綠色區域：黃金推論區
+                      {t("overclock.chart.sweetSpot")}
                     </span>
                   </div>
 
@@ -1121,7 +1121,7 @@ export default function App() {
                           stroke="#10b981"
                           fontSize={10}
                           tickLine={false}
-                          unit="GB"
+                          unit={t("overclock.chart.unitGB")}
                         />
                         <YAxis
                           yAxisId="right"
@@ -1129,7 +1129,7 @@ export default function App() {
                           stroke="#3b82f6"
                           fontSize={10}
                           tickLine={false}
-                          unit=" t/s"
+                          unit={t("overclock.chart.unitTPS")}
                         />
                         <Tooltip
                           contentStyle={{
@@ -1166,7 +1166,7 @@ export default function App() {
                           strokeWidth={1.5}
                           strokeDasharray="4 4"
                           label={{
-                            value: "當前配置",
+                            value: t("overclock.chart.currentConfig"),
                             position: "insideTopLeft",
                             fill: "#f59e0b",
                             fontSize: 11,
@@ -1177,7 +1177,7 @@ export default function App() {
                           yAxisId="left"
                           type="monotone"
                           dataKey="memoryDemand"
-                          name="記憶體總需求"
+                          name={t("overclock.chart.memoryDemand")}
                           stroke="#10b981"
                           strokeWidth={2}
                           fillOpacity={1}
@@ -1187,7 +1187,7 @@ export default function App() {
                           yAxisId="right"
                           type="monotone"
                           dataKey="tokensPerSecond"
-                          name="預估速度"
+                          name={t("overclock.chart.tokensPerSecond")}
                           stroke="#3b82f6"
                           strokeWidth={2}
                           fillOpacity={1}
@@ -1204,11 +1204,10 @@ export default function App() {
                   <Zap className="w-6 h-6" />
                 </div>
                 <h3 className="text-base font-bold text-slate-200">
-                  請從上方模型矩陣中點擊任一模型
+                  {t("overclock.placeholderTitle")}
                 </h3>
                 <p className="text-xs text-slate-400 max-w-md mx-auto">
-                  點擊模型後將立即展開「戰略推算艙」，為您模擬在不同 Context
-                  深度下的 VRAM/RAM 記憶體分配與推論速度衰退曲線。
+                  {t("overclock.placeholderDesc")}
                 </p>
               </div>
             )}

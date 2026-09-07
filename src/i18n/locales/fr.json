@@ -76,6 +76,32 @@
       "batchTesting": "Test en cours..."
     }
   },
+  "overclock": {
+    "placeholderTitle": "Sélectionnez un modèle dans la matrice ci-dessus",
+    "placeholderDesc": "Cliquez sur un modèle pour ouvrir le Deck tactique et simuler l'allocation VRAM/RAM ainsi que la décroissance du débit d'inférence selon la longueur du contexte.",
+    "parameterSizeLabel": "Paramètres :",
+    "pcieRouting": "Routage du bus PCIe",
+    "quantizationLabel": "Quantification :",
+    "maxContextLabel": "Contexte max :",
+    "unknown": "UNKNOWN",
+    "contextLabel": "Profondeur du contexte",
+    "preset": {
+      "fast": "🚀 Rapide (2K)",
+      "balanced": "⚖ Équilibré (8K)",
+      "max": "📚 Contexte max"
+    },
+    "vramCore": "VRAM GPU (dédiée)",
+    "ramSpillover": "RAM système (débordement PCIe)",
+    "chart": {
+      "title": "Profondeur de contexte vs Mémoire / Vitesse d'inférence",
+      "memoryDemand": "Demande de mémoire",
+      "tokensPerSecond": "Débit estimé",
+      "unitGB": "GB",
+      "unitTPS": " t/s",
+      "currentConfig": "Configuration actuelle",
+      "sweetSpot": "Point Optimal"
+    }
+  },
   "footer": {
     "tagline": "Un tableau de bord de gestion Ollama à distance et un système d'estimation d'overclock basé sur la physique, conçu pour les joueurs LLM.",
     "sloganCrafted": "Conçu avec",

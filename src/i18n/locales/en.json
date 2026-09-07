@@ -76,6 +76,32 @@
       "batchTesting": "Testing..."
     }
   },
+  "overclock": {
+    "placeholderTitle": "Select a model from the matrix above",
+    "placeholderDesc": "Click any model to open the Tactical Deck and simulate VRAM/RAM allocation and inference throughput decay across different context lengths.",
+    "parameterSizeLabel": "Parameters:",
+    "quantizationLabel": "Quantization:",
+    "maxContextLabel": "Max Context:",
+    "unknown": "UNKNOWN",
+    "contextLabel": "Context Depth",
+    "pcieRouting": "PCIe Bus Routing",
+    "preset": {
+      "fast": "🚀 Fast (2K)",
+      "balanced": "⚖ Balanced (8K)",
+      "max": "📚 Max Context"
+    },
+    "vramCore": "GPU VRAM (Dedicated)",
+    "ramSpillover": "System RAM (PCIe Spillover)",
+    "chart": {
+      "title": "Context Depth vs. Memory / Inference Speed",
+      "sweetSpot": "Sweet Spot",
+      "memoryDemand": "Memory Demand",
+      "tokensPerSecond": "Est. Throughput",
+      "unitGB": "GB",
+      "unitTPS": " t/s",
+      "currentConfig": "Current"
+    }
+  },
   "footer": {
     "tagline": "A remote Ollama management dashboard and physics-based overclock estimation system designed for LLM players.",
     "sloganCrafted": "Crafted with",

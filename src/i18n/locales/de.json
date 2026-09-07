@@ -76,6 +76,32 @@
       "batchTesting": "Teste im Batch..."
     }
   },
+  "overclock": {
+    "placeholderTitle": "Wählen Sie ein Modell aus der Matrix oben aus",
+    "placeholderDesc": "Klicken Sie auf ein Modell, um das taktische Decks zu öffnen und VRAM/RAM-Belegungen sowie die Leistungsabnahme bei verschiedenen Kontextlängen zu simulieren.",
+    "parameterSizeLabel": "Parametergröße:",
+    "pcieRouting": "PCIe-Bus-Routing",
+    "quantizationLabel": "Quantisierung:",
+    "maxContextLabel": "Max. Kontext:",
+    "unknown": "UNKNOWN",
+    "contextLabel": "Kontext-Tiefe",
+    "preset": {
+      "fast": "🚀 Schnell (2K)",
+      "balanced": "⚖ Ausgeglichen (8K)",
+      "max": "📚 Maximaler Kontext"
+    },
+    "vramCore": "GPU-VRAM-Kern (dediziert)",
+    "ramSpillover": "System-RAM (PCIe-Spillover)",
+    "chart": {
+      "title": "Kontexttiefe vs Speicher / Inferenzgeschwindigkeit",
+      "memoryDemand": "Gespeicherter Bedarf",
+      "tokensPerSecond": "Geschätzte Leistung",
+      "unitGB": "GB",
+      "unitTPS": " t/s",
+      "currentConfig": "Aktuelle Einstellung",
+      "sweetSpot": "Sweet Spot"
+    }
+  },
   "footer": {
     "tagline": "Ein Remote-Ollama-Verwaltungs-Dashboard und physikbasiertes Overclock-Schätzsystem, entwickelt für LLM-Player.",
     "sloganCrafted": "Mit Sorgfalt erstellt",

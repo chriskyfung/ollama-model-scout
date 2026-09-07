@@ -76,6 +76,32 @@
       "batchTesting": "バッチテスト中..."
     }
   },
+  "overclock": {
+    "placeholderTitle": "上のモデルマトリックスから任意のモデルを選択",
+    "placeholderDesc": "任意のモデルをクリックすると「戦略推計デッキ」が開き、様々な Context 長における VRAM/RAM の割り当てと推論スループットの減衰曲線をシミュレートします。",
+    "parameterSizeLabel": "パラメータ規模:",
+    "pcieRouting": "PCIe バスルーティング",
+    "quantizationLabel": "量子化:",
+    "maxContextLabel": "最大 Context:",
+    "unknown": "UNKNOWN",
+    "contextLabel": "Context 深度設定",
+    "preset": {
+      "fast": "🚀 高速 (2K)",
+      "balanced": "⚖ バランス (8K)",
+      "max": "📚 最大 Context"
+    },
+    "vramCore": "GPU VRAM コア (専用)",
+    "ramSpillover": "システム RAM (スピルオーバー)",
+    "chart": {
+      "title": "コンテキスト深度 vs メモリ / 推論速度",
+      "memoryDemand": "メモリ需要合計",
+      "tokensPerSecond": "推定スループット",
+      "unitGB": "GB",
+      "unitTPS": " t/s",
+      "currentConfig": "現在の設定",
+      "sweetSpot": "スイートスポット"
+    }
+  },
   "footer": {
     "tagline": "LLM プレイヤーのために設計されたリモート Ollama 管理ダッシュボードと物理ベースのオーバークロック推定システム。",
     "sloganCrafted": "愛を込めて制作",
