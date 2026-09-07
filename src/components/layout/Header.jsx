@@ -1,10 +1,12 @@
 import { SquareActivity, Zap, Settings, ChevronDown } from "lucide-react";
 import GithubIcon from "@/components/ui/GithubIcon";
+import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 import { APP_VERSION, GITHUB_REPO } from "@/lib/constants";
 
 /**
- * Sticky top app bar: logo + connection status dot, anchor nav, GitHub link
- * and the "Server & Hardware" toggle that reveals the settings panel.
+ * Sticky top app bar: logo + connection status dot, anchor nav, GitHub link,
+ * language switcher, and the "Server & Hardware" toggle that reveals the
+ * settings panel.
  *
  * Props:
  *   - apiStatus:      { state, isFallback, message }
@@ -79,8 +81,13 @@ export default function Header({
             aria-label="GitHub 專案原始碼（開啟新分頁）"
             title="GitHub 專案原始碼"
           >
-            <GithubIcon className="w-4 h-4 text-slate-400 group-hover:text-white transition-colors" aria-hidden="true" />
-            <span className="hidden sm:inline" aria-hidden="true">GitHub</span>
+            <GithubIcon
+              className="w-4 h-4 text-slate-400 group-hover:text-white transition-colors"
+              aria-hidden="true"
+            />
+            <span className="hidden sm:inline" aria-hidden="true">
+              GitHub
+            </span>
           </a>
 
           <button
@@ -98,6 +105,8 @@ export default function Header({
               aria-hidden="true"
             />
           </button>
+
+          <LanguageSwitcher />
         </div>
       </div>
     </header>
