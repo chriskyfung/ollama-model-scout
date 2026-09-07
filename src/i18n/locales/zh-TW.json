@@ -10,6 +10,22 @@
     "apiSettingsBtn": "伺服器與硬體",
     "apiSettingsAria": "伺服器與硬體設定"
   },
+  "apiSettings": {
+    "title": "遠端 Ollama API 配置",
+    "baseUrl": "Base URL",
+    "apiKey": "Bearer API Key (選填)",
+    "headers": "Custom Headers (JSON 格式)",
+    "headersPlaceholder": "{\n  \"X-Custom-Header\": \"Value\"\n}",
+    "hardwareTitle": "本地硬體規格模擬 (VRAM / RAM)",
+    "vramLabel": "GPU VRAM 顯存",
+    "ramLabel": "系統 RAM 記憶體",
+    "apply": "套用設定並重新載入",
+    "presets": {
+      "cpu": "純 CPU (32G)",
+      "macbook": "MacBook (16G)",
+      "rtx4090": "RTX 4090 (24G)"
+    }
+  },
   "langSwitcher": {
     "label": "語言切換",
     "toggleAria": "切換語言"

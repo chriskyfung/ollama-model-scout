@@ -34,6 +34,6 @@ describe("centralized constants", () => {
   });
   it("exposes sane hardware presets", () => {
     expect(HARDWARE_PRESETS).toHaveLength(3);
-    expect(HARDWARE_PRESETS[2]).toEqual({ label: "RTX 4090 (24G)", vram: 24, ram: 64 });
+    expect(HARDWARE_PRESETS[2]).toEqual({ id: "rtx4090", vram: 24, ram: 64 });
   });
 });

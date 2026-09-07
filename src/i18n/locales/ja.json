@@ -10,6 +10,22 @@
     "apiSettingsBtn": "サーバーとハードウェア",
     "apiSettingsAria": "サーバーとハードウェア設定"
   },
+  "apiSettings": {
+    "title": "リモート Ollama API 設定",
+    "baseUrl": "Base URL",
+    "apiKey": "Bearer API Key (任意)",
+    "headers": "カスタムヘッダー (JSON 形式)",
+    "headersPlaceholder": "{\n  \"X-Custom-Header\": \"Value\"\n}",
+    "hardwareTitle": "ローカルハードウェアシミュレーション (VRAM / RAM)",
+    "vramLabel": "GPU VRAM",
+    "ramLabel": "システム RAM",
+    "apply": "設定を適用して再読み込み",
+    "presets": {
+      "cpu": "純 CPU (32G)",
+      "macbook": "MacBook (16G)",
+      "rtx4090": "RTX 4090 (24G)"
+    }
+  },
   "langSwitcher": {
     "label": "言語切替",
     "toggleAria": "言語を切り替える"

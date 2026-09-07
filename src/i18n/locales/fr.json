@@ -10,6 +10,22 @@
     "apiSettingsBtn": "Serveur et matériel",
     "apiSettingsAria": "Paramètres serveur et matériel"
   },
+  "apiSettings": {
+    "title": "Configuration de l'API Ollama distante",
+    "baseUrl": "Base URL",
+    "apiKey": "Bearer API Key (facultatif)",
+    "headers": "En-têtes personnalisés (format JSON)",
+    "headersPlaceholder": "{\n  \"X-Custom-Header\": \"Value\"\n}",
+    "hardwareTitle": "Simulation du matériel local (VRAM / RAM)",
+    "vramLabel": "VRAM de la carte graphique",
+    "ramLabel": "RAM système",
+    "apply": "Appliquer et recharger",
+    "presets": {
+      "cpu": "CPU pur (32G)",
+      "macbook": "MacBook (16G)",
+      "rtx4090": "RTX 4090 (24G)"
+    }
+  },
   "langSwitcher": {
     "label": "Changer de langue",
     "toggleAria": "Changer de langue"
