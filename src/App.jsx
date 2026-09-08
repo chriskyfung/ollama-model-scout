@@ -31,7 +31,7 @@ import TestLogModal from "@/components/dashboard/TestLogModal";
 import ConnectionBanner from "@/components/dashboard/ConnectionBanner";
 import ApiSettingsPanel from "@/components/dashboard/ApiSettingsPanel";
 import FeaturesSection from "@/components/dashboard/FeaturesSection";
-import { MOCK_MODELS } from "@/data/models";
+import { useModels } from "@/hooks/useModels";
 import {
   GITHUB_REPO,
   STORAGE_KEYS,
@@ -52,12 +52,6 @@ import { useModelTesting } from "@/hooks/useModelTesting";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 export default function App() {
-  const { t } = useTranslation();
-  // --- State: API connection settings & status ---
-  const [apiConfig, setApiConfig] = useLocalStorage(
-    STORAGE_KEYS.apiConfig,
-    DEFAULT_API_CONFIG,
-  );
   const [showApiSettings, setShowApiSettings] = useState(false);
   const [showColumnMenu, setShowColumnMenu] = useState(false);
   const [openFaq, setOpenFaq] = useState(0);
@@ -72,6 +66,20 @@ export default function App() {
       element.scrollIntoView({ behavior: "smooth" });
     }
   };
+
+  // --- Data layer (fetch-on-mount; onFinally preserves the original
+  //     `finally { resetFilters() }` ordering after every fetch. The closure
+  //     below references `filtersApi`, declared afterwards — safe because the
+  //     callback only fires once the async fetch resolves, i.e. after render) ---
+  const {
+    apiConfig,
+    setApiConfig,
+    apiStatus,
+    allowMockFallback,
+    setAllowMockFallback,
+    models,
+    fetchModels,
+  } = useModels({ onFinally: () => filtersApi.resetFilters() });
 
   // --- Batch testing (declared before the filter hook so its testResults can
   //     feed test-status filtering; handleBatchTest receives the filtered list
@@ -144,9 +152,12 @@ export default function App() {
           <ConnectionBanner
             apiStatus={apiStatus}
             allowMockFallback={allowMockFallback}
-            onToggleFallback={(v) => { setAllowMockFallback(v); fetchModels(v); }}
+            onToggleFallback={(v) => {
+              setAllowMockFallback(v);
+              fetchModels(v);
+            }}
             onRetry={() => fetchModels()}
-            />
+          />
 
           {/* 展開式 API & 硬體規格設定面板 */}
           <ApiSettingsPanel
