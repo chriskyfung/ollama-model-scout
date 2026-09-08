@@ -7,7 +7,8 @@ import PerformanceChart from "./PerformanceChart";
 /**
  * 戰略指揮艙 / 超頻預估器 (`#overclock`). Extracted verbatim from App.jsx —
  * the IIFE perf computation is now a plain inline call (still pure via
- * calculatePerformance).
+ * calculatePerformance). Intentionally not memoized: it is cheap pure
+ * arithmetic, so useMemo overhead ≈ the computation itself.
  */
 export default function OverclockPanel({
   model,
