@@ -16,7 +16,7 @@
     "apiKey": "Bearer-API-Key (optional)",
     "headers": "Benutzerdefinierte Header (JSON-Format)",
     "headersPlaceholder": "{\n  \"X-Custom-Header\": \"Value\"\n}",
-    "hardwareTitle": "Lokale Hardware-Simualation (VRAM / RAM)",
+    "hardwareTitle": "Lokale Hardware-Simulation (VRAM / RAM)",
     "vramLabel": "GPU-VRAM",
     "ramLabel": "System-RAM",
     "apply": "Übernehmen & neu laden",
