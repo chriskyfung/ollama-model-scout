@@ -4,7 +4,8 @@
     "overclock": "Mazo Táctico",
     "features": "Funcionalidades",
     "faq": "Preguntas Frecuentes",
-    "github": "GitHub"
+    "github": "GitHub",
+    "githubAria": "GitHub (se abre en una pestaña nueva)"
   },
   "header": {
     "apiSettingsBtn": "Servidor y hardware",

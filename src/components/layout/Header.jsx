@@ -80,7 +80,7 @@ export default function Header({
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 rounded-xl text-xs font-medium text-slate-300 hover:text-white transition-all group"
-            aria-label={t("nav.github") + " (opens in new tab)"}
+            aria-label={t("nav.githubAria")}
             title={t("nav.github")}
           >
             <GithubIcon

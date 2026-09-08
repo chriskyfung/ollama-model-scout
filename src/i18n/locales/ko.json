@@ -4,7 +4,8 @@
     "overclock": "전략 추산 덱",
     "features": "핵심 기능",
     "faq": "자주 묻는 질문",
-    "github": "GitHub"
+    "github": "GitHub",
+    "githubAria": "GitHub(새 탭에서 열림)"
   },
   "header": {
     "apiSettingsBtn": "서버 및 하드웨어",

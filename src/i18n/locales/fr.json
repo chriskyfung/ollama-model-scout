@@ -4,7 +4,8 @@
     "overclock": "Deck tactique",
     "features": "Fonctionnalités",
     "faq": "Questions fréquentes",
-    "github": "GitHub"
+    "github": "GitHub",
+    "githubAria": "GitHub (s'ouvre dans un nouvel onglet)"
   },
   "header": {
     "apiSettingsBtn": "Serveur et matériel",

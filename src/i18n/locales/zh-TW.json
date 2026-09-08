@@ -4,7 +4,8 @@
     "overclock": "戰略推算艙",
     "features": "核心特點",
     "faq": "常見問題",
-    "github": "GitHub"
+    "github": "GitHub",
+    "githubAria": "GitHub（在新分頁開啟）"
   },
   "header": {
     "apiSettingsBtn": "伺服器與硬體",

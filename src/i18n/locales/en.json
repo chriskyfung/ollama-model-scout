@@ -4,7 +4,8 @@
     "overclock": "Tactical Deck",
     "features": "Core Features",
     "faq": "FAQ",
-    "github": "GitHub"
+    "github": "GitHub",
+    "githubAria": "GitHub (opens in new tab)"
   },
   "header": {
     "apiSettingsBtn": "Server & Hardware",

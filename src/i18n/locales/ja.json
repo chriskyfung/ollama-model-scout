@@ -4,7 +4,8 @@
     "overclock": "戦略推計デッキ",
     "features": "コア機能",
     "faq": "よくある質問",
-    "github": "GitHub"
+    "github": "GitHub",
+    "githubAria": "GitHub（新しいタブで開きます）"
   },
   "header": {
     "apiSettingsBtn": "サーバーとハードウェア",
