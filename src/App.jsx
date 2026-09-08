@@ -1,29 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
-import { useTranslation } from "react-i18next";
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  ReferenceArea,
-  ReferenceLine,
-} from "recharts";
-import {
-  Search,
-  Cloud,
-  Cpu,
-  ChevronDown,
-  Filter,
-  HardDrive,
-  Zap,
-  XCircle,
-  Sliders,
-  Terminal,
-  Sparkles,
-} from "lucide-react";
+import { useState } from "react";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import FaqSection from "@/components/dashboard/FaqSection";
@@ -35,22 +10,8 @@ import FilterButtonBar from "@/components/dashboard/FilterButtonBar";
 import ModelsTable from "@/components/dashboard/ModelsTable";
 import OverclockPanel from "@/components/dashboard/OverclockPanel";
 import FeaturesSection from "@/components/dashboard/FeaturesSection";
+import { GITHUB_REPO, STORAGE_KEYS, DEFAULT_HARDWARE } from "@/lib/constants";
 import { useModels } from "@/hooks/useModels";
-import {
-  GITHUB_REPO,
-  STORAGE_KEYS,
-  DEFAULT_API_CONFIG,
-  DEFAULT_HARDWARE,
-  DEFAULT_COLUMNS,
-  DEFAULT_FILTER_STATE,
-  DEFAULT_SORT_CONFIG,
-} from "@/lib/constants";
-import {
-  formatBytes,
-  formatParameterSize,
-} from "@/lib/format";
-import { calculatePerformance } from "@/lib/perf";
-import { FEATURE_STYLES } from "@/lib/featureStyles";
 import { useModelFilters } from "@/hooks/useModelFilters";
 import { useModelTesting } from "@/hooks/useModelTesting";
 import { useOverclockPlanner } from "@/hooks/useOverclockPlanner";
