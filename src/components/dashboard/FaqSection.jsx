@@ -22,7 +22,7 @@ export default function FaqSection({
   return (
     <section id="faq" className="scroll-mt-20 pt-6">
       <div className="text-center space-y-2 mb-8">
-        <h2 className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-teal-300 to-cyan-400 inline-flex items-center gap-2">
+        <h2 className="text-2xl font-extrabold bg-clip-text text-transparent bg-linear-to-r from-teal-300 to-cyan-400 inline-flex items-center gap-2">
           <HelpCircle className="w-6 h-6 text-teal-400" /> {t("faq.title")}
         </h2>
         <p className="text-xs text-slate-400">

@@ -71,7 +71,7 @@ export default function TestLogModal({ open, logs, isTesting, onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
       <div
-        className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-3xl flex flex-col shadow-2xl overflow-hidden h-[60vh] max-h-[600px] animate-in zoom-in-95 duration-200 outline-none"
+        className="bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-3xl flex flex-col shadow-2xl overflow-hidden h-[60vh] max-h-150 animate-in zoom-in-95 duration-200 outline-none"
         role="dialog"
         aria-modal="true"
         aria-labelledby="test-log-title"
@@ -117,7 +117,7 @@ export default function TestLogModal({ open, logs, isTesting, onClose }) {
                 })}
               </span>
               <span
-                className={`shrink-0 w-[140px] truncate ${
+                className={`shrink-0 w-35 truncate ${
                   log.model === "System"
                     ? "text-indigo-400 font-bold"
                     : "text-slate-400"
