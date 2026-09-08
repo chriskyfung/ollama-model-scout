@@ -59,7 +59,7 @@
     "tableHeaders": {
       "name": "模型名稱",
       "family": "家族",
-      "parameters": "參數",
+      "parameterSize": "參數",
       "quantization": "量化",
       "contextLength": "內容長度",
       "size": "大小",

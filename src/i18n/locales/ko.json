@@ -59,7 +59,7 @@
     "tableHeaders": {
       "name": "모델 이름",
       "family": "패밀리",
-      "parameters": "파라미터",
+      "parameterSize": "파라미터",
       "quantization": "양자화",
       "contextLength": "컨텍스트 길이",
       "size": "크기",

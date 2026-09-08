@@ -59,7 +59,7 @@
     "tableHeaders": {
       "name": "Nom du modèle",
       "family": "Famille",
-      "parameters": "Paramètres",
+      "parameterSize": "Paramètres",
       "quantization": "Quantification",
       "contextLength": "Longueur de contexte",
       "size": "Taille",

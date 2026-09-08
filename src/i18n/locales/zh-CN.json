@@ -59,7 +59,7 @@
     "tableHeaders": {
       "name": "模型名称",
       "family": "家族",
-      "parameters": "参数",
+      "parameterSize": "参数",
       "quantization": "量化",
       "contextLength": "上下文长度",
       "size": "大小",

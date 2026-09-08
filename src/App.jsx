@@ -520,11 +520,7 @@ export default function App() {
                             className="accent-cyan-500 rounded"
                           />
                           <span>
-                            {t(
-                              `models.tableHeaders.${
-                                col === "parameterSize" ? "parameters" : col
-                              }`,
-                            )}
+                            {t(`models.tableHeaders.${col}`)}
                           </span>
                         </label>
                       ))}
@@ -550,7 +546,7 @@ export default function App() {
                           : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
                       }`}
                     >
-                      {type === "remote" ? t("models.filters.types.remote") : t("models.filters.types." + type)}
+                      {t("models.filters.types." + type)}
                     </button>
                   ))}
                 </div>
@@ -677,7 +673,7 @@ export default function App() {
                           className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
                           onClick={() => sortTable("parameter_size")}
                         >
-                          {t("models.tableHeaders.parameters")}
+                          {t("models.tableHeaders.parameterSize")}
                         </th>
                       )}
                       {columns.quantization && (
