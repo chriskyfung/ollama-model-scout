@@ -1,0 +1,213 @@
+{
+  "nav": {
+    "models": "모델 매트릭스",
+    "overclock": "전략 추산 덱",
+    "features": "핵심 기능",
+    "faq": "자주 묻는 질문",
+    "github": "GitHub",
+    "githubAria": "GitHub(새 탭에서 열림)"
+  },
+  "header": {
+    "apiSettingsBtn": "서버 및 하드웨어",
+    "apiSettingsAria": "서버 및 하드웨어 설정"
+  },
+  "apiSettings": {
+    "title": "원격 Ollama API 구성",
+    "baseUrl": "Base URL",
+    "apiKey": "Bearer API Key (선택)",
+    "headers": "커스텀 헤더 (JSON 형식)",
+    "headersPlaceholder": "{\n  \"X-Custom-Header\": \"Value\"\n}",
+    "hardwareTitle": "로컬 하드웨어 시뮬레이션 (VRAM / RAM)",
+    "vramLabel": "GPU VRAM",
+    "ramLabel": "시스템 RAM",
+    "apply": "설정 적용 및 새로 고침",
+    "presets": {
+      "cpu": "순수 CPU (32G)",
+      "macbook": "MacBook (16G)",
+      "rtx4090": "RTX 4090 (24G)"
+    }
+  },
+  "connectionBanner": {
+    "mockEnabled": "Mock 데이터 사용",
+    "retry": "다시 시도"
+  },
+  "models": {
+    "searchPlaceholder": "모델, 기능, 패밀리 검색...",
+    "columnCustomize": "열 사용자 지정",
+    "columnToggleTitle": "열 표시 전환",
+    "emptyState": "현재 필터에 맞는 모델이 없습니다",
+    "cloudBadge": "Cloud",
+    "cloudApiBadge": "Cloud API",
+    "statusDash": "-",
+    "filters": {
+      "type": "유형:",
+      "caps": "기능:",
+      "family": "패밀리:",
+      "quant": "양자화:",
+      "status": "상태:",
+      "types": {
+        "all": "전체",
+        "local": "로컬",
+        "remote": "클라우드(원격)"
+      },
+      "statuses": {
+        "all": "모든 상태",
+        "success": "연결 성공",
+        "error": "연결 실패",
+        "untested": "미테스트"
+      }
+    },
+    "tableHeaders": {
+      "name": "모델 이름",
+      "family": "패밀리",
+      "parameterSize": "파라미터",
+      "quantization": "양자화",
+      "contextLength": "컨텍스트 길이",
+      "size": "크기",
+      "status": "API 상태",
+      "capabilities": "기능",
+      "modifiedAt": "수정일"
+    },
+    "footer": {
+      "count": "표시 모델:",
+      "countUnit": " 개",
+      "localUsed": "로컬 디스크 사용량:",
+      "viewLogs": "테스트 로그 보기",
+      "batchTest": "클라우드 API 연결 일괄 테스트",
+      "batchTesting": "일괄 테스트 중..."
+    }
+  },
+  "overclock": {
+    "placeholderTitle": "위 모델 매트릭스에서 원하는 모델을 선택하세요",
+    "placeholderDesc": "모델을 클릭하면 '전략 추산 덱'이 열리고, 다양한 Context 길이에 따른 VRAM/RAM 할당과 추론 처리량 감소 곡선을 시뮬레이션합니다.",
+    "parameterSizeLabel": "파라미터 규모:",
+    "pcieRouting": "PCIe 버스 라우팅",
+    "quantizationLabel": "양자화:",
+    "maxContextLabel": "최대 Context:",
+    "unknown": "UNKNOWN",
+    "contextLabel": "Context 깊이 설정",
+    "preset": {
+      "fast": "🚀 빠름 (2K)",
+      "balanced": "⚖ 균형 (8K)",
+      "max": "📚 최대 Context"
+    },
+    "vramCore": "GPU VRAM 코어 (전용)",
+    "ramSpillover": "시스템 RAM (스필오버)",
+    "chart": {
+      "title": "컨텍스트 깊이 vs 메모리 / 추론 속도",
+      "memoryDemand": "메모리 수요 총합",
+      "tokensPerSecond": "예상 처리량",
+      "unitGB": "GB",
+      "unitTPS": " t/s",
+      "currentConfig": "현재 설정",
+      "sweetSpot": "스위트 스폿"
+    }
+  },
+  "features": {
+    "title": "LLM 플레이어를 위한 핵심 기술",
+    "subtitle": "LLM 추론 물리학과 시각화 분석을 결합해 로컬 하드웨어의 잠재력을 최대로 끌어냅니다.",
+    "items": [
+      {
+        "title": "물리급 KV Cache 추정",
+        "desc": "각 +1K Context 창에서의 VRAM 비용을 정확히 계산하여 OOM 충돌을 방지합니다."
+      },
+      {
+        "title": "이중층 RAM/VRAM 스필오버",
+        "desc": "독점적인 액체 스필오버 매트릭스가 VRAM 부족 시 모델 계층의 시스템 RAM 이동과 PCIe 대역폭 제한을 실시간으로 시각화합니다."
+      },
+      {
+        "title": "클라우드 API 백일체 건강 진단",
+        "desc": "마이크로초급 클라우드 프록시와 원격 API 연결성 검사, 실시간 멀티스레드 터미널 로그를 제공합니다."
+      },
+      {
+        "title": "100% 로컬 및 프라이빗",
+        "desc": "순수 프론트엔드 아키텍처 — API 키와 엔드포인트는 브라우저의 LocalStorage에만 존재합니다."
+      }
+    ]
+  },
+  "faq": {
+    "title": "자주 묻는 질문 (FAQ)",
+    "subtitle": "모델 관리, VRAM 계산 및 개인정보 보호에 관한 핵심 답변",
+    "items": [
+      {
+        "id": "vram-overflow",
+        "q": "VRAM이 시스템 RAM으로 넘칠 때 어떻게 됩니까?",
+        "a": "LLM 모델의 가중치와 KV Cache의 합계가 GPU 전용 VRAM 용량을 초과하면 Ollama는 PCIe 버스를 통해 나머지 레이어를 시스템 RAM으로 오프로드합니다. DDR4/DDR5 대역폭(~40-80 GB/s)은 GPU 전용 VRAM(~500-1000 GB/s)보다 훨씬 낮기 때문에 추론 속도(Tokens/s)가 절벽처럼 떨어지며, 일반적으로 80%에서 95%까지 감소합니다."
+      },
+      {
+        "id": "kv-cache-calculation",
+        "q": "시스템은 다양한 컨텍스트 길이에서 KV Cache 요구 사항을 어떻게 정밀하게 계산합니까?",
+        "a": "이 대시보드에는 LLM 추론 물리학 추정 모델이 내장되어 있습니다. 이 공식은 모델 파라미터 크기(추정 네트워크 은닉층 수), 임베딩 차원, Grouped-Query Attention (GQA)의 1/8 KV 압축률을 고려하여 컨텍스트를 1,024 Tokens 확장할 때마다 소비되는 추가 VRAM을 동적으로 예측합니다."
+      },
+      {
+        "id": "privacy-keys",
+        "q": "연결 설정과 API Key가 제3자 서버로 전송됩니까?",
+        "a": "절대 전송되지 않습니다. 이것은 100% 순수 프론트엔드 웹 앱입니다. 모든 API 구성, 사용자 정의 헤더 및 하드웨어 매개변수 설정은 브라우저의 LocalStorage에만 저장됩니다. 모든 가져오기 요청은 브라우저에서 지정한 Ollama API로 직접 전송됩니다."
+      },
+      {
+        "id": "cloud-size-display",
+        "q": "일부 클라우드 모델의 크기가 'Cloud'로 표시되는 이유는 무엇입니까?",
+        "a": "원격 API 모델(예: GPT-4o 또는 제3자 API 프록시)의 경우 실제 모델 가중치는 원격 클라우드 클러스터에 호스팅되며 로컬 하드웨어 디스크 공간이나 VRAM을 차지하지 않으므로 시스템이 클라우드 API 모델로 독립적으로 분류하고 레이블을 지정합니다."
+      }
+    ]
+  },
+  "footer": {
+    "tagline": "LLM 플레이어를 위해 설계된 원격 Ollama 관리 대시보드 및 물리 기반 오버클럭 추정 시스템.",
+    "sloganCrafted": "정성으로 만든",
+    "sloganEnthusiasts": "로컬 AI 애호가를 위하여.",
+    "copyright": "© 2026 Ollama Model Scout. MIT 라이선스 오픈소스.",
+    "clientSide": "100% 클라이언트 사이드. 사용자 데이터는 외부 서버로 전송되지 않습니다.",
+    "columns": {
+      "brand": "Ollama Model Scout",
+      "features": "핵심 기능",
+      "resources": "실용 커뮤니티 리소스",
+      "disclaimer": "면책 조항 및 개인정보 보호",
+      "links": {
+        "ollama": "Ollama (공식 사이트)",
+        "huggingface": "Hugging Face GGUF 허브",
+        "lmarena": "LMSYS Chatbot Arena",
+        "ollamaGithub": "Ollama (GitHub)"
+      },
+      "featuresList": {
+        "vramBudget": "• VRAM / RAM 스필오버 예산 (실시간)",
+        "smartFilter": "• 스마트 다차원 필터링 및 동적 정렬",
+        "batchDiag": "• 클라우드 API 일괄 연결 진단",
+        "sweetSpot": "• Context 스위트스팟 차트"
+      },
+      "disclaimerText": "본 도구의 Tokens/sec 및 VRAM 추정치는 일반적인 GQA 및 KV Cache 모델을 기반으로 한 예측값이며, 실제 추론 속도는 GPU 아키텍처와 시스템 버스 대역폭에 따라 다릅니다."
+    }
+  },
+  "langSwitcher": {
+    "label": "언어 전환",
+    "toggleAria": "언어를 전환합니다"
+  },
+  "toast": {
+    "connecting": "Ollama 서버에 연결 중...",
+    "success": "연결 성공! {{count}}개 모델을 불러왔습니다",
+    "headersError": "Headers JSON이 유효하지 않습니다",
+    "httpError": "HTTP 오류! 상태: {{status}}",
+    "responseError": "예상치 못한 응답: 'models' 배열을 찾을 수 없습니다",
+    "fallback": "연결 실패 ({{error}}). Mock 데이터로 대체합니다.",
+    "failed": "연결 실패 ({{error}}). 서버 설정을 확인하십시오."
+  },
+  "logs": {
+    "noRemoteModels": "현재 목록에 테스트할 클라우드 API 모델이 없습니다.",
+    "startTest": "{{count}}개 클라우드 모델의 연결을 일괄 테스트 중...",
+    "testOk": "200 OK (도달 가능)",
+    "testFail": "ERR_CONNECTION_TIMEOUT",
+    "testDone": "일괄 테스트 완료.",
+    "waiting": "테스트 시작을 기다리는 중...",
+    "executing": "실행 중...",
+    "modalTitle": "일괄 테스트 로그",
+    "closeAria": "테스트 로그 닫기",
+    "srDesc": "일괄 테스트의 실시간 로그입니다. Esc 키를 누르거나 닫기 버튼을 클릭하여 닫습니다."
+  },
+  "terminology": {
+    "liquidOverclock": "리키드 오버클럭 리액터",
+    "spillover": "스필오버",
+    "harmonicMean": "조화 평균 추정",
+    "sweetSpot": "스위트스팟",
+    "oom": "메모리 부족 (OOM)",
+    "pcieRouting": "PCIe 버스 라우팅"
+  }
+}

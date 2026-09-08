@@ -1,0 +1,213 @@
+{
+  "nav": {
+    "models": "Model Matrix",
+    "overclock": "Tactical Deck",
+    "features": "Core Features",
+    "faq": "FAQ",
+    "github": "GitHub",
+    "githubAria": "GitHub (opens in new tab)"
+  },
+  "header": {
+    "apiSettingsBtn": "Server & Hardware",
+    "apiSettingsAria": "Server & Hardware Settings"
+  },
+  "apiSettings": {
+    "title": "Remote Ollama API Configuration",
+    "baseUrl": "Base URL",
+    "apiKey": "Bearer API Key (Optional)",
+    "headers": "Custom Headers (JSON format)",
+    "headersPlaceholder": "{\n  \"X-Custom-Header\": \"Value\"\n}",
+    "hardwareTitle": "Local Hardware Simulation (VRAM / RAM)",
+    "vramLabel": "GPU VRAM",
+    "ramLabel": "System RAM",
+    "apply": "Apply & Reload",
+    "presets": {
+      "cpu": "Pure CPU (32G)",
+      "macbook": "MacBook (16G)",
+      "rtx4090": "RTX 4090 (24G)"
+    }
+  },
+  "connectionBanner": {
+    "mockEnabled": "Enable Mock Data",
+    "retry": "Retry"
+  },
+  "models": {
+    "searchPlaceholder": "Search models, capabilities, family...",
+    "columnCustomize": "Customize Columns",
+    "columnToggleTitle": "Column Visibility",
+    "emptyState": "No models match the current filters",
+    "cloudBadge": "Cloud",
+    "cloudApiBadge": "Cloud API",
+    "statusDash": "-",
+    "filters": {
+      "type": "Type:",
+      "caps": "Caps:",
+      "family": "Family:",
+      "quant": "Quant:",
+      "status": "Status:",
+      "types": {
+        "all": "ALL",
+        "local": "LOCAL",
+        "remote": "CLOUD (REMOTE)"
+      },
+      "statuses": {
+        "all": "All Status",
+        "success": "Connected",
+        "error": "Connection Failed",
+        "untested": "Untested"
+      }
+    },
+    "tableHeaders": {
+      "name": "Model Name",
+      "family": "Family",
+      "parameterSize": "Parameters",
+      "quantization": "Quantization",
+      "contextLength": "Context Length",
+      "size": "Size",
+      "status": "API Status",
+      "capabilities": "Capabilities",
+      "modifiedAt": "Modified At"
+    },
+    "footer": {
+      "count": "Models shown:",
+      "countUnit": "",
+      "localUsed": "Local disk usage:",
+      "viewLogs": "View Test Logs",
+      "batchTest": "Batch Test Cloud APIs",
+      "batchTesting": "Testing..."
+    }
+  },
+  "overclock": {
+    "placeholderTitle": "Select a model from the matrix above",
+    "placeholderDesc": "Click any model to open the Tactical Deck and simulate VRAM/RAM allocation and inference throughput decay across different context lengths.",
+    "parameterSizeLabel": "Parameters:",
+    "quantizationLabel": "Quantization:",
+    "maxContextLabel": "Max Context:",
+    "unknown": "UNKNOWN",
+    "contextLabel": "Context Depth",
+    "pcieRouting": "PCIe Bus Routing",
+    "preset": {
+      "fast": "🚀 Fast (2K)",
+      "balanced": "⚖ Balanced (8K)",
+      "max": "📚 Max Context"
+    },
+    "vramCore": "GPU VRAM (Dedicated)",
+    "ramSpillover": "System RAM (PCIe Spillover)",
+    "chart": {
+      "title": "Context Depth vs. Memory / Inference Speed",
+      "sweetSpot": "Sweet Spot",
+      "memoryDemand": "Memory Demand",
+      "tokensPerSecond": "Est. Throughput",
+      "unitGB": "GB",
+      "unitTPS": " t/s",
+      "currentConfig": "Current"
+    }
+  },
+  "features": {
+    "title": "Core Tech Built for LLM Players",
+    "subtitle": "Combining LLM inference physics with visual analytics to unleash your local hardware.",
+    "items": [
+      {
+        "title": "Physical-grade KV Cache Estimator",
+        "desc": "Precisely computes the VRAM cost of each +1K context window to prevent OOM crashes."
+      },
+      {
+        "title": "Dual-layer RAM/VRAM Spillover",
+        "desc": "Proprietary liquid-spillover matrix visualizes layer off-loading to system RAM and PCIe bandwidth throttling under VRAM pressure."
+      },
+      {
+        "title": "Cloud API Batch Health Diagnostics",
+        "desc": "Microsecond-grade cloud proxies and remote API connectivity checks with real-time multi-threaded terminal logs."
+      },
+      {
+        "title": "100% Local & Private",
+        "desc": "Pure-frontend architecture — API keys and endpoints live only in your browser's LocalStorage."
+      }
+    ]
+  },
+  "faq": {
+    "title": "Frequently Asked Questions (FAQ)",
+    "subtitle": "Core answers about model management, VRAM calculation, and privacy",
+    "items": [
+      {
+        "id": "vram-overflow",
+        "q": "What happens when VRAM overflows into system RAM?",
+        "a": "When the combined model weights and KV Cache exceed the GPU's dedicated VRAM capacity, Ollama offloads the remaining layers to system RAM via the PCIe bus. Since DDR4/DDR5 bandwidth (~40-80 GB/s) is far lower than dedicated GPU VRAM (~500-1000 GB/s), this causes a cliff-like drop in inference speed (Tokens/s), typically declining 80% to 95%."
+      },
+      {
+        "id": "kv-cache-calculation",
+        "q": "How does the system precisely calculate KV Cache requirements for different context lengths?",
+        "a": "This dashboard features a built-in LLM inference physics estimation model. The formula accounts for model parameter size (estimated network hidden layers), embedding dimension, and Grouped-Query Attention (GQA)'s 1/8 KV compression ratio, dynamically predicting the additional VRAM consumed per 1,024 Tokens of context extension."
+      },
+      {
+        "id": "privacy-keys",
+        "q": "Are connection settings and API Keys sent to third-party servers?",
+        "a": "Never. This is a 100% pure frontend web app. All API configurations, custom headers, and hardware parameter settings are stored solely in your browser's LocalStorage. All fetch requests are sent directly from your browser to your specified Ollama API."
+      },
+      {
+        "id": "cloud-size-display",
+        "q": "Why do some cloud models show 'Cloud' as their size?",
+        "a": "For remote API models (such as GPT-4o or third-party API proxies), the actual model weights are hosted in remote cloud clusters and do not occupy local hardware disk space or VRAM, so the system independently categorizes and labels them as Cloud API models."
+      }
+    ]
+  },
+  "footer": {
+    "tagline": "A remote Ollama management dashboard and physics-based overclock estimation system designed for LLM players.",
+    "sloganCrafted": "Crafted with",
+    "sloganEnthusiasts": "for Local AI Enthusiasts.",
+    "copyright": "© 2026 Ollama Model Scout. Open-source under MIT License.",
+    "clientSide": "100% Client-side. No user data is transmitted to external servers.",
+    "columns": {
+      "brand": "Ollama Model Scout",
+      "features": "Core Features",
+      "resources": "Community Resources",
+      "disclaimer": "Disclaimer & Privacy",
+      "links": {
+        "ollama": "Ollama (official site)",
+        "huggingface": "Hugging Face GGUF Hub",
+        "lmarena": "LMSYS Chatbot Arena",
+        "ollamaGithub": "Ollama (GitHub)"
+      },
+      "featuresList": {
+        "vramBudget": "• Live VRAM/RAM spillover budget",
+        "smartFilter": "• Smart multi-dimension filtering & dynamic sorting",
+        "batchDiag": "• Cloud API batch connection diagnostics",
+        "sweetSpot": "• Context sweet-spot chart"
+      },
+      "disclaimerText": "Tokens/sec figures and VRAM estimates are predictions derived from a generic GQA + KV Cache model; real throughput varies with GPU architecture and system bus bandwidth."
+    }
+  },
+  "langSwitcher": {
+    "label": "Language",
+    "toggleAria": "Switch language"
+  },
+  "toast": {
+    "connecting": "Connecting to the Ollama server...",
+    "success": "Connected! Loaded {{count}} models",
+    "headersError": "Invalid Headers JSON",
+    "httpError": "HTTP error! Status: {{status}}",
+    "responseError": "Unexpected response: missing 'models' array",
+    "fallback": "Connection failed ({{error}}). Falling back to Mock data.",
+    "failed": "Connection failed ({{error}}). Please check your server settings."
+  },
+  "logs": {
+    "noRemoteModels": "No cloud API models in the current list to test.",
+    "startTest": "Batch-testing connections for {{count}} cloud models...",
+    "testOk": "200 OK (reachable)",
+    "testFail": "ERR_CONNECTION_TIMEOUT",
+    "testDone": "Batch tests complete.",
+    "waiting": "Waiting for tests to start...",
+    "executing": "Executing...",
+    "modalTitle": "Batch Test Logs",
+    "closeAria": "Close test logs",
+    "srDesc": "Real-time log of the batch test process. Press Escape or click the close button to dismiss."
+  },
+  "terminology": {
+    "liquidOverclock": "Liquid Overclock Reactor",
+    "spillover": "Spillover",
+    "harmonicMean": "Harmonic Mean Estimation",
+    "sweetSpot": "Sweet Spot",
+    "oom": "OOM (Out of Memory)",
+    "pcieRouting": "PCIe Bus Routing"
+  }
+}

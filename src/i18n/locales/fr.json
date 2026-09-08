@@ -1,0 +1,213 @@
+{
+  "nav": {
+    "models": "Matrice des modèles",
+    "overclock": "Deck tactique",
+    "features": "Fonctionnalités",
+    "faq": "Questions fréquentes",
+    "github": "GitHub",
+    "githubAria": "GitHub (s'ouvre dans un nouvel onglet)"
+  },
+  "header": {
+    "apiSettingsBtn": "Serveur et matériel",
+    "apiSettingsAria": "Paramètres serveur et matériel"
+  },
+  "apiSettings": {
+    "title": "Configuration de l'API Ollama distante",
+    "baseUrl": "Base URL",
+    "apiKey": "Bearer API Key (facultatif)",
+    "headers": "En-têtes personnalisés (format JSON)",
+    "headersPlaceholder": "{\n  \"X-Custom-Header\": \"Value\"\n}",
+    "hardwareTitle": "Simulation du matériel local (VRAM / RAM)",
+    "vramLabel": "VRAM de la carte graphique",
+    "ramLabel": "RAM système",
+    "apply": "Appliquer et recharger",
+    "presets": {
+      "cpu": "CPU pur (32G)",
+      "macbook": "MacBook (16G)",
+      "rtx4090": "RTX 4090 (24G)"
+    }
+  },
+  "connectionBanner": {
+    "mockEnabled": "Activer les données simulées",
+    "retry": "Réessayer"
+  },
+  "models": {
+    "searchPlaceholder": "Rechercher des modèles, capacités, famille...",
+    "columnCustomize": "Personnaliser les colonnes",
+    "columnToggleTitle": "Visibilité des colonnes",
+    "emptyState": "Aucun modèle ne correspond aux filtres",
+    "cloudBadge": "Cloud",
+    "cloudApiBadge": "Cloud API",
+    "statusDash": "-",
+    "filters": {
+      "type": "Type :",
+      "caps": "Caps. :",
+      "family": "Famille :",
+      "quant": "Quant. :",
+      "status": "Statut :",
+      "types": {
+        "all": "TOUS",
+        "local": "LOCAL",
+        "remote": "CLOUD (DISTANT)"
+      },
+      "statuses": {
+        "all": "Tous les statuts",
+        "success": "Connecté",
+        "error": "Connexion échouée",
+        "untested": "Non testé"
+      }
+    },
+    "tableHeaders": {
+      "name": "Nom du modèle",
+      "family": "Famille",
+      "parameterSize": "Paramètres",
+      "quantization": "Quantification",
+      "contextLength": "Longueur de contexte",
+      "size": "Taille",
+      "status": "Statut API",
+      "capabilities": "Capacités",
+      "modifiedAt": "Modifié le"
+    },
+    "footer": {
+      "count": "Modèles affichés :",
+      "countUnit": "",
+      "localUsed": "Utilisation du disque local :",
+      "viewLogs": "Afficher les journaux",
+      "batchTest": "Test de connexion par lots",
+      "batchTesting": "Test en cours..."
+    }
+  },
+  "overclock": {
+    "placeholderTitle": "Sélectionnez un modèle dans la matrice ci-dessus",
+    "placeholderDesc": "Cliquez sur un modèle pour ouvrir le Deck tactique et simuler l'allocation VRAM/RAM ainsi que la décroissance du débit d'inférence selon la longueur du contexte.",
+    "parameterSizeLabel": "Paramètres :",
+    "pcieRouting": "Routage du bus PCIe",
+    "quantizationLabel": "Quantification :",
+    "maxContextLabel": "Contexte max :",
+    "unknown": "UNKNOWN",
+    "contextLabel": "Profondeur du contexte",
+    "preset": {
+      "fast": "🚀 Rapide (2K)",
+      "balanced": "⚖ Équilibré (8K)",
+      "max": "📚 Contexte max"
+    },
+    "vramCore": "VRAM GPU (dédiée)",
+    "ramSpillover": "RAM système (débordement PCIe)",
+    "chart": {
+      "title": "Profondeur de contexte vs Mémoire / Vitesse d'inférence",
+      "memoryDemand": "Demande de mémoire",
+      "tokensPerSecond": "Débit estimé",
+      "unitGB": "GB",
+      "unitTPS": " t/s",
+      "currentConfig": "Configuration actuelle",
+      "sweetSpot": "Point Optimal"
+    }
+  },
+  "features": {
+    "title": "Technologies centrales pour joueurs LLM",
+    "subtitle": "Alliance entre physique de l'inférence LLM et analyse visuelle pour libérer votre matériel local.",
+    "items": [
+      {
+        "title": "Estimation physique du KV Cache",
+        "desc": "Calcule avec précision le coût VRAM de chaque fenêtre de contexte +1K pour éviter les plantages OOM."
+      },
+      {
+        "title": "Débordement RAM/VRAM à double couche",
+        "desc": "Matrice de débordement liquide brevetée visualisant en temps réel le transfert des couches vers la RAM système et le throttling PCIe sous pression de VRAM."
+      },
+      {
+        "title": "Diagnostic de santé par lots d'API cloud",
+        "desc": "Proxys cloud à précision microsecondique et contrôles de connectivité API distante avec journaux terminaux multi-thread temps réel."
+      },
+      {
+        "title": "100% local et privé",
+        "desc": "Architecture purement frontend : les clés API et les points de terminaison ne vivent que dans le LocalStorage de votre navigateur."
+      }
+    ]
+  },
+  "faq": {
+    "title": "Questions Fréquentes (FAQ)",
+    "subtitle": "Réponses clés sur la gestion des modèles, le calcul VRAM et la confidentialité",
+    "items": [
+      {
+        "id": "vram-overflow",
+        "q": "Que se passe-t-il lorsque la VRAM déborde dans la RAM système ?",
+        "a": "Lorsque le poids combiné du modèle LLM et du KV Cache dépasse la capacité de VRAM dédiée du GPU, Ollama décharge les couches restantes dans la RAM système via le bus PCIe. Étant donné que la bande passante DDR4/DDR5 (~40-80 Go/s) est bien inférieure à celle de la VRAM dédiée du GPU (~500-1000 Go/s), cela provoque une chute abrupte de la vitesse d'inférence (Tokens/s), diminuant généralement de 80% à 95%."
+      },
+      {
+        "id": "kv-cache-calculation",
+        "q": "Comment le système calcule-t-il précisément les exigences de KV Cache pour différentes longueurs de contexte ?",
+        "a": "Ce tableau de bord intègre un modèle d'estimation de la physique d'inférence LLM. La formule prend en compte la taille des paramètres du model (couches cachées estimées du réseau), la dimension d'intégration et le taux de compression KV de 1/8 de Grouped-Query Attention (GQA), prédisant dynamiquement la VRAM supplémentaire consommée par 1 024 Tokens d'extension de contexte."
+      },
+      {
+        "id": "privacy-keys",
+        "q": "Les paramètres de connexion et les clés API sont-ils envoyés à des serveurs tiers ?",
+        "a": "Jamais. Il s'agit d'une application web 100% frontend pur. Toutes les configurations d'API, en-têtes personnalisés et paramètres matériels sont stockés exclusivement dans le LocalStorage de votre navigateur. Toutes les requêtes fetch sont envoyées directement depuis votre navigateur à l'API Ollama spécifiée."
+      },
+      {
+        "id": "cloud-size-display",
+        "q": "Pourquoi certains modèles cloud affichent-ils 'Cloud' comme taille ?",
+        "a": "Pour les modèles d'API distante (tels que GPT-4o ou les proxies API tiers), les poids réels du modèle sont hébergés dans des clusters cloud distants et n'occupent pas l'espace disque local ni la VRAM, le système les catégorise donc et les étiquette indépendamment comme modèles API cloud."
+      }
+    ]
+  },
+  "footer": {
+    "tagline": "Un tableau de bord de gestion Ollama à distance et un système d'estimation d'overclock basé sur la physique, conçu pour les joueurs LLM.",
+    "sloganCrafted": "Conçu avec",
+    "sloganEnthusiasts": "pour les passionnés d'IA locale.",
+    "copyright": "© 2026 Ollama Model Scout. Open source sous licence MIT.",
+    "clientSide": "100 % côté client. Aucune donnée utilisateur n'est transmise à des serveurs externes.",
+    "columns": {
+      "brand": "Ollama Model Scout",
+      "features": "Fonctionnalités",
+      "resources": "Ressources communautaires utiles",
+      "disclaimer": "Avertissement & Confidentialité",
+      "links": {
+        "ollama": "Ollama (site officiel)",
+        "huggingface": "Hugging Face GGUF Hub",
+        "lmarena": "LMSYS Chatbot Arena",
+        "ollamaGithub": "Ollama (GitHub)"
+      },
+      "featuresList": {
+        "vramBudget": "• Budget de débordement VRAM/RAM en direct",
+        "smartFilter": "• Filtrage multi-dimensionnel intelligent & tri dynamique",
+        "batchDiag": "• Diagnostic de connexion par lots d'API cloud",
+        "sweetSpot": "• Graphique du point optimal du contexte"
+      },
+      "disclaimerText": "Les valeurs Tokens/s et les estimations de VRAM sont des prédictions basées sur un modèle générique de GQA + KV Cache ; le débit réel varie selon l'architecture du GPU et la bande passante du bus système."
+    }
+  },
+  "langSwitcher": {
+    "label": "Changer de langue",
+    "toggleAria": "Changer de langue"
+  },
+  "toast": {
+    "connecting": "Connexion au serveur Ollama...",
+    "success": "Connecté ! {{count}} modèles chargés",
+    "headersError": "JSON d'en-têtes non valide",
+    "httpError": "Erreur HTTP ! Statut : {{status}}",
+    "responseError": "Réponse inattendue : tableau 'models' manquant",
+    "fallback": "Échec de la connexion ({{error}}). Retour aux données simulées.",
+    "failed": "Échec de la connexion ({{error}}). Vérifiez la configuration du serveur."
+  },
+  "logs": {
+    "noRemoteModels": "Aucun modèle API cloud à tester dans la liste.",
+    "startTest": "Test des connexions de {{count}} modèles cloud...",
+    "testOk": "200 OK (atteignable)",
+    "testFail": "ERR_CONNECTION_TIMEOUT",
+    "testDone": "Tests par lots terminés.",
+    "waiting": "En attente du démarrage des tests...",
+    "executing": "Exécution...",
+    "modalTitle": "Journaux de test par lots",
+    "closeAria": "Fermer les journaux de test",
+    "srDesc": "Journal en temps réel du processus de test par lots. Appuyez sur Échap ou cliquez sur le bouton de fermeture pour fermer."
+  },
+  "terminology": {
+    "liquidOverclock": "Réacteur d'overclock liquide",
+    "spillover": "Débordement",
+    "harmonicMean": "Estimation de la moyenne harmonique",
+    "sweetSpot": "Point optimal",
+    "oom": "Mémoire saturée (OOM)",
+    "pcieRouting": "Routage du bus PCIe"
+  }
+}

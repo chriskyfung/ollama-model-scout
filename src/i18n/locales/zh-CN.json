@@ -1,0 +1,213 @@
+{
+  "nav": {
+    "models": "模型矩阵",
+    "overclock": "战略推算舱",
+    "features": "核心功能",
+    "faq": "常见问题",
+    "github": "GitHub",
+    "githubAria": "GitHub（在新标签页打开）"
+  },
+  "header": {
+    "apiSettingsBtn": "服务器与硬件",
+    "apiSettingsAria": "服务器与硬件设置"
+  },
+  "apiSettings": {
+    "title": "远程 Ollama API 配置",
+    "baseUrl": "Base URL",
+    "apiKey": "Bearer API Key (可选)",
+    "headers": "自定义标头 (JSON 格式)",
+    "headersPlaceholder": "{\n  \"X-Custom-Header\": \"Value\"\n}",
+    "hardwareTitle": "本地硬件规格模拟 (VRAM / RAM)",
+    "vramLabel": "GPU VRAM 显存",
+    "ramLabel": "系统 RAM 内存",
+    "apply": "应用设置并重新加载",
+    "presets": {
+      "cpu": "纯 CPU (32G)",
+      "macbook": "MacBook (16G)",
+      "rtx4090": "RTX 4090 (24G)"
+    }
+  },
+  "connectionBanner": {
+    "mockEnabled": "启用 Mock 数据",
+    "retry": "重试"
+  },
+  "models": {
+    "searchPlaceholder": "搜索模型名称、能力、家族、量化等级...",
+    "columnCustomize": "自定义列",
+    "columnToggleTitle": "显示列开关",
+    "emptyState": "没有符合过滤条件的模型",
+    "cloudBadge": "Cloud",
+    "cloudApiBadge": "Cloud API",
+    "statusDash": "-",
+    "filters": {
+      "type": "类型：",
+      "caps": "能力：",
+      "family": "家族：",
+      "quant": "量化：",
+      "status": "状态：",
+      "types": {
+        "all": "全部",
+        "local": "本地",
+        "remote": "云端（远程）"
+      },
+      "statuses": {
+        "all": "所有状态",
+        "success": "连接成功",
+        "error": "连接失败",
+        "untested": "尚未测试"
+      }
+    },
+    "tableHeaders": {
+      "name": "模型名称",
+      "family": "家族",
+      "parameterSize": "参数",
+      "quantization": "量化",
+      "contextLength": "上下文长度",
+      "size": "大小",
+      "status": "API 状态",
+      "capabilities": "能力",
+      "modifiedAt": "修改时间"
+    },
+    "footer": {
+      "count": "显示模型:",
+      "countUnit": " 个",
+      "localUsed": "本地模型占用:",
+      "viewLogs": "查看测试日志",
+      "batchTest": "批量测试云端 API 连接",
+      "batchTesting": "批量测试中..."
+    }
+  },
+  "overclock": {
+    "placeholderTitle": "请点击上方模型矩阵中的任意模型",
+    "placeholderDesc": "点击任意模型即可展开「战略推算舱」，为您模拟在不同 Context 深度下显存/RAM 分配与推论速度衰减曲线。",
+    "parameterSizeLabel": "参数规模:",
+    "quantizationLabel": "量化:",
+    "maxContextLabel": "最大 Context:",
+    "unknown": "UNKNOWN",
+    "contextLabel": "Context 深度配置",
+    "pcieRouting": "PCIe 总线分流",
+    "preset": {
+      "fast": "🚀 极速 (2K)",
+      "balanced": "⚖ 均衡 (8K)",
+      "max": "📚 极限 Context"
+    },
+    "vramCore": "GPU VRAM 核心 (专用)",
+    "ramSpillover": "系统 RAM (溢流分流)",
+    "chart": {
+      "title": "深度 vs. 内存 / 推论速度",
+      "sweetSpot": "黄金推理区",
+      "memoryDemand": "内存总需求",
+      "tokensPerSecond": "预估速度",
+      "unitGB": "GB",
+      "unitTPS": " t/s",
+      "currentConfig": "当前配置"
+    }
+  },
+  "features": {
+    "title": "专为 LLM 玩家打造的核心技术",
+    "subtitle": "结合 LLM 推论物理学与可视化分析，助您极致释放本地硬件潜能",
+    "items": [
+      {
+        "title": "物理级 KV Cache 动态估算",
+        "desc": "精确计算每拉长 1K Context 所产生的 Key-Value 显存需求，避免爆显存（OOM）崩溃。"
+      },
+      {
+        "title": "双层 RAM/VRAM 液态溢流",
+        "desc": "独创液态溢流矩阵，实时呈现显存不足时模型层数向系统 RAM 分流与 PCIe 降速特征。"
+      },
+      {
+        "title": "云端 API 批量健康诊断",
+        "desc": "提供微秒级云端代理与远程 API 连接诊断，搭配实时多线程 Terminal 测试日志。"
+      },
+      {
+        "title": "100% 本地隐私无服务器",
+        "desc": "纯前端架构，API Keys 与服务器路径全数托管于本地 LocalStorage，绝不上传云端。"
+      }
+    ]
+  },
+  "faq": {
+    "title": "常见问题 (FAQ)",
+    "subtitle": "关于模型管理、VRAM 计算与隐私安全的核心解答",
+    "items": [
+      {
+        "id": "vram-overflow",
+        "q": "显存 (VRAM) 溢流至系统内存 (RAM) 时会发生什么事？",
+        "a": "当 LLM 模型的权重与 KV Cache 总和超越显示卡专属 VRAM 容量时，Ollama 会通过 PCIe 总线将剩余层数托管于系统 RAM。由于 DDR4/DDR5 的带宽（约 40-80 GB/s）远低于 GPU 专用显存（约 500-1000 GB/s），这会导致推论速度（Tokens/s）呈现谐振式断崖下跌，通常下降 80% 至 95%。"
+      },
+      {
+        "id": "kv-cache-calculation",
+        "q": "系统如何精密计算不同 Context 下的 KV Cache 需求？",
+        "a": "本仪表板内建 LLM 推论物理学推算模型。公式考量了模型参数规模（估计网络隐藏层数 Layers）、嵌入层维度（Embedding Dim）、以及 Grouped-Query Attention (GQA) 的 1/8 键值对压缩比，动态预测每拉长 1,024 Tokens 所额外消耗的显存量。"
+      },
+      {
+        "id": "privacy-keys",
+        "q": "连线设定与 API Key 会传送到第三方服务器吗？",
+        "a": "绝不传送。本系统为 100% 纯前端 Web App，所有 API 配置、自定义 Headers 以及硬件参数设定仅储存于您浏览器的本地端 (LocalStorage)。所有 Fetch 请求均由您的浏览器直接向您指定的 Ollama API 发送。"
+      },
+      {
+        "id": "cloud-size-display",
+        "q": "为什么部分云端模型的体积大小显示为 'Cloud'？",
+        "a": "对于远端 API 模型（例如 GPT-4o 或第三方 API 代理），模型的实际权重托管于远端云端集群，本地并不占用硬件硬盘空间与 VRAM，因此系统将其独立归类标记为 Cloud API 模型。"
+      }
+    ]
+  },
+  "footer": {
+    "tagline": "专为大语言模型玩家设计的远程 Ollama 管理仪表板与物理超频推估系统。",
+    "sloganCrafted": "精心打造",
+    "sloganEnthusiasts": "献给本地 AI 爱好者。",
+    "copyright": "© 2026 Ollama Model Scout。基于 MIT 许可证开源。",
+    "clientSide": "100% 纯前端运行。不会向外部服务器传输任何用户数据。",
+    "columns": {
+      "brand": "Ollama Model Scout",
+      "features": "核心功能",
+      "resources": "实用社群资源",
+      "disclaimer": "免责声明与隐私",
+      "links": {
+        "ollama": "Ollama 官方网站",
+        "huggingface": "Hugging Face GGUF 模型库",
+        "lmarena": "LMSYS Chatbot Arena 竞技场",
+        "ollamaGithub": "Ollama GitHub 官方项目"
+      },
+      "featuresList": {
+        "vramBudget": "• VRAM / RAM 溢流实时预算",
+        "smartFilter": "• 智慧多维度过滤与动态排序",
+        "batchDiag": "• 云端 API 批量连接诊断",
+        "sweetSpot": "• Context 黄金推理区图表"
+      },
+      "disclaimerText": "本工具提供的 Tokens/sec 及 VRAM 估算为依据通用 GQA 与 KV Cache 理论模型之数值预测，实际推论速度将因 GPU 架构与系统总线带宽有所差异。"
+    }
+  },
+  "langSwitcher": {
+    "label": "语言切换",
+    "toggleAria": "切换语言"
+  },
+  "toast": {
+    "connecting": "正在连接至 Ollama 服务器...",
+    "success": "连接成功！已加载 {{count}} 个模型",
+    "headersError": "Headers JSON 格式不正确",
+    "httpError": "HTTP 错误! 状态码: {{status}}",
+    "responseError": "响应格式不符，缺少 models 数组",
+    "fallback": "无法连接 ({{error}})。已启用备援 Mock 模型数据。",
+    "failed": "连接失败 ({{error}})。请检查服务器设置。"
+  },
+  "logs": {
+    "noRemoteModels": "目前列表中没有云端 API 模型可供测试。",
+    "startTest": "开始批量测试 {{count}} 个云端模型的连接状态...",
+    "testOk": "200 OK (连接正常)",
+    "testFail": "ERR_CONNECTION_TIMEOUT",
+    "testDone": "批量测试执行完毕。",
+    "waiting": "等待测试开始...",
+    "executing": "执行中...",
+    "modalTitle": "批量测试终端日志 (Batch Test Logs)",
+    "closeAria": "关闭测试日志",
+    "srDesc": "批量测试执行过程的实时日志。按下 Escape 或点击关闭按钮可关闭此窗口。"
+  },
+  "terminology": {
+    "liquidOverclock": "Liquid Overclock Reactor",
+    "spillover": "Spillover",
+    "harmonicMean": "Harmonic Mean Estimation",
+    "sweetSpot": "Sweet Spot",
+    "oom": "OOM (Out of Memory)",
+    "pcieRouting": "PCIe 总线分流"
+  }
+}

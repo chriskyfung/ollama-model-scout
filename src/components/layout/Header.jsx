@@ -1,10 +1,13 @@
 import { SquareActivity, Zap, Settings, ChevronDown } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import GithubIcon from "@/components/ui/GithubIcon";
+import LanguageSwitcher from "@/components/ui/LanguageSwitcher";
 import { APP_VERSION, GITHUB_REPO } from "@/lib/constants";
 
 /**
- * Sticky top app bar: logo + connection status dot, anchor nav, GitHub link
- * and the "Server & Hardware" toggle that reveals the settings panel.
+ * Sticky top app bar: logo + connection status dot, anchor nav, GitHub link,
+ * language switcher, and the "Server & Hardware" toggle that reveals the
+ * settings panel.
  *
  * Props:
  *   - apiStatus:      { state, isFallback, message }
@@ -18,11 +21,12 @@ export default function Header({
   onToggleApiSettings,
   onNavigate,
 }) {
+  const { t } = useTranslation();
   const navItems = [
-    { id: "models", label: "模型陣列" },
-    { id: "overclock", label: "戰略推算艙", icon: <Zap className="w-3.5 h-3.5 text-amber-400" /> },
-    { id: "features", label: "核心特點" },
-    { id: "faq", label: "常見問題" },
+    { id: "models", label: t("nav.models") },
+    { id: "overclock", label: t("nav.overclock"), icon: <Zap className="w-3.5 h-3.5 text-amber-400" /> },
+    { id: "features", label: t("nav.features") },
+    { id: "faq", label: t("nav.faq") },
   ];
 
   return (
@@ -76,21 +80,26 @@ export default function Header({
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 rounded-xl text-xs font-medium text-slate-300 hover:text-white transition-all group"
-            aria-label="GitHub 專案原始碼（開啟新分頁）"
-            title="GitHub 專案原始碼"
+            aria-label={t("nav.githubAria")}
+            title={t("nav.github")}
           >
-            <GithubIcon className="w-4 h-4 text-slate-400 group-hover:text-white transition-colors" aria-hidden="true" />
-            <span className="hidden sm:inline" aria-hidden="true">GitHub</span>
+            <GithubIcon
+              className="w-4 h-4 text-slate-400 group-hover:text-white transition-colors"
+              aria-hidden="true"
+            />
+            <span className="hidden sm:inline" aria-hidden="true">
+              GitHub
+            </span>
           </a>
 
           <button
             onClick={onToggleApiSettings}
             className="flex items-center gap-1.5 px-3 py-1.5 bg-cyan-950/40 hover:bg-cyan-900/50 border border-cyan-800/50 hover:border-cyan-500/50 rounded-xl text-xs font-medium text-cyan-300 transition-all shadow-sm shadow-cyan-950"
-            aria-label="伺服器與硬體設定"
+            aria-label={t("header.apiSettingsAria")}
             aria-expanded={showApiSettings}
           >
             <Settings className="w-3.5 h-3.5 text-cyan-400 animate-spin-slow" aria-hidden="true" />
-            <span className="hidden sm:inline" aria-hidden="true">伺服器與硬體</span>
+            <span className="hidden sm:inline" aria-hidden="true">{t("header.apiSettingsBtn")}</span>
             <ChevronDown
               className={`w-3.5 h-3.5 transition-transform ${
                 showApiSettings ? "rotate-180" : ""
@@ -98,6 +107,8 @@ export default function Header({
               aria-hidden="true"
             />
           </button>
+
+          <LanguageSwitcher />
         </div>
       </div>
     </header>

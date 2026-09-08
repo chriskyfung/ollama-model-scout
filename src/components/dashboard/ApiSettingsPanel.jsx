@@ -1,4 +1,5 @@
 import { Server, Cpu } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { HARDWARE_PRESETS } from "@/lib/constants";
 
 /**
@@ -21,18 +22,19 @@ export default function ApiSettingsPanel({
 }) {
   // Early-return before any render work: when collapsed we render nothing, so
   // none of the inputs or the HARDWARE_PRESETS mapping below are allocated.
+  const { t } = useTranslation();
   if (!open) return null;
   return (
     <div className="bg-slate-900/90 backdrop-blur-md border border-slate-800 rounded-2xl p-6 grid grid-cols-1 md:grid-cols-3 gap-6 shadow-2xl animate-in slide-in-from-top-4">
       {/* API 連線區 */}
       <div className="md:col-span-2 space-y-4 border-b md:border-b-0 md:border-r border-slate-800 pb-4 md:pb-0 md:pr-6">
         <h3 className="text-sm font-bold text-cyan-400 flex items-center gap-2">
-          <Server className="w-4 h-4" /> 遠端 Ollama API 配置
+          <Server className="w-4 h-4" /> {t("apiSettings.title")}
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-semibold text-slate-400 mb-1.5">
-              Base URL
+              {t("apiSettings.baseUrl")}
             </label>
             <input
               type="text"
@@ -46,7 +48,7 @@ export default function ApiSettingsPanel({
           </div>
           <div>
             <label className="block text-xs font-semibold text-slate-400 mb-1.5">
-              Bearer API Key (選填)
+              {t("apiSettings.apiKey")}
             </label>
             <input
               type="password"
@@ -61,7 +63,7 @@ export default function ApiSettingsPanel({
         </div>
         <div>
           <label className="block text-xs font-semibold text-slate-400 mb-1.5">
-            Custom Headers (JSON 格式)
+            {t("apiSettings.headers")}
           </label>
           <textarea
             value={apiConfig.headers}
@@ -78,11 +80,11 @@ export default function ApiSettingsPanel({
       {/* 本地硬體規格設定區 (解決使用者輸入 VRAM/RAM 需求) */}
       <div className="space-y-4">
         <h3 className="text-sm font-bold text-emerald-400 flex items-center gap-2">
-          <Cpu className="w-4 h-4" /> 本地硬體規格模擬 (VRAM / RAM)
+          <Cpu className="w-4 h-4" /> {t("apiSettings.hardwareTitle")}
         </h3>
         <div>
           <label className="flex justify-between text-xs font-semibold text-slate-400 mb-1.5">
-            <span>GPU VRAM 顯存</span>
+            <span>{t("apiSettings.vramLabel")}</span>
             <span className="text-emerald-400 font-mono font-bold">
               {hardware.vram} GB
             </span>
@@ -103,7 +105,7 @@ export default function ApiSettingsPanel({
         </div>
         <div>
           <label className="flex justify-between text-xs font-semibold text-slate-400 mb-1.5">
-            <span>系統 RAM 記憶體</span>
+            <span>{t("apiSettings.ramLabel")}</span>
             <span className="text-cyan-400 font-mono font-bold">
               {hardware.ram} GB
             </span>
@@ -127,11 +129,11 @@ export default function ApiSettingsPanel({
         <div className="pt-1 flex flex-wrap gap-2">
           {HARDWARE_PRESETS.map((p) => (
             <button
-              key={p.label}
+              key={p.id}
               onClick={() => setHardware({ vram: p.vram, ram: p.ram })}
               className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-[11px] rounded-lg text-slate-300"
             >
-              {p.label}
+              {t(`apiSettings.presets.${p.id}`)}
             </button>
           ))}
         </div>
@@ -142,7 +144,7 @@ export default function ApiSettingsPanel({
           onClick={onApply}
           className="px-6 py-2 bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-500 hover:to-emerald-500 text-white rounded-xl text-sm font-semibold transition-all shadow-lg shadow-cyan-950/50"
         >
-          套用設定並重新載入
+          {t("apiSettings.apply")}
         </button>
       </div>
     </div>

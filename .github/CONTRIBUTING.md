@@ -48,6 +48,39 @@ We will review your pull request as soon as possible. Thank you for your contrib
 - [ ] My changes generate no new ESLint or build errors.
 - [ ] I have added tests that prove my fix is effective or that my feature works.
 
+## Internationalization (i18n) & Translation
+
+The UI supports 8 languages: **en** (primary/fallback), **zh-TW**, **zh-CN**, **ja**, **ko**, **es**, **fr**, **de**.
+
+### How translations work
+
+- All user-facing strings live in `src/i18n/locales/<lang>.json`.
+- Components use the `useTranslation()` hook from `react-i18next` and reference keys like `t("nav.models")`.
+- The English (`en`) file is the structural base — every other locale must contain the same keys.
+
+### Adding a new language
+
+1. Create `src/i18n/locales/<lang>.json` by copying `en.json` and translating every value.
+2. Add the language to the `SUPPORTED_LANGUAGES` array in `src/i18n/languages.js` (with its native display name).
+3. Register the locale in `src/i18n/index.js` resources.
+4. Run `pnpm test` — the `tests/i18n.test.js` suite verifies that all locale files share an identical key structure (fails on missing keys).
+
+### Translating an existing language
+
+1. Open `src/i18n/locales/<lang>.json` and update the targeted values.
+2. Run `pnpm test` to confirm key-structure parity.
+3. Run `pnpm lint && pnpm build` before submitting.
+
+### Key naming conventions
+
+- Group by UI section: `nav.*`, `header.*`, `apiSettings.*`, `models.*`, `overclock.*`, `features.*`, `faq.*`, `footer.*`, `toast.*`, `logs.*`, `terminology.*`.
+- Use dot notation for hierarchy (e.g., `models.filters.types.remote`).
+- Dynamic data (model names, families, sizes from the Ollama API) is **not** translated — only static UI labels.
+
+### Terminology reference
+
+For consistent translations of domain-specific terms (e.g., "Spillover", "Sweet Spot", "OOM"), see the glossary in the project's i18n implementation plan (README/CONTRIBUTING in `docs/`).
+
 ## Code of Conduct
 
 This project and everyone participating in it is governed by the [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.

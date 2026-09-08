@@ -1,4 +1,5 @@
 import { AlertTriangle, XCircle, CheckCircle2, RefreshCw } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 /**
  * Connection status banner shown below the header when a message exists.
@@ -16,6 +17,7 @@ export default function ConnectionBanner({
   onToggleFallback,
   onRetry,
 }) {
+  const { t } = useTranslation();
   if (!apiStatus.message) return null;
   const flag =
     apiStatus.state === "error" || apiStatus.isFallback ? "warn" : "ok";
@@ -49,14 +51,14 @@ export default function ConnectionBanner({
               onChange={(e) => onToggleFallback(e.target.checked)}
               className="accent-cyan-500 rounded cursor-pointer"
             />
-            <span>啟用 Mock 資料</span>
+            <span>{t("connectionBanner.mockEnabled")}</span>
           </label>
         )}
         <button
           onClick={onRetry}
           className="flex items-center gap-1 text-xs px-2.5 py-1 bg-slate-900/80 hover:bg-slate-800 rounded-lg border border-slate-700 transition-colors"
         >
-          <RefreshCw className="w-3 h-3" /> 重試
+          <RefreshCw className="w-3 h-3" /> {t("connectionBanner.retry")}
         </button>
       </div>
     </div>

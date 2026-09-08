@@ -1,35 +1,40 @@
 import { HelpCircle, ChevronUp, ChevronDown } from "lucide-react";
-import { FAQ_ITEMS } from "@/data/models";
+import { useTranslation } from "react-i18next";
 
 /**
  * FAQ accordion.
  *
- * Reads from `FAQ_ITEMS` by default, but accepts an override `items` prop so
- * the i18n layer can later supply localized question/answer objects without
- * touching `data/models.js`.
+ * Items are read from the locale JSON (`faq.items` — an array of
+ * { id, q, a } objects) with `returnObjects: true`, matching the pattern
+ * used for `features.items` in App.jsx. The `id` field provides stable DOM
+ * identifiers (faq-panel-<id> / aria-controls) across locales; the `openIndex`
+ * state is positional and managed by the parent (`App` via `onToggle`).
  */
 export default function FaqSection({
-  items = FAQ_ITEMS,
   openIndex,
   onToggle,
 }) {
+  const { t } = useTranslation();
+  // Guard against a malformed/missing locale entry so the section still
+  // renders (just without items) instead of crashing.
+  const items = t("faq.items", { returnObjects: true });
+  const faqItems = Array.isArray(items) ? items : [];
   return (
     <section id="faq" className="scroll-mt-20 pt-6">
       <div className="text-center space-y-2 mb-8">
         <h2 className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-teal-300 to-cyan-400 inline-flex items-center gap-2">
-          <HelpCircle className="w-6 h-6 text-teal-400" /> 常見問題 (FAQ)
+          <HelpCircle className="w-6 h-6 text-teal-400" /> {t("faq.title")}
         </h2>
         <p className="text-xs text-slate-400">
-          關於模型管理、VRAM 計算與隱私安全的核心解答
+          {t("faq.subtitle")}
         </p>
       </div>
 
       <div className="max-w-3xl mx-auto space-y-3">
-        {items.map((item, index) => {
+        {faqItems.map((item, index) => {
           const isOpen = openIndex === index;
-          // Defensive: FAQ_ITEMS entries are expected to carry a stable `id`
-          // (enforced by tests/models.test.js), but guard against undefined/empty
-          // ids to avoid duplicate or invalid DOM identifiers.
+          // Defensive: locale entries carry a stable `id`, but guard against
+          // undefined/empty ids to avoid duplicate or invalid DOM identifiers.
           const itemId = item.id || `faq-${index}`;
           return (
             <div

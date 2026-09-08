@@ -1,5 +1,6 @@
 import { useEffect, useRef, useCallback } from "react";
 import { Terminal, X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 /**
  * Floating terminal-style modal that surfaces the batch-test logs.
@@ -17,6 +18,7 @@ import { Terminal, X } from "lucide-react";
  * element on unmount. Body scroll is locked while open.
  */
 export default function TestLogModal({ open, logs, isTesting, onClose }) {
+  const { t } = useTranslation();
   const dialogRef = useRef(null);
   const closeButtonRef = useRef(null);
   const previouslyFocusedRef = useRef(null);
@@ -84,13 +86,13 @@ export default function TestLogModal({ open, logs, isTesting, onClose }) {
             className="text-sm font-bold flex items-center gap-2 text-slate-200"
           >
             <Terminal className="w-4 h-4 text-cyan-400" />
-            批次測試終端日誌 (Batch Test Logs)
+            {t("logs.modalTitle")}
           </h3>
           <button
             ref={closeButtonRef}
             onClick={onClose}
             className="p-1 text-slate-400 hover:bg-slate-800 hover:text-white rounded-lg transition-colors"
-            aria-label="關閉測試日誌"
+            aria-label={t("logs.closeAria")}
           >
             <X className="w-5 h-5" aria-hidden="true" />
           </button>
@@ -98,7 +100,7 @@ export default function TestLogModal({ open, logs, isTesting, onClose }) {
 
         {/* Screen-reader-only description of the dialog's purpose + dismissal hint */}
         <p id="test-log-desc" className="sr-only">
-          批次測試執行過程的即時日誌。按下 Escape 或點擊關閉按鈕可關閉此視窗。
+          {t("logs.srDesc")}
         </p>
 
         {/* Terminal Log Area */}
@@ -138,13 +140,13 @@ export default function TestLogModal({ open, logs, isTesting, onClose }) {
           ))}
           {logs.length === 0 && (
             <div className="text-slate-500 animate-pulse">
-              等待測試開始...
+              {t("logs.waiting")}
             </div>
           )}
           {isTesting && (
             <div className="flex items-center gap-2 text-slate-500 mt-4">
               <span className="w-2 h-2 bg-indigo-500 rounded-full animate-ping"></span>
-              執行中...
+              {t("logs.executing")}
             </div>
           )}
         </div>

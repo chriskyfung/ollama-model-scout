@@ -88,9 +88,9 @@ export const CONTEXT_STEP = 2048;
  * domain constants instead of inside the component.
  */
 export const HARDWARE_PRESETS = Object.freeze([
-  Object.freeze({ label: "純 CPU (32G)", vram: 0, ram: 32 }),
-  Object.freeze({ label: "MacBook (16G)", vram: 16, ram: 32 }),
-  Object.freeze({ label: "RTX 4090 (24G)", vram: 24, ram: 64 }),
+  Object.freeze({ id: "cpu", vram: 0, ram: 32 }),
+  Object.freeze({ id: "macbook", vram: 16, ram: 32 }),
+  Object.freeze({ id: "rtx4090", vram: 24, ram: 64 }),
 ]);
 
 // Legacy export kept so existing imports are unaffected during transition.

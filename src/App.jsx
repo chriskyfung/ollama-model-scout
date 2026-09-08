@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   AreaChart,
   Area,
@@ -21,8 +22,6 @@ import {
   XCircle,
   Sliders,
   Terminal,
-  ShieldCheck,
-  Layers,
   Sparkles,
 } from "lucide-react";
 import Footer from "@/components/layout/Footer";
@@ -46,9 +45,11 @@ import {
   formatParameterSize,
 } from "@/lib/format";
 import { calculatePerformance } from "@/lib/perf";
+import { FEATURE_STYLES } from "@/lib/featureStyles";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 export default function App() {
+  const { t } = useTranslation();
   // --- State: API connection settings & status ---
   const [apiConfig, setApiConfig] = useLocalStorage(
     STORAGE_KEYS.apiConfig,
@@ -127,7 +128,7 @@ export default function App() {
         : allowMockFallback;
     setApiStatus({
       state: "loading",
-      message: "正在連線至 Ollama 伺服器...",
+      message: t("toast.connecting"),
       isFallback: false,
     });
     try {
@@ -136,7 +137,7 @@ export default function App() {
         try {
           customHeaders = JSON.parse(apiConfig.headers);
         } catch {
-          throw new Error("Headers JSON 格式不正確");
+          throw new Error(t("toast.headersError"));
         }
       }
 
@@ -151,32 +152,32 @@ export default function App() {
         headers,
       });
 
-      if (!res.ok) throw new Error(`HTTP 錯誤! 狀態碼: ${res.status}`);
+      if (!res.ok) throw new Error(t("toast.httpError", { status: res.status }));
 
       const data = await res.json();
       if (data && Array.isArray(data.models)) {
         setModels(data.models);
         setApiStatus({
           state: "success",
-          message: `連線成功！已載入 ${data.models.length} 個模型`,
+          message: t("toast.success", { count: data.models.length }),
           isFallback: false,
         });
       } else {
-        throw new Error("回應格式不符，缺少 models 陣列");
+        throw new Error(t("toast.responseError"));
       }
     } catch (err) {
       if (fallback) {
         setModels(MOCK_MODELS);
         setApiStatus({
           state: "error",
-          message: `無法連線 (${err.message})。已啟用備援 Mock 模型資料。`,
+          message: t("toast.fallback", { error: err.message }),
           isFallback: true,
         });
       } else {
         setModels([]);
         setApiStatus({
           state: "error",
-          message: `連線失敗 (${err.message})。請檢查伺服器設定。`,
+          message: t("toast.failed", { error: err.message }),
           isFallback: false,
         });
       }
@@ -334,7 +335,7 @@ export default function App() {
           time: new Date().toISOString(),
           model: "System",
           status: "info",
-          message: "目前列表中沒有雲端 API 模型可供測試。",
+          message: t("logs.noRemoteModels"),
         },
       ]);
       return;
@@ -346,7 +347,7 @@ export default function App() {
         time: new Date().toISOString(),
         model: "System",
         status: "info",
-        message: `開始批次測試 ${remoteModels.length} 個雲端模型的連線狀態...`,
+        message: t("logs.startTest", { count: remoteModels.length }),
       },
     ]);
 
@@ -354,7 +355,7 @@ export default function App() {
       setTimeout(
         () => {
           const success = Math.random() > 0.25;
-          const msg = success ? "200 OK (連線正常)" : "ERR_CONNECTION_TIMEOUT";
+          const msg = success ? t("logs.testOk") : t("logs.testFail");
           const status = success ? "ok" : "error";
 
           setTestResults((prev) => ({ ...prev, [m.name]: { status, msg } }));
@@ -378,7 +379,7 @@ export default function App() {
                 time: new Date().toISOString(),
                 model: "System",
                 status: "info",
-                message: "批次測試執行完畢。",
+                message: t("logs.testDone"),
               },
             ]);
           }
@@ -482,7 +483,7 @@ export default function App() {
                   <Search className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
                   <input
                     type="text"
-                    placeholder="搜尋模型名稱、能力、家族、量化等級..."
+                    placeholder={t("models.searchPlaceholder")}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-200 focus:border-cyan-500 outline-none transition-colors"
@@ -496,13 +497,13 @@ export default function App() {
                     className="w-full md:w-auto flex items-center justify-between gap-2 px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 text-sm font-medium text-slate-300"
                   >
                     <Filter className="w-4 h-4 text-cyan-400" />
-                    <span>欄位自訂</span>
+                    <span>{t("models.columnCustomize")}</span>
                     <ChevronDown className="w-3.5 h-3.5" />
                   </button>
                   {showColumnMenu && (
                     <div className="absolute right-0 mt-2 w-52 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl z-50 p-3 space-y-1">
                       <div className="text-xs font-bold text-slate-400 px-2 pb-2 border-b border-slate-800">
-                        顯示欄位開關
+                        {t("models.columnToggleTitle")}
                       </div>
                       {Object.keys(columns).map((col) => (
                         <label
@@ -517,8 +518,8 @@ export default function App() {
                             }
                             className="accent-cyan-500 rounded"
                           />
-                          <span className="capitalize">
-                            {col.replace(/([A-Z])/g, " $1")}
+                          <span>
+                            {t(`models.tableHeaders.${col}`)}
                           </span>
                         </label>
                       ))}
@@ -532,19 +533,19 @@ export default function App() {
                 {/* 1. 類型 (Type) */}
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
-                    Type:
+                    {t("models.filters.type")}
                   </span>
-                  {["all", "local", "remote"].map((t) => (
+                  {["all", "local", "remote"].map((type) => (
                     <button
-                      key={t}
-                      onClick={() => setFilters((p) => ({ ...p, type: t }))}
+                      key={type}
+                      onClick={() => setFilters((p) => ({ ...p, type }))}
                       className={`px-3 py-1 rounded-lg font-semibold transition-all border ${
-                        filters.type === t
+                        filters.type === type
                           ? "bg-cyan-500/20 border-cyan-500 text-cyan-300 shadow-sm shadow-cyan-950"
                           : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
                       }`}
                     >
-                      {t === "remote" ? "CLOUD (REMOTE)" : t.toUpperCase()}
+                      {t("models.filters.types." + type)}
                     </button>
                   ))}
                 </div>
@@ -553,7 +554,7 @@ export default function App() {
                 {availableCapabilities.length > 0 && (
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
-                      Caps:
+                      {t("models.filters.caps")}
                     </span>
                     {availableCapabilities.map((c) => (
                       <button
@@ -575,7 +576,7 @@ export default function App() {
                 {availableFamilies.length > 0 && (
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
-                      Family:
+                      {t("models.filters.family")}
                     </span>
                     {availableFamilies.map((f) => (
                       <button
@@ -597,7 +598,7 @@ export default function App() {
                 {availableQuantizations.length > 0 && (
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
-                      Quant:
+                      {t("models.filters.quant")}
                     </span>
                     {availableQuantizations.map((q) => (
                       <button
@@ -618,13 +619,13 @@ export default function App() {
                 {/* 5. 測試狀態 (Test Status) */}
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
-                    Status:
+                    {t("models.filters.status")}
                   </span>
                   {[
-                    { id: "all", label: "所有狀態" },
-                    { id: "success", label: "連線成功" },
-                    { id: "error", label: "連線失敗" },
-                    { id: "untested", label: "尚未測試" },
+                    { id: "all", label: t("models.filters.statuses.all") },
+                    { id: "success", label: t("models.filters.statuses.success") },
+                    { id: "error", label: t("models.filters.statuses.error") },
+                    { id: "untested", label: t("models.filters.statuses.untested") },
                   ].map((st) => (
                     <button
                       key={st.id}
@@ -655,7 +656,7 @@ export default function App() {
                           className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
                           onClick={() => sortTable("name")}
                         >
-                          Model Name
+                          {t("models.tableHeaders.name")}
                         </th>
                       )}
                       {columns.family && (
@@ -663,7 +664,7 @@ export default function App() {
                           className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
                           onClick={() => sortTable("family")}
                         >
-                          Family
+                          {t("models.tableHeaders.family")}
                         </th>
                       )}
                       {columns.parameterSize && (
@@ -671,7 +672,7 @@ export default function App() {
                           className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
                           onClick={() => sortTable("parameter_size")}
                         >
-                          Parameters
+                          {t("models.tableHeaders.parameterSize")}
                         </th>
                       )}
                       {columns.quantization && (
@@ -679,7 +680,7 @@ export default function App() {
                           className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
                           onClick={() => sortTable("quantization_level")}
                         >
-                          Quantization
+                          {t("models.tableHeaders.quantization")}
                         </th>
                       )}
                       {columns.contextLength && (
@@ -687,7 +688,7 @@ export default function App() {
                           className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
                           onClick={() => sortTable("context_length")}
                         >
-                          Context Length
+                          {t("models.tableHeaders.contextLength")}
                         </th>
                       )}
                       {columns.size && (
@@ -695,7 +696,7 @@ export default function App() {
                           className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
                           onClick={() => sortTable("size")}
                         >
-                          Size
+                          {t("models.tableHeaders.size")}
                         </th>
                       )}
                       {columns.status && (
@@ -703,18 +704,18 @@ export default function App() {
                           className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
                           onClick={() => sortTable("status")}
                         >
-                          API Status
+                          {t("models.tableHeaders.status")}
                         </th>
                       )}
                       {columns.capabilities && (
-                        <th className="p-4">Capabilities</th>
+                        <th className="p-4">{t("models.tableHeaders.capabilities")}</th>
                       )}
                       {columns.modifiedAt && (
                         <th
                           className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
                           onClick={() => sortTable("modified_at")}
                         >
-                          Modified At
+                          {t("models.tableHeaders.modifiedAt")}
                         </th>
                       )}
                     </tr>
@@ -726,7 +727,7 @@ export default function App() {
                           colSpan="8"
                           className="p-8 text-center text-slate-500"
                         >
-                          沒有符合過濾條件的模型
+                          {t("models.emptyState")}
                         </td>
                       </tr>
                     ) : (
@@ -754,7 +755,7 @@ export default function App() {
                                 {m.name}
                                 {isRemote && (
                                   <span className="px-1.5 py-0.5 bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-[10px] rounded">
-                                    Cloud
+                                    {t("models.cloudBadge")}
                                   </span>
                                 )}
                               </td>
@@ -791,7 +792,7 @@ export default function App() {
                               <td className="p-4 font-mono text-xs">
                                 {isRemote ? (
                                   <span className="inline-flex items-center gap-1.5 text-indigo-400 bg-indigo-950/40 px-2 py-1 rounded-md border border-indigo-800/40">
-                                    <Cloud className="w-3.5 h-3.5" /> Cloud API
+                                    <Cloud className="w-3.5 h-3.5" /> {t("models.cloudApiBadge")}
                                   </span>
                                 ) : (
                                   <span className="inline-flex items-center gap-1.5 text-emerald-400 bg-emerald-950/40 px-2 py-1 rounded-md border border-emerald-800/40">
@@ -814,7 +815,7 @@ export default function App() {
                                     {testResults[m.name].msg}
                                   </span>
                                 ) : (
-                                  <span className="text-slate-600">-</span>
+                                  <span className="text-slate-600">{t("models.statusDash")}</span>
                                 )}
                               </td>
                             )}
@@ -836,7 +837,7 @@ export default function App() {
                               <td className="p-4 text-xs text-slate-500 font-mono">
                                 {m.modified_at
                                   ? new Date(m.modified_at).toLocaleDateString()
-                                  : "-"}
+                                  : t("models.statusDash")}
                               </td>
                             )}
                           </tr>
@@ -851,15 +852,15 @@ export default function App() {
               <div className="bg-slate-950 p-4 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-slate-400">
                 <div className="flex items-center gap-4">
                   <span>
-                    顯示模型:{" "}
+                    {t("models.footer.count")}{" "}
                     <strong className="text-white">
                       {filteredModels.length}
                     </strong>{" "}
-                    個
+                    {t("models.footer.countUnit")}
                   </span>
                   <span className="h-3 w-px bg-slate-800"></span>
                   <span>
-                    本地模型佔用:{" "}
+                    {t("models.footer.localUsed")}{" "}
                     <strong className="text-emerald-400 font-mono">
                       {formatBytes(totalLocalSize)}
                     </strong>
@@ -872,7 +873,7 @@ export default function App() {
                       onClick={() => setShowLogs(true)}
                       className="flex items-center gap-2 px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-xl transition-colors text-xs font-semibold"
                     >
-                      <Terminal className="w-3.5 h-3.5" /> 檢視測試日誌
+                      <Terminal className="w-3.5 h-3.5" /> {t("models.footer.viewLogs")}
                     </button>
                   )}
                   <button
@@ -881,7 +882,7 @@ export default function App() {
                     className="flex items-center gap-2 px-4 py-1.5 bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-300 border border-indigo-500/30 rounded-xl transition-colors text-xs font-semibold disabled:opacity-50"
                   >
                     <Zap className="w-3.5 h-3.5" />
-                    {isTesting ? "批次測試中..." : "批次測試雲端 API 連線"}
+                    {isTesting ? t("models.footer.batchTesting") : t("models.footer.batchTest")}
                   </button>
                 </div>
               </div>
@@ -900,14 +901,14 @@ export default function App() {
                         {selectedModel.name}
                       </h3>
                       <p className="text-xs text-slate-400 mt-1">
-                        參數規模:{" "}
+                        {t("overclock.parameterSizeLabel")}{" "}
                         {formatParameterSize(
                           selectedModel.details?.parameter_size,
                         )}{" "}
-                        | 量化:{" "}
+                        | {t("overclock.quantizationLabel")}{" "}
                         {selectedModel.details?.quantization_level?.toUpperCase() ||
-                          "UNKNOWN"}{" "}
-                        | 最大 Context:{" "}
+                          t("overclock.unknown")}{" "}
+                        | {t("overclock.maxContextLabel")}{" "}
                         {(
                           selectedModel.details?.context_length || 0
                         ).toLocaleString()}
@@ -927,13 +928,13 @@ export default function App() {
                       onClick={() => setContextSlider(2048)}
                       className="px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 rounded-xl text-emerald-400 text-xs font-bold transition-colors"
                     >
-                      🚀 極速 (2K)
+                      {t("overclock.preset.fast")}
                     </button>
                     <button
                       onClick={() => setContextSlider(8192)}
                       className="px-3 py-1.5 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 rounded-xl text-cyan-400 text-xs font-bold transition-colors"
                     >
-                      ⚖ 均衡 (8K)
+                      {t("overclock.preset.balanced")}
                     </button>
                     <button
                       onClick={() =>
@@ -943,14 +944,14 @@ export default function App() {
                       }
                       className="px-3 py-1.5 bg-indigo-500/10 hover:bg-indigo-500/20 border border-indigo-500/30 rounded-xl text-indigo-400 text-xs font-bold transition-colors"
                     >
-                      📚 極限 Context
+                      {t("overclock.preset.max")}
                     </button>
                   </div>
 
                   {/* Context 滑桿 */}
                   <div>
                     <div className="flex justify-between text-xs font-semibold text-slate-300 mb-2">
-                      <span>Context 深度配置</span>
+                      <span>{t("overclock.contextLabel")}</span>
                       <span className="text-cyan-400 font-mono font-bold">
                         {contextSlider.toLocaleString()} Tokens
                       </span>
@@ -993,7 +994,7 @@ export default function App() {
                             <div className="flex justify-between text-xs mb-1.5">
                               <span className="text-slate-400 flex items-center gap-1.5">
                                 <Cpu className="w-3.5 h-3.5 text-emerald-400" />{" "}
-                                GPU VRAM 核心 (專用)
+                                {t("overclock.vramCore")}
                               </span>
                               <span className="font-mono text-slate-200">
                                 {perf.vramUsed} / {hardware.vram} GB
@@ -1018,10 +1019,10 @@ export default function App() {
                             <div className="flex justify-between text-xs mb-1.5">
                               <span className="text-slate-400 flex items-center gap-1.5">
                                 <HardDrive className="w-3.5 h-3.5 text-amber-400" />{" "}
-                                系統 RAM (溢流分流)
+                                {t("overclock.ramSpillover")}
                                 {perf.ramUsed > 0 && (
                                   <span className="text-[10px] bg-amber-500/20 text-amber-400 px-1.5 py-0.5 rounded border border-amber-500/30">
-                                    PCIe 匯流排分流中
+                                    {t("terminology.pcieRouting")}
                                   </span>
                                 )}
                               </span>
@@ -1050,11 +1051,11 @@ export default function App() {
                 <div className="flex-1 min-h-[280px] bg-slate-950/60 rounded-xl border border-slate-800 p-4 flex flex-col justify-between">
                   <div className="flex justify-between items-center mb-2">
                     <span className="text-xs font-bold text-slate-400 flex items-center gap-1.5">
-                      <Sliders className="w-3.5 h-3.5 text-cyan-400" /> Context
-                      vs. 記憶體與推論速度 (t/s)
+                      <Sliders className="w-3.5 h-3.5 text-cyan-400" />{" "}
+                      {t("overclock.chart.title")}
                     </span>
                     <span className="text-[10px] text-emerald-400 bg-emerald-950/50 border border-emerald-800/40 px-2 py-0.5 rounded">
-                      ✨ 綠色區域：黃金推論區
+                      {t("overclock.chart.sweetSpot")}
                     </span>
                   </div>
 
@@ -1119,7 +1120,7 @@ export default function App() {
                           stroke="#10b981"
                           fontSize={10}
                           tickLine={false}
-                          unit="GB"
+                          unit={t("overclock.chart.unitGB")}
                         />
                         <YAxis
                           yAxisId="right"
@@ -1127,7 +1128,7 @@ export default function App() {
                           stroke="#3b82f6"
                           fontSize={10}
                           tickLine={false}
-                          unit=" t/s"
+                          unit={t("overclock.chart.unitTPS")}
                         />
                         <Tooltip
                           contentStyle={{
@@ -1164,7 +1165,7 @@ export default function App() {
                           strokeWidth={1.5}
                           strokeDasharray="4 4"
                           label={{
-                            value: "當前配置",
+                            value: t("overclock.chart.currentConfig"),
                             position: "insideTopLeft",
                             fill: "#f59e0b",
                             fontSize: 11,
@@ -1175,7 +1176,7 @@ export default function App() {
                           yAxisId="left"
                           type="monotone"
                           dataKey="memoryDemand"
-                          name="記憶體總需求"
+                          name={t("overclock.chart.memoryDemand")}
                           stroke="#10b981"
                           strokeWidth={2}
                           fillOpacity={1}
@@ -1185,7 +1186,7 @@ export default function App() {
                           yAxisId="right"
                           type="monotone"
                           dataKey="tokensPerSecond"
-                          name="預估速度"
+                          name={t("overclock.chart.tokensPerSecond")}
                           stroke="#3b82f6"
                           strokeWidth={2}
                           fillOpacity={1}
@@ -1202,11 +1203,10 @@ export default function App() {
                   <Zap className="w-6 h-6" />
                 </div>
                 <h3 className="text-base font-bold text-slate-200">
-                  請從上方模型矩陣中點擊任一模型
+                  {t("overclock.placeholderTitle")}
                 </h3>
                 <p className="text-xs text-slate-400 max-w-md mx-auto">
-                  點擊模型後將立即展開「戰略推算艙」，為您模擬在不同 Context
-                  深度下的 VRAM/RAM 記憶體分配與推論速度衰退曲線。
+                  {t("overclock.placeholderDesc")}
                 </p>
               </div>
             )}
@@ -1216,66 +1216,26 @@ export default function App() {
           <section id="features" className="scroll-mt-20 pt-6">
             <div className="text-center space-y-2 mb-8">
               <h2 className="text-2xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-emerald-400 inline-flex items-center gap-2">
-                <Sparkles className="w-6 h-6 text-cyan-400" /> 專為 LLM
-                玩家打造的核心技術
+                <Sparkles className="w-6 h-6 text-cyan-400" /> {t("features.title")}
               </h2>
               <p className="text-xs text-slate-400">
-                結合 LLM 推論物理學與視覺化分析，協助您極致釋放本地硬體潛能
+                {t("features.subtitle")}
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-slate-900/60 border border-slate-800 hover:border-cyan-500/40 transition-all rounded-2xl p-5 space-y-3 group">
-                <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
-                  <Sliders className="w-5 h-5" />
-                </div>
-                <h3 className="text-sm font-bold text-slate-200">
-                  物理級 KV Cache 動態估算
-                </h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  精確計算每拉長 1K Context 所產生的 Key-Value
-                  顯存需求，避免爆顯存（OOM）崩潰。
-                </p>
-              </div>
-
-              <div className="bg-slate-900/60 border border-slate-800 hover:border-emerald-500/40 transition-all rounded-2xl p-5 space-y-3 group">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
-                  <Layers className="w-5 h-5" />
-                </div>
-                <h3 className="text-sm font-bold text-slate-200">
-                  雙層 RAM/VRAM 液態溢流
-                </h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  獨創液態溢流矩陣，即時呈現顯存不足時模型層數向系統 RAM 分流與
-                  PCIe 降速特徵。
-                </p>
-              </div>
-
-              <div className="bg-slate-900/60 border border-slate-800 hover:border-indigo-500/40 transition-all rounded-2xl p-5 space-y-3 group">
-                <div className="w-10 h-10 rounded-xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform">
-                  <Terminal className="w-5 h-5" />
-                </div>
-                <h3 className="text-sm font-bold text-slate-200">
-                  雲端 API 批次健康診斷
-                </h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  提供微秒級雲端代理與遠端 API 連線診斷，搭配即時多線程 Terminal
-                  測試日誌。
-                </p>
-              </div>
-
-              <div className="bg-slate-900/60 border border-slate-800 hover:border-teal-500/40 transition-all rounded-2xl p-5 space-y-3 group">
-                <div className="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/20 flex items-center justify-center text-teal-400 group-hover:scale-110 transition-transform">
-                  <ShieldCheck className="w-5 h-5" />
-                </div>
-                <h3 className="text-sm font-bold text-slate-200">
-                  100% 本地隱私無伺服器
-                </h3>
-                <p className="text-xs text-slate-400 leading-relaxed">
-                  純前端架構，API Keys 與伺服器路徑全數託管於本機
-                  LocalStorage，絕不上傳雲端。
-                </p>
-              </div>
+              {t("features.items", { returnObjects: true }).map((item, i) => {
+                const s = FEATURE_STYLES[i % FEATURE_STYLES.length];
+                return (
+                  <div key={i} className={`bg-slate-900/60 border border-slate-800 ${s.hover} transition-all rounded-2xl p-5 space-y-3 group`}>
+                    <div className={`w-10 h-10 rounded-xl ${s.bg} border ${s.border} flex items-center justify-center ${s.text} group-hover:scale-110 transition-transform`}>
+                      {s.icon}
+                    </div>
+                    <h3 className="text-sm font-bold text-slate-200">{item.title}</h3>
+                    <p className="text-xs text-slate-400 leading-relaxed">{item.desc}</p>
+                  </div>
+                );
+              })}
             </div>
           </section>
 
