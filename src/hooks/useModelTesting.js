@@ -15,7 +15,11 @@ import { isRemoteModel } from "@/lib/models";
  * `handleBatchTest(remoteModels)` takes the current filtered list as an
  * argument (passed by the caller at click time), which keeps this hook free
  * of a circular dependency on the filtering hook.
- */
+ * `pushLog` is intentionally not memoized with useCallback: it is
+ * internal-only (never returned or passed as a prop), so its identity
+ * is unobservable.
+
+*/
 export function useModelTesting() {
   const { t } = useTranslation();
   const [testResults, setTestResults] = useState({});
