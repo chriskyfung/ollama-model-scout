@@ -49,9 +49,6 @@ i18n
       caches: ["localStorage"],
       lookupCookie: LANGUAGE_STORAGE_KEY,
       lookupLocalStorage: LANGUAGE_STORAGE_KEY,
-      cachesCookie: LANGUAGE_STORAGE_KEY,
-      // Ignore browser defaults once the user has explicitly chosen a language.
-      excludeCookie: [LANGUAGE_STORAGE_KEY],
     },
     fallbackLng: FALLBACK_LNG,
     supportedLngs: LANGUAGES.map((l) => l.code),
