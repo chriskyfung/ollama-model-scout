@@ -22,6 +22,9 @@ export default function ModelsTable({
 }) {
   const { t } = useTranslation();
 
+  // Number of currently visible columns; used for the empty-state colSpan.
+  const visibleColCount = Object.values(columns).filter(Boolean).length;
+
   return (
     <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl relative z-10">
       <div className="overflow-x-auto">
@@ -101,7 +104,7 @@ export default function ModelsTable({
             {models.length === 0 ? (
               <tr>
                 <td
-                  colSpan="8"
+                  colSpan={visibleColCount}
                   className="p-8 text-center text-slate-500"
                 >
                   {t("models.emptyState")}
