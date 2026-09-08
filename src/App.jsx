@@ -47,6 +47,7 @@ import {
 } from "@/lib/format";
 import { calculatePerformance } from "@/lib/perf";
 import { FEATURE_STYLES } from "@/lib/featureStyles";
+import { useModelTesting } from "@/hooks/useModelTesting";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 export default function App() {
@@ -95,10 +96,6 @@ export default function App() {
 
   // --- State: Tactical Command Center panel ---
   const [selectedModel, setSelectedModel] = useState(null);
-  const [testResults, setTestResults] = useState({});
-  const [testLogs, setTestLogs] = useState([]);
-  const [showLogs, setShowLogs] = useState(false);
-  const [isTesting, setIsTesting] = useState(false);
   const [contextSlider, setContextSlider] = useState(8192);
 
   const availableCapabilities = useMemo(() => {
@@ -216,6 +213,11 @@ export default function App() {
     }
   };
 
+  // --- Batch testing (declared before the filter hook so its testResults can
+  //     feed test-status filtering; handleBatchTest receives the filtered list
+  //     at click time, avoiding a circular dependency) ---
+  const testingApi = useModelTesting();
+
   const filteredModels = useMemo(() => {
     return models
       .filter((m) => {
@@ -319,76 +321,6 @@ export default function App() {
       0,
     );
   }, [filteredModels]);
-
-  const handleBatchTest = () => {
-    setIsTesting(true);
-    setShowLogs(true);
-    const remoteModels = filteredModels.filter(
-      (m) =>
-        m.size === "remote" || m.details?.format === "api" || !!m.remote_model,
-    );
-
-    if (remoteModels.length === 0) {
-      setIsTesting(false);
-      setTestLogs((prev) => [
-        ...prev,
-        {
-          time: new Date().toISOString(),
-          model: "System",
-          status: "info",
-          message: t("logs.noRemoteModels"),
-        },
-      ]);
-      return;
-    }
-
-    setTestLogs((prev) => [
-      ...prev,
-      {
-        time: new Date().toISOString(),
-        model: "System",
-        status: "info",
-        message: t("logs.startTest", { count: remoteModels.length }),
-      },
-    ]);
-
-    remoteModels.forEach((m, idx) => {
-      setTimeout(
-        () => {
-          const success = Math.random() > 0.25;
-          const msg = success ? t("logs.testOk") : t("logs.testFail");
-          const status = success ? "ok" : "error";
-
-          setTestResults((prev) => ({ ...prev, [m.name]: { status, msg } }));
-
-          // 寫入即時日誌
-          setTestLogs((prev) => [
-            ...prev,
-            {
-              time: new Date().toISOString(),
-              model: m.name,
-              status: status,
-              message: msg,
-            },
-          ]);
-
-          if (idx === remoteModels.length - 1) {
-            setIsTesting(false);
-            setTestLogs((prev) => [
-              ...prev,
-              {
-                time: new Date().toISOString(),
-                model: "System",
-                status: "info",
-                message: t("logs.testDone"),
-              },
-            ]);
-          }
-        },
-        (idx + 1) * 500,
-      );
-    });
-  };
 
   const toggleFilter = (type, value) => {
     setFilters((prev) => ({
