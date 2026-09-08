@@ -101,6 +101,12 @@ describe("useModels — closure stabilization", () => {
 
     const { result } = renderUseModels();
 
+    // Gate on the mount-triggered fetch settling first, so the explicit call
+    // below is unambiguously the source of the final state (matches test 3).
+    await waitFor(() => {
+      expect(result.current.apiStatus.state).toBe("error");
+    });
+
     // allowMockFallback defaults to true, but an explicit false overrides it:
     // the failure path must yield empty models, not the mock data.
     await act(async () => {
@@ -115,6 +121,11 @@ describe("useModels — closure stabilization", () => {
     vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("offline"));
 
     const { result } = renderUseModels();
+
+    // Gate on the mount-triggered fetch settling first (see test 5).
+    await waitFor(() => {
+      expect(result.current.apiStatus.state).toBe("error");
+    });
 
     act(() => result.current.setAllowMockFallback(false));
 
