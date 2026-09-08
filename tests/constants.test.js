@@ -36,4 +36,13 @@ describe("centralized constants", () => {
     expect(HARDWARE_PRESETS).toHaveLength(3);
     expect(HARDWARE_PRESETS[2]).toEqual({ id: "rtx4090", vram: 24, ram: 64 });
   });
+  it("gives every hardware preset a non-empty, unique id", () => {
+    // ids are used as React keys AND as i18n keys
+    // (t(`apiSettings.presets.${p.id}`)), so duplicates or blanks would
+    // silently break rendering/localization.
+    HARDWARE_PRESETS.forEach((p) => expect(typeof p.id).toBe("string"));
+    const ids = HARDWARE_PRESETS.map((p) => p.id);
+    ids.forEach((id) => expect(id.length).toBeGreaterThan(0));
+    expect(new Set(ids).size).toBe(ids.length);
+  });
 });
