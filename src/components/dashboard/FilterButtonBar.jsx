@@ -3,8 +3,9 @@ import { useTranslation } from "react-i18next";
 /**
  * Multi-dimension smart filter button rows (type / capabilities / family /
  * quantization / test status). Fully controlled via props; extracted
- * verbatim from App.jsx. Class strings are kept as literals (NOT built
- * dynamically) so Tailwind's JIT scanner can see them.
+ * verbatim from App.jsx. Class strings are kept as full string literals in the
+ * `pillBase`, `radioPillBase`, and `activePill` constants (NOT built dynamically)
+ * so Tailwind's JIT scanner can still see every class.
  */
 export default function FilterButtonBar({
   filters,
@@ -17,6 +18,21 @@ export default function FilterButtonBar({
   const { t } = useTranslation();
   const pillBase =
     "px-3 py-1 rounded-lg border transition-all bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700";
+  // Exclusive (radio-style) rows share the same inactive base as pillBase but
+  // additionally carry font-semibold always plus an active-state shadow.
+ // Rendered
+  // output is byte-for-byte unchanged from the previous inline template literals —
+  // this is a code-shape normalization only (every class stays a full literal so
+  // Tailwind's JIT scanner can see them, per the note atop this component).
+  const radioPillBase =
+    "px-3 py-1 rounded-lg font-semibold transition-all border bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700";
+  const activePill = {
+    cyan: "px-3 py-1 rounded-lg font-semibold transition-all border bg-cyan-500/20 border-cyan-500 text-cyan-300 shadow-sm shadow-cyan-950",
+    indigoShadow: "px-3 py-1 rounded-lg font-semibold transition-all border bg-indigo-500/20 border-indigo-500 text-indigo-300 shadow-sm shadow-indigo-950",
+    indigo: "px-3 py-1 rounded-lg border transition-all bg-indigo-500/20 border-indigo-500 text-indigo-300",
+    teal: "px-3 py-1 rounded-lg border transition-all bg-teal-500/20 border-teal-500 text-teal-300",
+    emerald: "px-3 py-1 rounded-lg border transition-all bg-emerald-500/20 border-emerald-500 text-emerald-300",
+  };
   return (
     <div className="flex flex-col space-y-3 pt-3 border-t border-slate-800/60 text-xs">
       {/* 1. 類型 (Type) */}
@@ -28,11 +44,9 @@ export default function FilterButtonBar({
           <button
             key={type}
             onClick={() => setFilters((p) => ({ ...p, type }))}
-            className={`px-3 py-1 rounded-lg font-semibold transition-all border ${
-              filters.type === type
-                ? "bg-cyan-500/20 border-cyan-500 text-cyan-300 shadow-sm shadow-cyan-950"
-                : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
-            }`}
+            className={
+                filters.type === type ? activePill.cyan : radioPillBase
+              }
           >
             {t("models.filters.types." + type)}
           </button>
@@ -51,7 +65,7 @@ export default function FilterButtonBar({
               onClick={() => toggleFilter("capabilities", c)}
               className={
                 filters.capabilities.includes(c)
-                  ? "px-3 py-1 rounded-lg border transition-all bg-indigo-500/20 border-indigo-500 text-indigo-300"
+                  ? activePill.indigo
                   : pillBase
               }
             >
@@ -73,7 +87,7 @@ export default function FilterButtonBar({
               onClick={() => toggleFilter("families", f)}
               className={
                 filters.families.includes(f)
-                  ? "px-3 py-1 rounded-lg border transition-all bg-teal-500/20 border-teal-500 text-teal-300"
+                  ? activePill.teal
                   : pillBase
               }
             >
@@ -95,7 +109,7 @@ export default function FilterButtonBar({
               onClick={() => toggleFilter("quantizations", q)}
               className={
                 filters.quantizations.includes(q)
-                  ? "px-3 py-1 rounded-lg border transition-all bg-emerald-500/20 border-emerald-500 text-emerald-300"
+                  ? activePill.emerald
                   : pillBase
               }
             >
@@ -121,11 +135,11 @@ export default function FilterButtonBar({
             onClick={() =>
               setFilters((p) => ({ ...p, testStatus: st.id }))
             }
-            className={`px-3 py-1 rounded-lg font-semibold transition-all border ${
-              filters.testStatus === st.id
-                ? "bg-indigo-500/20 border-indigo-500 text-indigo-300 shadow-sm shadow-indigo-950"
-                : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
-            }`}
+            className={
+                filters.testStatus === st.id
+                  ? activePill.indigoShadow
+                  : radioPillBase
+              }
           >
             {st.label}
           </button>
