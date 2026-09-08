@@ -127,22 +127,28 @@
   "faq": {
     "title": "常见问题 (FAQ)",
     "subtitle": "关于模型管理、VRAM 计算与隐私安全的核心解答",
-    "item1": {
-      "q": "显存 (VRAM) 溢流至系统内存 (RAM) 时会发生什么事？",
-      "a": "当 LLM 模型的权重与 KV Cache 总和超越显示卡专属 VRAM 容量时，Ollama 会通过 PCIe 总线将剩余层数托管于系统 RAM。由于 DDR4/DDR5 的带宽（约 40-80 GB/s）远低于 GPU 专用显存（约 500-1000 GB/s），这会导致推论速度（Tokens/s）呈现谐振式断崖下跌，通常下降 80% 至 95%。"
-    },
-    "item2": {
-      "q": "系统如何精密计算不同 Context 下的 KV Cache 需求？",
-      "a": "本仪表板内建 LLM 推论物理学推算模型。公式考量了模型参数规模（估计网络隐藏层数 Layers）、嵌入层维度（Embedding Dim）、以及 Grouped-Query Attention (GQA) 的 1/8 键值对压缩比，动态预测每拉长 1,024 Tokens 所额外消耗的显存量。"
-    },
-    "item3": {
-      "q": "连线设定与 API Key 会传送到第三方服务器吗？",
-      "a": "绝不传送。本系统为 100% 纯前端 Web App，所有 API 配置、自定义 Headers 以及硬件参数设定仅储存于您浏览器的本地端 (LocalStorage)。所有 Fetch 请求均由您的浏览器直接向您指定的 Ollama API 发送。"
-    },
-    "item4": {
-      "q": "为什么部分云端模型的体积大小显示为 'Cloud'？",
-      "a": "对于远端 API 模型（例如 GPT-4o 或第三方 API 代理），模型的实际权重托管于远端云端集群，本地并不占用硬件硬盘空间与 VRAM，因此系统将其独立归类标记为 Cloud API 模型。"
-    }
+    "items": [
+      {
+        "id": "vram-overflow",
+        "q": "显存 (VRAM) 溢流至系统内存 (RAM) 时会发生什么事？",
+        "a": "当 LLM 模型的权重与 KV Cache 总和超越显示卡专属 VRAM 容量时，Ollama 会通过 PCIe 总线将剩余层数托管于系统 RAM。由于 DDR4/DDR5 的带宽（约 40-80 GB/s）远低于 GPU 专用显存（约 500-1000 GB/s），这会导致推论速度（Tokens/s）呈现谐振式断崖下跌，通常下降 80% 至 95%。"
+      },
+      {
+        "id": "kv-cache-calculation",
+        "q": "系统如何精密计算不同 Context 下的 KV Cache 需求？",
+        "a": "本仪表板内建 LLM 推论物理学推算模型。公式考量了模型参数规模（估计网络隐藏层数 Layers）、嵌入层维度（Embedding Dim）、以及 Grouped-Query Attention (GQA) 的 1/8 键值对压缩比，动态预测每拉长 1,024 Tokens 所额外消耗的显存量。"
+      },
+      {
+        "id": "privacy-keys",
+        "q": "连线设定与 API Key 会传送到第三方服务器吗？",
+        "a": "绝不传送。本系统为 100% 纯前端 Web App，所有 API 配置、自定义 Headers 以及硬件参数设定仅储存于您浏览器的本地端 (LocalStorage)。所有 Fetch 请求均由您的浏览器直接向您指定的 Ollama API 发送。"
+      },
+      {
+        "id": "cloud-size-display",
+        "q": "为什么部分云端模型的体积大小显示为 'Cloud'？",
+        "a": "对于远端 API 模型（例如 GPT-4o 或第三方 API 代理），模型的实际权重托管于远端云端集群，本地并不占用硬件硬盘空间与 VRAM，因此系统将其独立归类标记为 Cloud API 模型。"
+      }
+    ]
   },
   "footer": {
     "tagline": "专为大语言模型玩家设计的远程 Ollama 管理仪表板与物理超频推估系统。",

@@ -6,8 +6,8 @@
  * DYNAMIC API data (model names, families, sizes) and are NOT i18n keys —
  * they are rendered verbatim per the i18n plan.
  *
- * FAQ_ITEMS has been externalized to locale JSON (src/i18n/locales/*.json)
- * under the `faq.*` keys and is no longer exported from this file.
+ * FAQ content has been externalized to locale JSON (src/i18n/locales/*.json)
+ * under the `faq.items` key and is no longer exported from this file.
  */
 
 export const MOCK_MODELS = [
@@ -83,4 +83,4 @@ export const MOCK_MODELS = [
   },
 ];
 
-// FAQ_ITEMS has been externalized to locale JSON (src/i18n/locales/*.json).
+// FAQ content has been externalized to locale JSON (src/i18n/locales/*.json).

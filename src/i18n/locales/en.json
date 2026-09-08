@@ -127,22 +127,28 @@
   "faq": {
     "title": "Frequently Asked Questions (FAQ)",
     "subtitle": "Core answers about model management, VRAM calculation, and privacy",
-    "item1": {
-      "q": "What happens when VRAM overflows into system RAM?",
-      "a": "When the combined model weights and KV Cache exceed the GPU's dedicated VRAM capacity, Ollama offloads the remaining layers to system RAM via the PCIe bus. Since DDR4/DDR5 bandwidth (~40-80 GB/s) is far lower than dedicated GPU VRAM (~500-1000 GB/s), this causes a cliff-like drop in inference speed (Tokens/s), typically declining 80% to 95%."
-    },
-    "item2": {
-      "q": "How does the system precisely calculate KV Cache requirements for different context lengths?",
-      "a": "This dashboard features a built-in LLM inference physics estimation model. The formula accounts for model parameter size (estimated network hidden layers), embedding dimension, and Grouped-Query Attention (GQA)'s 1/8 KV compression ratio, dynamically predicting the additional VRAM consumed per 1,024 Tokens of context extension."
-    },
-    "item3": {
-      "q": "Are connection settings and API Keys sent to third-party servers?",
-      "a": "Never. This is a 100% pure frontend web app. All API configurations, custom headers, and hardware parameter settings are stored solely in your browser's LocalStorage. All fetch requests are sent directly from your browser to your specified Ollama API."
-    },
-    "item4": {
-      "q": "Why do some cloud models show 'Cloud' as their size?",
-      "a": "For remote API models (such as GPT-4o or third-party API proxies), the actual model weights are hosted in remote cloud clusters and do not occupy local hardware disk space or VRAM, so the system independently categorizes and labels them as Cloud API models."
-    }
+    "items": [
+      {
+        "id": "vram-overflow",
+        "q": "What happens when VRAM overflows into system RAM?",
+        "a": "When the combined model weights and KV Cache exceed the GPU's dedicated VRAM capacity, Ollama offloads the remaining layers to system RAM via the PCIe bus. Since DDR4/DDR5 bandwidth (~40-80 GB/s) is far lower than dedicated GPU VRAM (~500-1000 GB/s), this causes a cliff-like drop in inference speed (Tokens/s), typically declining 80% to 95%."
+      },
+      {
+        "id": "kv-cache-calculation",
+        "q": "How does the system precisely calculate KV Cache requirements for different context lengths?",
+        "a": "This dashboard features a built-in LLM inference physics estimation model. The formula accounts for model parameter size (estimated network hidden layers), embedding dimension, and Grouped-Query Attention (GQA)'s 1/8 KV compression ratio, dynamically predicting the additional VRAM consumed per 1,024 Tokens of context extension."
+      },
+      {
+        "id": "privacy-keys",
+        "q": "Are connection settings and API Keys sent to third-party servers?",
+        "a": "Never. This is a 100% pure frontend web app. All API configurations, custom headers, and hardware parameter settings are stored solely in your browser's LocalStorage. All fetch requests are sent directly from your browser to your specified Ollama API."
+      },
+      {
+        "id": "cloud-size-display",
+        "q": "Why do some cloud models show 'Cloud' as their size?",
+        "a": "For remote API models (such as GPT-4o or third-party API proxies), the actual model weights are hosted in remote cloud clusters and do not occupy local hardware disk space or VRAM, so the system independently categorizes and labels them as Cloud API models."
+      }
+    ]
   },
   "footer": {
     "tagline": "A remote Ollama management dashboard and physics-based overclock estimation system designed for LLM players.",

@@ -127,22 +127,28 @@
   "faq": {
     "title": "Preguntas Frecuentes (FAQ)",
     "subtitle": "Respuestas clave sobre gestión de modelos, cálculo de VRAM y privacidad",
-    "item1": {
-      "q": "¿Qué sucede cuando la VRAM se desborda en la RAM del sistema?",
-      "a": "Cuando el peso combinado del modelo LLM y la KV Cache exceden la capacidad de VRAM dedicada de la GPU, Ollama descarga las capas restantes en la RAM del sistema a través del bus PCIe. Dado que el ancho de banda de DDR4/DDR5 (~40-80 GB/s) es muy inferior al de la VRAM dedicada de la GPU (~500-1000 GB/s), esto provoca una caída abrupta de la velocidad de inferencia (Tokens/s), que típicamente disminuye entre un 80% y un 95%."
-    },
-    "item2": {
-      "q": "¿Cómo calcula el sistema con precisión los requisitos de KV Cache para diferentes longitudes de contexto?",
-      "a": "Este tablero incluye un modelo de estimación de la física de inferencia de LLM integrado. La fórmula tiene en cuenta el tamaño de los parámetros del modelo (capas ocultas estimadas de la red), la dimensión de incrustación y la relación de compresión KV de 1/8 de Grouped-Query Attention (GQA), prediciendo dinámicamente la VRAM adicional consumida por cada 1.024 Tokens de extensión de contexto."
-    },
-    "item3": {
-      "q": "¿Se envían la configuración de conexión y las claves API a servidores de terceros?",
-      "a": "Nunca. Esta es una aplicación web 100% frontend puro. Todas las configuraciones de API, encabezados personalizados y ajustes de parámetros de hardware se almacenan exclusivamente en el LocalStorage de tu navegador. Todas las solicitudes de fetch se envían directamente desde tu navegador a la API de Ollama especificada."
-    },
-    "item4": {
-      "q": "¿Por qué algunos modelos en la nube muestran 'Cloud' como su tamaño?",
-      "a": "Para los modelos de API remota (como GPT-4o o proxies de API de terceros), los pesos reales del modelo están alojados en clústeres en la nube remotos y no ocupan espacio en el disco duro ni VRAM locales, por lo que el sistema los categoriza y etiqueta independientemente como modelos de API en la nube."
-    }
+    "items": [
+      {
+        "id": "vram-overflow",
+        "q": "¿Qué sucede cuando la VRAM se desborda en la RAM del sistema?",
+        "a": "Cuando el peso combinado del modelo LLM y la KV Cache exceden la capacidad de VRAM dedicada de la GPU, Ollama descarga las capas restantes en la RAM del sistema a través del bus PCIe. Dado que el ancho de banda de DDR4/DDR5 (~40-80 GB/s) es muy inferior al de la VRAM dedicada de la GPU (~500-1000 GB/s), esto provoca una caída abrupta de la velocidad de inferencia (Tokens/s), que típicamente disminuye entre un 80% y un 95%."
+      },
+      {
+        "id": "kv-cache-calculation",
+        "q": "¿Cómo calcula el sistema con precisión los requisitos de KV Cache para diferentes longitudes de contexto?",
+        "a": "Este tablero incluye un modelo de estimación de la física de inferencia de LLM integrado. La fórmula tiene en cuenta el tamaño de los parámetros del modelo (capas ocultas estimadas de la red), la dimensión de incrustación y la relación de compresión KV de 1/8 de Grouped-Query Attention (GQA), prediciendo dinámicamente la VRAM adicional consumida por cada 1.024 Tokens de extensión de contexto."
+      },
+      {
+        "id": "privacy-keys",
+        "q": "¿Se envían la configuración de conexión y las claves API a servidores de terceros?",
+        "a": "Nunca. Esta es una aplicación web 100% frontend puro. Todas las configuraciones de API, encabezados personalizados y ajustes de parámetros de hardware se almacenan exclusivamente en el LocalStorage de tu navegador. Todas las solicitudes de fetch se envían directamente desde tu navegador a la API de Ollama especificada."
+      },
+      {
+        "id": "cloud-size-display",
+        "q": "¿Por qué algunos modelos en la nube muestran 'Cloud' como su tamaño?",
+        "a": "Para los modelos de API remota (como GPT-4o o proxies de API de terceros), los pesos reales del modelo están alojados en clústeres en la nube remotos y no ocupan espacio en el disco duro ni VRAM locales, por lo que el sistema los categoriza y etiqueta independientemente como modelos de API en la nube."
+      }
+    ]
   },
   "footer": {
     "tagline": "Un tablero de gestión remota de Ollama y sistema de estimación de overclock basado en física, diseñado para jugadores de LLM.",

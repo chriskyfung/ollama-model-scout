@@ -4,22 +4,21 @@ import { useTranslation } from "react-i18next";
 /**
  * FAQ accordion.
  *
- * Reads from `FAQ_ITEMS` by default, but accepts an override `items` prop so
- * the i18n layer can later supply localized question/answer objects without
- * touching `data/models.js`.
+ * Items are read from the locale JSON (`faq.items` — an array of
+ * { id, q, a } objects) with `returnObjects: true`, matching the pattern
+ * used for `features.items` in App.jsx. The `id` field provides stable DOM
+ * identifiers (faq-panel-<id> / aria-controls) across locales; the `openIndex`
+ * state is positional and managed by the parent (`App` via `onToggle`).
  */
 export default function FaqSection({
   openIndex,
   onToggle,
 }) {
   const { t } = useTranslation();
-  // Build FAQ items dynamically from locale JSON.
-  const items = [
-    { id: "vram-overflow", q: t("faq.item1.q"), a: t("faq.item1.a") },
-    { id: "kv-cache-calculation", q: t("faq.item2.q"), a: t("faq.item2.a") },
-    { id: "privacy-keys", q: t("faq.item3.q"), a: t("faq.item3.a") },
-    { id: "cloud-size-display", q: t("faq.item4.q"), a: t("faq.item4.a") },
-  ];
+  // Guard against a malformed/missing locale entry so the section still
+  // renders (just without items) instead of crashing.
+  const items = t("faq.items", { returnObjects: true });
+  const faqItems = Array.isArray(items) ? items : [];
   return (
     <section id="faq" className="scroll-mt-20 pt-6">
       <div className="text-center space-y-2 mb-8">
@@ -32,11 +31,10 @@ export default function FaqSection({
       </div>
 
       <div className="max-w-3xl mx-auto space-y-3">
-        {items.map((item, index) => {
+        {faqItems.map((item, index) => {
           const isOpen = openIndex === index;
-          // Defensive: FAQ_ITEMS entries are expected to carry a stable `id`
-          // (enforced by tests/models.test.js), but guard against undefined/empty
-          // ids to avoid duplicate or invalid DOM identifiers.
+          // Defensive: locale entries carry a stable `id`, but guard against
+          // undefined/empty ids to avoid duplicate or invalid DOM identifiers.
           const itemId = item.id || `faq-${index}`;
           return (
             <div
