@@ -71,14 +71,30 @@ describe("locale array contracts", () => {
   // Shape guard for FEATURE_STYLES: the module has two consumers (App.jsx
   // rendering, this test's length assertion), and a malformed entry would
   // otherwise only surface as a silent visual bug in the UI.
+  //
+  // The expected key set is derived as the UNION of all entries' keys, so the
+  // test is self-updating when the shape evolves AND catches partial edits
+  // (e.g. a 5th "ring" key added to some entries but not all). Derived keys
+  // cannot catch uniform decay (every entry losing the same key) — that is
+  // inherent to any data-derived schema.
   it("every FEATURE_STYLES entry has an icon element and complete classes", () => {
     expect(FEATURE_STYLES.length).toBeGreaterThan(0);
+
+    const expectedKeys = new Set(
+      FEATURE_STYLES.flatMap((s) => Object.keys(s)),
+    );
+    // "icon" must exist in the schema; everything else is a styling class.
+    expect(expectedKeys.has("icon")).toBe(true);
+
     FEATURE_STYLES.forEach((s) => {
+      // Uniform shape: every entry carries exactly the union of keys.
+      expect(new Set(Object.keys(s))).toEqual(expectedKeys);
       expect(isValidElement(s.icon)).toBe(true);
-      ["hover", "bg", "border", "text"].forEach((key) => {
+      for (const key of expectedKeys) {
+        if (key === "icon") continue;
         expect(typeof s[key]).toBe("string");
         expect(s[key].length).toBeGreaterThan(0);
-      });
+      }
     });
   });
 
