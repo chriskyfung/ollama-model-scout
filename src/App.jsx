@@ -57,6 +57,11 @@ import { useLocalStorage } from "@/hooks/useLocalStorage";
  * added, the palette simply cycles (i % FEATURE_STYLES.length) instead of
  * every extra card cloning the first style. Add a new entry here when you
  * want a distinct look for the new card.
+ *
+ * NOTE: the icon JSX elements are created once at module load and their
+ * single element references are reused across every render and card. This
+ * is intentional and safe — React elements are immutable descriptors — and
+ * it saves re-allocating them on each render.
  */
 const FEATURE_STYLES = [
   { icon: <Sliders className="w-5 h-5" />, hover: "hover:border-cyan-500/40", bg: "bg-cyan-500/10", border: "border-cyan-500/20", text: "text-cyan-400" },
