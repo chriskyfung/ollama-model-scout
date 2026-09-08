@@ -71,7 +71,7 @@ export default function ApiSettingsPanel({
               setApiConfig({ ...apiConfig, headers: e.target.value })
             }
             rows={3}
-            className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm font-mono text-slate-200 focus:border-cyan-500 outline-none resize-y min-h-[80px]"
+            className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2 text-sm font-mono text-slate-200 focus:border-cyan-500 outline-none resize-y min-h-20"
             placeholder={`{\n  "X-Custom-Header": "Value"\n}`}
           />
         </div>
@@ -142,7 +142,7 @@ export default function ApiSettingsPanel({
       <div className="md:col-span-3 flex justify-end pt-2 border-t border-slate-800">
         <button
           onClick={onApply}
-          className="px-6 py-2 bg-gradient-to-r from-cyan-600 to-emerald-600 hover:from-cyan-500 hover:to-emerald-500 text-white rounded-xl text-sm font-semibold transition-all shadow-lg shadow-cyan-950/50"
+          className="px-6 py-2 bg-linear-to-r from-cyan-600 to-emerald-600 hover:from-cyan-500 hover:to-emerald-500 text-white rounded-xl text-sm font-semibold transition-all shadow-lg shadow-cyan-950/50"
         >
           {t("apiSettings.apply")}
         </button>

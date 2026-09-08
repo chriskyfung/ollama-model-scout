@@ -171,7 +171,7 @@ export default function LanguageSwitcher() {
           role="menu"
           aria-orientation="vertical"
           aria-label={t("langSwitcher.label")}
-          className="fixed w-44 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl z-[9999] overflow-y-auto max-h-72"
+          className="fixed w-44 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl z-9999 overflow-y-auto max-h-72"
           style={{
             top: menuPosition.top,
             right: menuPosition.right,

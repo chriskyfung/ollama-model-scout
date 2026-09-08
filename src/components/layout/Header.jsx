@@ -34,7 +34,7 @@ export default function Header({
       <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between gap-4">
         {/* Logo 與狀態指示燈 */}
         <div className="flex items-center gap-3">
-          <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500/20 to-emerald-500/20 border border-cyan-500/30">
+          <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-linear-to-tr from-cyan-500/20 to-emerald-500/20 border border-cyan-500/30">
             <SquareActivity className="w-5 h-5 text-cyan-400" />
             <span
               className={`absolute -top-0.5 -right-0.5 w-2.5 h-2.5 rounded-full ring-2 ring-slate-950 ${
@@ -48,7 +48,7 @@ export default function Header({
           </div>
 
           <div className="flex items-baseline gap-2">
-            <span className="font-extrabold text-lg md:text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400">
+            <span className="font-extrabold text-lg md:text-xl tracking-tight bg-clip-text text-transparent bg-linear-to-r from-cyan-400 via-teal-300 to-emerald-400">
               Ollama Model Scout
             </span>
             <span className="hidden sm:inline-block px-1.5 py-0.5 text-[10px] font-mono bg-slate-800 border border-slate-700 text-slate-400 rounded-md">
