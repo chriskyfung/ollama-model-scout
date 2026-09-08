@@ -49,6 +49,22 @@ import {
 import { calculatePerformance } from "@/lib/perf";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 
+/**
+ * Per-card styling for the `features.items` grid, applied positionally.
+ *
+ * COUPLING: the locale JSON `features.items` array and this array are both
+ * positional. There are currently 4 items / 4 styles; if a 5th item is ever
+ * added, the palette simply cycles (i % FEATURE_STYLES.length) instead of
+ * every extra card cloning the first style. Add a new entry here when you
+ * want a distinct look for the new card.
+ */
+const FEATURE_STYLES = [
+  { icon: <Sliders className="w-5 h-5" />, hover: "hover:border-cyan-500/40", bg: "bg-cyan-500/10", border: "border-cyan-500/20", text: "text-cyan-400" },
+  { icon: <Layers className="w-5 h-5" />, hover: "hover:border-emerald-500/40", bg: "bg-emerald-500/10", border: "border-emerald-500/20", text: "text-emerald-400" },
+  { icon: <Terminal className="w-5 h-5" />, hover: "hover:border-indigo-500/40", bg: "bg-indigo-500/10", border: "border-indigo-500/20", text: "text-indigo-400" },
+  { icon: <ShieldCheck className="w-5 h-5" />, hover: "hover:border-teal-500/40", bg: "bg-teal-500/10", border: "border-teal-500/20", text: "text-teal-400" },
+];
+
 export default function App() {
   const { t } = useTranslation();
   // --- State: API connection settings & status ---
@@ -1226,13 +1242,7 @@ export default function App() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {t("features.items", { returnObjects: true }).map((item, i) => {
-                const styles = [
-                  { icon: <Sliders className="w-5 h-5" />, hover: "hover:border-cyan-500/40", bg: "bg-cyan-500/10", border: "border-cyan-500/20", text: "text-cyan-400" },
-                  { icon: <Layers className="w-5 h-5" />, hover: "hover:border-emerald-500/40", bg: "bg-emerald-500/10", border: "border-emerald-500/20", text: "text-emerald-400" },
-                  { icon: <Terminal className="w-5 h-5" />, hover: "hover:border-indigo-500/40", bg: "bg-indigo-500/10", border: "border-indigo-500/20", text: "text-indigo-400" },
-                  { icon: <ShieldCheck className="w-5 h-5" />, hover: "hover:border-teal-500/40", bg: "bg-teal-500/10", border: "border-teal-500/20", text: "text-teal-400" },
-                ];
-                const s = styles[i] || styles[0];
+                const s = FEATURE_STYLES[i % FEATURE_STYLES.length];
                 return (
                   <div key={i} className={`bg-slate-900/60 border border-slate-800 ${s.hover} transition-all rounded-2xl p-5 space-y-3 group`}>
                     <div className={`w-10 h-10 rounded-xl ${s.bg} border ${s.border} flex items-center justify-center ${s.text} group-hover:scale-110 transition-transform`}>
