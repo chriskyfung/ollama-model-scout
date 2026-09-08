@@ -17,6 +17,19 @@ import { useModelTesting } from "@/hooks/useModelTesting";
 import { useOverclockPlanner } from "@/hooks/useOverclockPlanner";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 
+/**
+ * App is now a pure composition/orchestrator (down from a 1255-line monolith):
+ *  - data layer:        hooks/useModels      (+ lib, fetch/fallback pipeline)
+ *  - filters/sort:      hooks/useModelFilters (+ lib/filtering, lib/models)
+ *  - batch testing:     hooks/useModelTesting (+ lib/batchTest)
+ *  - overclock planner: hooks/useOverclockPlanner
+ *  - sections:          components/dashboard/*
+ *
+ * All behavior (mount-time fetch with mock fallback, resetFilters-after-fetch
+ * ordering, filter/sort semantics, sync-setState effects) is preserved
+ * verbatim from the previous monolith; pure logic moved to lib/ and is
+ * unit-tested in src/lib/__tests__/.
+ */
 export default function App() {
   const [showApiSettings, setShowApiSettings] = useState(false);
   const [showColumnMenu, setShowColumnMenu] = useState(false);
