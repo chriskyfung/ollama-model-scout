@@ -1,4 +1,4 @@
-import { useState, useEffect, useLayoutEffect, useRef } from "react";
+import { useState, useEffect, useLayoutEffect, useRef, useCallback } from "react";
 import { Globe, Check, ChevronDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import i18n from "@/i18n";
@@ -40,7 +40,10 @@ export default function LanguageSwitcher() {
   // viewport (never cropped by the top/bottom window border). Measured in
   // a layout effect (not during render) and re-measured on scroll/resize
   // while open so the menu never ends up in a stale location.
-  const measureMenuPosition = () => {
+  // Stable across renders: only reads refs (stable identity) and calls the
+  // useState setter (also stable), so [] deps are correct and the identity
+  // captured by the layout-effect listeners never goes stale.
+  const measureMenuPosition = useCallback(() => {
     const rect = buttonRef.current?.getBoundingClientRect();
     if (!rect) return;
     const vw = window.innerWidth;
@@ -73,7 +76,7 @@ export default function LanguageSwitcher() {
     );
 
     setMenuPosition({ top, right });
-  };
+  }, []);
 
   useLayoutEffect(() => {
     if (!open) return;
@@ -84,7 +87,7 @@ export default function LanguageSwitcher() {
       window.removeEventListener("resize", measureMenuPosition);
       window.removeEventListener("scroll", measureMenuPosition, true);
     };
-  }, [open]);
+  }, [open, measureMenuPosition]);
 
 
   useEffect(() => {
