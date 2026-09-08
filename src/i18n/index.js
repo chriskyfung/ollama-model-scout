@@ -4,7 +4,7 @@
  * Design decisions (per project i18n plan):
  *  - Pure-frontend / static hosting: locale JSON is imported at build time so
  *    the bundle includes every language up-front. No `i18next-http-backend`.
- *  - zh-TW is the source-of-truth / fallbackLng (every other file is a delta
+ *  - en is the source-of-truth / fallbackLng (every other file is a delta
  *    against it).
  *  - Browser language is auto-detected via i18next-browser-languagedetector;
  *    the user's manual choice is persisted to localStorage under the key

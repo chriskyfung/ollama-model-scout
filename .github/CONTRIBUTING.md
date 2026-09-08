@@ -50,7 +50,7 @@ We will review your pull request as soon as possible. Thank you for your contrib
 
 ## Internationalization (i18n) & Translation
 
-The UI supports 8 languages: **zh-TW** (primary/fallback), **en**, **zh-CN**, **ja**, **ko**, **es**, **fr**, **de**.
+The UI supports 8 languages: **en** (primary/fallback), **zh-TW**, **zh-CN**, **ja**, **ko**, **es**, **fr**, **de**.
 
 ### How translations work
 
