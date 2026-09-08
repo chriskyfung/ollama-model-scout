@@ -47,6 +47,7 @@ import {
 } from "@/lib/format";
 import { calculatePerformance } from "@/lib/perf";
 import { FEATURE_STYLES } from "@/lib/featureStyles";
+import { useModelFilters } from "@/hooks/useModelFilters";
 import { useModelTesting } from "@/hooks/useModelTesting";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 
@@ -58,153 +59,12 @@ export default function App() {
     DEFAULT_API_CONFIG,
   );
   const [showApiSettings, setShowApiSettings] = useState(false);
-  const [apiStatus, setApiStatus] = useState({
-    state: "idle",
-    message: "",
-    isFallback: false,
-  });
-  const [allowMockFallback, setAllowMockFallback] = useState(true);
-
-  // --- State: FAQ expansion ---
-  const [openFaq, setOpenFaq] = useState(0);
-
-  // --- State: data & filters ---
-  const [models, setModels] = useState(MOCK_MODELS);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filters, setFilters] = useState(DEFAULT_FILTER_STATE);
-
-  const resetFilters = () => {
-    setFilters(DEFAULT_FILTER_STATE);
-  };
-
-  // --- State: hardware specs (VRAM / RAM) ---
-  const [hardware, setHardware] = useLocalStorage(
-    STORAGE_KEYS.hardware,
-    DEFAULT_HARDWARE,
-  );
-
-  // --- State: table UI & column settings ---
-  const [sortConfig, setSortConfig] = useLocalStorage(
-    STORAGE_KEYS.sortConfig,
-    DEFAULT_SORT_CONFIG,
-  );
   const [showColumnMenu, setShowColumnMenu] = useState(false);
-  const [columns, setColumns] = useLocalStorage(
-    STORAGE_KEYS.columns,
-    DEFAULT_COLUMNS,
-  );
+  const [openFaq, setOpenFaq] = useState(0);
 
   // --- State: Tactical Command Center panel ---
   const [selectedModel, setSelectedModel] = useState(null);
   const [contextSlider, setContextSlider] = useState(8192);
-
-  const availableCapabilities = useMemo(() => {
-    return Array.from(new Set(models.flatMap((m) => m.capabilities || [])));
-  }, [models]);
-
-  const availableFamilies = useMemo(() => {
-    return Array.from(
-      new Set(models.map((m) => m.details?.family).filter(Boolean)),
-    ).sort();
-  }, [models]);
-
-  // Quantization 全部轉大寫 (依據規格需求)
-  const availableQuantizations = useMemo(() => {
-    return Array.from(
-      new Set(
-        models
-          .map((m) => m.details?.quantization_level?.toUpperCase())
-          .filter(Boolean),
-      ),
-    ).sort();
-  }, [models]);
-
-  const fetchModels = async (overrideFallback) => {
-    const fallback =
-      typeof overrideFallback === "boolean"
-        ? overrideFallback
-        : allowMockFallback;
-    setApiStatus({
-      state: "loading",
-      message: t("toast.connecting"),
-      isFallback: false,
-    });
-    try {
-      let customHeaders = {};
-      if (apiConfig.headers) {
-        try {
-          customHeaders = JSON.parse(apiConfig.headers);
-        } catch {
-          throw new Error(t("toast.headersError"));
-        }
-      }
-
-      const headers = {
-        "Content-Type": "application/json",
-        ...(apiConfig.key ? { Authorization: `Bearer ${apiConfig.key}` } : {}),
-        ...customHeaders,
-      };
-
-      const res = await fetch(`${apiConfig.url}/api/tags`, {
-        method: "GET",
-        headers,
-      });
-
-      if (!res.ok) throw new Error(t("toast.httpError", { status: res.status }));
-
-      const data = await res.json();
-      if (data && Array.isArray(data.models)) {
-        setModels(data.models);
-        setApiStatus({
-          state: "success",
-          message: t("toast.success", { count: data.models.length }),
-          isFallback: false,
-        });
-      } else {
-        throw new Error(t("toast.responseError"));
-      }
-    } catch (err) {
-      if (fallback) {
-        setModels(MOCK_MODELS);
-        setApiStatus({
-          state: "error",
-          message: t("toast.fallback", { error: err.message }),
-          isFallback: true,
-        });
-      } else {
-        setModels([]);
-        setApiStatus({
-          state: "error",
-          message: t("toast.failed", { error: err.message }),
-          isFallback: false,
-        });
-      }
-    } finally {
-      resetFilters();
-    }
-  };
-
-  // fetchModels orchestrates API + mock-fallback and writes several slices of
-  // state at once; calling it here on mount is intentional app behavior.
-  // TODO(architectural): replace with React Query / an init flag when the data
-  //   layer is promoted out of App.
-  useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- fetchModels is the data-sync boundary on mount
-    fetchModels();
-  }, []);
-
-  // When the user selects a model, reset the context slider to a balanced
-  // default. Intentional synchronous setState inside a change-driven effect.
-  useEffect(() => {
-    if (selectedModel) {
-      const defaultCtx = Math.min(
-        8192,
-        selectedModel.details?.context_length || 8192,
-      );
-      // eslint-disable-next-line react-hooks/set-state-in-effect -- derived default sync
-      setContextSlider(defaultCtx);
-    }
-  }, [selectedModel]);
 
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
@@ -218,125 +78,15 @@ export default function App() {
   //     at click time, avoiding a circular dependency) ---
   const testingApi = useModelTesting();
 
-  const filteredModels = useMemo(() => {
-    return models
-      .filter((m) => {
-        // 1. 全域搜尋
-        const matchesSearch = JSON.stringify(m)
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase());
+  // --- Filters / sort / columns ---
+  const filtersApi = useModelFilters(models, testingApi.testResults);
 
-        // 2. 模型類型 (Local / Remote) 檢測 remote_model 欄位
-        const isRemote =
-          m.size === "remote" ||
-          m.details?.format === "api" ||
-          !!m.remote_model;
-        const matchesType =
-          filters.type === "all"
-            ? true
-            : filters.type === "remote"
-              ? isRemote
-              : !isRemote;
-
-        // 3. Capabilities
-        const matchesCap =
-          filters.capabilities.length === 0 ||
-          filters.capabilities.every((c) => m.capabilities?.includes(c));
-
-        // 4. Family
-        const matchesFam =
-          filters.families.length === 0 ||
-          filters.families.includes(m.details?.family);
-
-        // 5. Quantization (全部比對大寫)
-        const modelQuant = m.details?.quantization_level?.toUpperCase();
-        const matchesQuant =
-          filters.quantizations.length === 0 ||
-          filters.quantizations.includes(modelQuant);
-
-        // 6. Test Status (API Connection)
-        let matchesTest = true;
-        if (filters.testStatus !== "all") {
-          const res = testResults[m.name];
-          if (filters.testStatus === "success")
-            matchesTest = res?.status === "ok";
-          else if (filters.testStatus === "error")
-            matchesTest = res?.status === "error";
-          else if (filters.testStatus === "untested") matchesTest = !res;
-        }
-
-        return (
-          matchesSearch &&
-          matchesType &&
-          matchesCap &&
-          matchesFam &&
-          matchesQuant &&
-          matchesTest
-        );
-      })
-      .sort((a, b) => {
-        let valA, valB;
-
-        // 支援 modified_at 排序
-        if (sortConfig.key === "modified_at") {
-          valA = new Date(a.modified_at || 0).getTime();
-          valB = new Date(b.modified_at || 0).getTime();
-        } else if (sortConfig.key === "size") {
-          valA = a.size === "remote" ? -1 : a.size || 0;
-          valB = b.size === "remote" ? -1 : b.size || 0;
-        } else if (sortConfig.key === "status") {
-          // 狀態排序權重: ok > error > untested (0)
-          const weight = { ok: 2, error: 1 };
-          valA = weight[testResults[a.name]?.status] || 0;
-          valB = weight[testResults[b.name]?.status] || 0;
-        } else if (
-          [
-            "family",
-            "quantization_level",
-            "parameter_size",
-            "context_length",
-          ].includes(sortConfig.key)
-        ) {
-          valA = a.details?.[sortConfig.key] || "";
-          valB = b.details?.[sortConfig.key] || "";
-          if (sortConfig.key === "quantization_level") {
-            valA = String(valA).toUpperCase();
-            valB = String(valB).toUpperCase();
-          }
-        } else {
-          valA = a[sortConfig.key] || "";
-          valB = b[sortConfig.key] || "";
-        }
-
-        if (valA < valB) return sortConfig.direction === "asc" ? -1 : 1;
-        if (valA > valB) return sortConfig.direction === "asc" ? 1 : -1;
-        return 0;
-      });
-  }, [models, searchQuery, filters, sortConfig, testResults]);
-
-  // 本地模型總容量計算
-  const totalLocalSize = useMemo(() => {
-    return filteredModels.reduce(
-      (sum, m) => sum + (typeof m.size === "number" ? m.size : 0),
-      0,
-    );
-  }, [filteredModels]);
-
-  const toggleFilter = (type, value) => {
-    setFilters((prev) => ({
-      ...prev,
-      [type]: prev[type].includes(value)
-        ? prev[type].filter((v) => v !== value)
-        : [...prev[type], value],
-    }));
-  };
-
-  const sortTable = (key) => {
-    setSortConfig((prev) => ({
-      key,
-      direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
-    }));
-  };
+  // --- Hardware specs (VRAM / RAM) — stays in App: shared by the settings
+  //     panel (write) and the overclock planner (read) ---
+  const [hardware, setHardware] = useLocalStorage(
+    STORAGE_KEYS.hardware,
+    DEFAULT_HARDWARE,
+  );
 
   const chartData = useMemo(() => {
     if (!selectedModel) return [];
