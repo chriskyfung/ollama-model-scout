@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { isValidElement } from "react";
 import { FEATURE_STYLES } from "@/lib/featureStyles";
 import en from "@/i18n/locales/en.json";
 import zhTW from "@/i18n/locales/zh-TW.json";
@@ -66,6 +67,20 @@ describe("locale array contracts", () => {
   // No code-side constant exists for this — FaqSection renders any count.
   // It is an editorial contract: every locale ships exactly 4 FAQs.
   const FAQ_ITEMS_COUNT = 4;
+
+  // Shape guard for FEATURE_STYLES: the module has two consumers (App.jsx
+  // rendering, this test's length assertion), and a malformed entry would
+  // otherwise only surface as a silent visual bug in the UI.
+  it("every FEATURE_STYLES entry has an icon element and complete classes", () => {
+    expect(FEATURE_STYLES.length).toBeGreaterThan(0);
+    FEATURE_STYLES.forEach((s) => {
+      expect(isValidElement(s.icon)).toBe(true);
+      ["hover", "bg", "border", "text"].forEach((key) => {
+        expect(typeof s[key]).toBe("string");
+        expect(s[key].length).toBeGreaterThan(0);
+      });
+    });
+  });
 
   const isNonEmptyString = (v) => typeof v === "string" && v.length > 0;
 
