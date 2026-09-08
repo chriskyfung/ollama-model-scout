@@ -16,6 +16,13 @@ export function useOverclockPlanner(hardware) {
 
   // When the user selects a model, reset the context slider to a balanced
   // default. Intentional synchronous setState inside a change-driven effect.
+  //
+  // Edge cases (both intentional):
+  // - Deselect (null) leaves the slider at its last value; it resets on the
+  //   next selection since null → model is always a reference change..
+  // - Re-selecting the *same* model object while already selected is a no-op
+  //   (Object.is bail-out): no effect run, so a user-dragged slider value is
+  //   preserved rather than snapped back to the default.
   useEffect(() => {
     if (selectedModel) {
       const defaultCtx = Math.min(
