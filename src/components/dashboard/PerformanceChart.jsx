@@ -1,3 +1,4 @@
+import { useId } from "react";
 import { useTranslation } from "react-i18next";
 import {
   AreaChart,
@@ -17,6 +18,9 @@ import {
  */
 export default function PerformanceChart({ chartData, contextSlider }) {
   const { t } = useTranslation();
+  // Stable per-instance prefix so SVG gradient ids stay unique across
+  // multiple chart instances in the same document (avoids url(#id) collision).
+  const uid = useId();
   return (
     <div className="h-56 w-full">
       <ResponsiveContainer width="100%" height="100%">
@@ -26,7 +30,7 @@ export default function PerformanceChart({ chartData, contextSlider }) {
         >
           <defs>
             <linearGradient
-              id="colorMemory"
+              id={`${uid}-colorMemory`}
               x1="0"
               y1="0"
               x2="0"
@@ -44,7 +48,7 @@ export default function PerformanceChart({ chartData, contextSlider }) {
               />
             </linearGradient>
             <linearGradient
-              id="colorSpeed"
+              id={`${uid}-colorSpeed`}
               x1="0"
               y1="0"
               x2="0"
@@ -139,7 +143,7 @@ export default function PerformanceChart({ chartData, contextSlider }) {
             stroke="#10b981"
             strokeWidth={2}
             fillOpacity={1}
-            fill="url(#colorMemory)"
+            fill={`url(#${uid}-colorMemory)`}
           />
           <Area
             yAxisId="right"
@@ -149,7 +153,7 @@ export default function PerformanceChart({ chartData, contextSlider }) {
             stroke="#3b82f6"
             strokeWidth={2}
             fillOpacity={1}
-            fill="url(#colorSpeed)"
+            fill={`url(#${uid}-colorSpeed)`}
           />
         </AreaChart>
       </ResponsiveContainer>
