@@ -1,4 +1,5 @@
 import { describe, it, expect } from "vitest";
+import { FEATURE_STYLES } from "@/lib/featureStyles";
 import en from "@/i18n/locales/en.json";
 import zhTW from "@/i18n/locales/zh-TW.json";
 import zhCN from "@/i18n/locales/zh-CN.json";
@@ -59,8 +60,12 @@ describe("locale array contracts", () => {
   // Arrays are opaque leaves to the parity test above, so the positional
   // contracts below are enforced here instead.
 
-  const FEATURE_ITEMS_COUNT = 4; // must match FEATURE_STYLES.length in src/App.jsx
-  const FAQ_ITEMS_COUNT = 4; // ids are used as DOM ids in FaqSection (a11y tests rely on them)
+  // Derived from the single source of truth: editing FEATURE_STYLES in
+  // src/lib/featureStyles.jsx automatically updates this expectation.
+  const FEATURE_ITEMS_COUNT = FEATURE_STYLES.length;
+  // No code-side constant exists for this — FaqSection renders any count.
+  // It is an editorial contract: every locale ships exactly 4 FAQs.
+  const FAQ_ITEMS_COUNT = 4;
 
   const isNonEmptyString = (v) => typeof v === "string" && v.length > 0;
 

@@ -22,8 +22,6 @@ import {
   XCircle,
   Sliders,
   Terminal,
-  ShieldCheck,
-  Layers,
   Sparkles,
 } from "lucide-react";
 import Footer from "@/components/layout/Footer";
@@ -47,28 +45,8 @@ import {
   formatParameterSize,
 } from "@/lib/format";
 import { calculatePerformance } from "@/lib/perf";
+import { FEATURE_STYLES } from "@/lib/featureStyles";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
-
-/**
- * Per-card styling for the `features.items` grid, applied positionally.
- *
- * COUPLING: the locale JSON `features.items` array and this array are both
- * positional. There are currently 4 items / 4 styles; if a 5th item is ever
- * added, the palette simply cycles (i % FEATURE_STYLES.length) instead of
- * every extra card cloning the first style. Add a new entry here when you
- * want a distinct look for the new card.
- *
- * NOTE: the icon JSX elements are created once at module load and their
- * single element references are reused across every render and card. This
- * is intentional and safe — React elements are immutable descriptors — and
- * it saves re-allocating them on each render.
- */
-const FEATURE_STYLES = [
-  { icon: <Sliders className="w-5 h-5" />, hover: "hover:border-cyan-500/40", bg: "bg-cyan-500/10", border: "border-cyan-500/20", text: "text-cyan-400" },
-  { icon: <Layers className="w-5 h-5" />, hover: "hover:border-emerald-500/40", bg: "bg-emerald-500/10", border: "border-emerald-500/20", text: "text-emerald-400" },
-  { icon: <Terminal className="w-5 h-5" />, hover: "hover:border-indigo-500/40", bg: "bg-indigo-500/10", border: "border-indigo-500/20", text: "text-indigo-400" },
-  { icon: <ShieldCheck className="w-5 h-5" />, hover: "hover:border-teal-500/40", bg: "bg-teal-500/10", border: "border-teal-500/20", text: "text-teal-400" },
-];
 
 export default function App() {
   const { t } = useTranslation();
