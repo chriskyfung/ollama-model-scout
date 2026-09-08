@@ -30,6 +30,9 @@ import FaqSection from "@/components/dashboard/FaqSection";
 import TestLogModal from "@/components/dashboard/TestLogModal";
 import ConnectionBanner from "@/components/dashboard/ConnectionBanner";
 import ApiSettingsPanel from "@/components/dashboard/ApiSettingsPanel";
+import ModelSearchToolbar from "@/components/dashboard/ModelSearchToolbar";
+import FilterButtonBar from "@/components/dashboard/FilterButtonBar";
+import ModelsTable from "@/components/dashboard/ModelsTable";
 import FeaturesSection from "@/components/dashboard/FeaturesSection";
 import { useModels } from "@/hooks/useModels";
 import {
@@ -167,420 +170,49 @@ export default function App() {
             hardware={hardware}
             setHardware={setHardware}
             onApply={fetchModels}
-            />
+          />
 
           {/* === 2. 模型搜尋與診斷矩陣區塊 (`#models`) === */}
           <section id="models" className="scroll-mt-20">
             <div className="bg-slate-900 border border-slate-800 rounded-2xl p-5 mb-6 space-y-4 shadow-xl">
-              <div className="flex flex-col md:flex-row gap-4">
-                <div className="relative flex-1">
-                  <Search className="absolute left-3.5 top-3 w-4 h-4 text-slate-500" />
-                  <input
-                    type="text"
-                    placeholder={t("models.searchPlaceholder")}
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-sm text-slate-200 focus:border-cyan-500 outline-none transition-colors"
-                  />
-                </div>
-
-                {/* 欄位顯示/隱藏選單 */}
-                <div className="relative shrink-0">
-                  <button
-                    onClick={() => setShowColumnMenu(!showColumnMenu)}
-                    className="w-full md:w-auto flex items-center justify-between gap-2 px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 text-sm font-medium text-slate-300"
-                  >
-                    <Filter className="w-4 h-4 text-cyan-400" />
-                    <span>{t("models.columnCustomize")}</span>
-                    <ChevronDown className="w-3.5 h-3.5" />
-                  </button>
-                  {showColumnMenu && (
-                    <div className="absolute right-0 mt-2 w-52 bg-slate-900 border border-slate-700 rounded-xl shadow-2xl z-50 p-3 space-y-1">
-                      <div className="text-xs font-bold text-slate-400 px-2 pb-2 border-b border-slate-800">
-                        {t("models.columnToggleTitle")}
-                      </div>
-                      {Object.keys(columns).map((col) => (
-                        <label
-                          key={col}
-                          className="flex items-center gap-2.5 px-2 py-1.5 hover:bg-slate-800/80 rounded-lg cursor-pointer text-xs text-slate-300"
-                        >
-                          <input
-                            type="checkbox"
-                            checked={columns[col]}
-                            onChange={() =>
-                              setColumns((p) => ({ ...p, [col]: !p[col] }))
-                            }
-                            className="accent-cyan-500 rounded"
-                          />
-                          <span>
-                            {t(`models.tableHeaders.${col}`)}
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
+              <ModelSearchToolbar
+                searchQuery={filtersApi.searchQuery}
+                onSearchChange={filtersApi.setSearchQuery}
+                columns={filtersApi.columns}
+                onToggleColumn={(col) =>
+                  filtersApi.setColumns((p) => ({ ...p, [col]: !p[col] }))
+                }
+                open={showColumnMenu}
+                onOpenChange={setShowColumnMenu}
+              />
 
               {/* 多維度智慧動態篩選按鈕列 */}
-              <div className="flex flex-col space-y-3 pt-3 border-t border-slate-800/60 text-xs">
-                {/* 1. 類型 (Type) */}
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
-                    {t("models.filters.type")}
-                  </span>
-                  {["all", "local", "remote"].map((type) => (
-                    <button
-                      key={type}
-                      onClick={() => setFilters((p) => ({ ...p, type }))}
-                      className={`px-3 py-1 rounded-lg font-semibold transition-all border ${
-                        filters.type === type
-                          ? "bg-cyan-500/20 border-cyan-500 text-cyan-300 shadow-sm shadow-cyan-950"
-                          : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
-                      }`}
-                    >
-                      {t("models.filters.types." + type)}
-                    </button>
-                  ))}
-                </div>
-
-                {/* 2. 能力 (Capabilities) */}
-                {availableCapabilities.length > 0 && (
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
-                      {t("models.filters.caps")}
-                    </span>
-                    {availableCapabilities.map((c) => (
-                      <button
-                        key={c}
-                        onClick={() => toggleFilter("capabilities", c)}
-                        className={`px-3 py-1 rounded-lg border transition-all ${
-                          filters.capabilities.includes(c)
-                            ? "bg-indigo-500/20 border-indigo-500 text-indigo-300"
-                            : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
-                        }`}
-                      >
-                        {c}
-                      </button>
-                    ))}
-                  </div>
-                )}
-
-                {/* 3. 家族 (Family) */}
-                {availableFamilies.length > 0 && (
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
-                      {t("models.filters.family")}
-                    </span>
-                    {availableFamilies.map((f) => (
-                      <button
-                        key={f}
-                        onClick={() => toggleFilter("families", f)}
-                        className={`px-3 py-1 rounded-lg border transition-all ${
-                          filters.families.includes(f)
-                            ? "bg-teal-500/20 border-teal-500 text-teal-300"
-                            : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
-                        }`}
-                      >
-                        {f}
-                      </button>
-                    ))}
-                  </div>
-                )}
-
-                {/* 4. 量化 (Quantization - 全部大寫) */}
-                {availableQuantizations.length > 0 && (
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
-                      {t("models.filters.quant")}
-                    </span>
-                    {availableQuantizations.map((q) => (
-                      <button
-                        key={q}
-                        onClick={() => toggleFilter("quantizations", q)}
-                        className={`px-3 py-1 rounded-lg border transition-all ${
-                          filters.quantizations.includes(q)
-                            ? "bg-emerald-500/20 border-emerald-500 text-emerald-300"
-                            : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
-                        }`}
-                      >
-                        {q}
-                      </button>
-                    ))}
-                  </div>
-                )}
-
-                {/* 5. 測試狀態 (Test Status) */}
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="text-slate-500 font-bold uppercase w-16 shrink-0">
-                    {t("models.filters.status")}
-                  </span>
-                  {[
-                    { id: "all", label: t("models.filters.statuses.all") },
-                    { id: "success", label: t("models.filters.statuses.success") },
-                    { id: "error", label: t("models.filters.statuses.error") },
-                    { id: "untested", label: t("models.filters.statuses.untested") },
-                  ].map((st) => (
-                    <button
-                      key={st.id}
-                      onClick={() =>
-                        setFilters((p) => ({ ...p, testStatus: st.id }))
-                      }
-                      className={`px-3 py-1 rounded-lg font-semibold transition-all border ${
-                        filters.testStatus === st.id
-                          ? "bg-indigo-500/20 border-indigo-500 text-indigo-300 shadow-sm shadow-indigo-950"
-                          : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
-                      }`}
-                    >
-                      {st.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
+              <FilterButtonBar
+                filters={filtersApi.filters}
+                setFilters={filtersApi.setFilters}
+                toggleFilter={filtersApi.toggleFilter}
+                availableCapabilities={filtersApi.availableCapabilities}
+                availableFamilies={filtersApi.availableFamilies}
+                availableQuantizations={filtersApi.availableQuantizations}
+              />
             </div>
 
             {/* 模型列表數據表格 */}
-            <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl relative z-10">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs md:text-sm whitespace-nowrap">
-                  <thead className="bg-slate-950/80 border-b border-slate-800 text-slate-400 font-semibold select-none">
-                    <tr>
-                      {columns.name && (
-                        <th
-                          className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
-                          onClick={() => sortTable("name")}
-                        >
-                          {t("models.tableHeaders.name")}
-                        </th>
-                      )}
-                      {columns.family && (
-                        <th
-                          className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
-                          onClick={() => sortTable("family")}
-                        >
-                          {t("models.tableHeaders.family")}
-                        </th>
-                      )}
-                      {columns.parameterSize && (
-                        <th
-                          className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
-                          onClick={() => sortTable("parameter_size")}
-                        >
-                          {t("models.tableHeaders.parameterSize")}
-                        </th>
-                      )}
-                      {columns.quantization && (
-                        <th
-                          className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
-                          onClick={() => sortTable("quantization_level")}
-                        >
-                          {t("models.tableHeaders.quantization")}
-                        </th>
-                      )}
-                      {columns.contextLength && (
-                        <th
-                          className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
-                          onClick={() => sortTable("context_length")}
-                        >
-                          {t("models.tableHeaders.contextLength")}
-                        </th>
-                      )}
-                      {columns.size && (
-                        <th
-                          className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
-                          onClick={() => sortTable("size")}
-                        >
-                          {t("models.tableHeaders.size")}
-                        </th>
-                      )}
-                      {columns.status && (
-                        <th
-                          className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
-                          onClick={() => sortTable("status")}
-                        >
-                          {t("models.tableHeaders.status")}
-                        </th>
-                      )}
-                      {columns.capabilities && (
-                        <th className="p-4">{t("models.tableHeaders.capabilities")}</th>
-                      )}
-                      {columns.modifiedAt && (
-                        <th
-                          className="p-4 cursor-pointer hover:text-cyan-400 transition-colors"
-                          onClick={() => sortTable("modified_at")}
-                        >
-                          {t("models.tableHeaders.modifiedAt")}
-                        </th>
-                      )}
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-800/40">
-                    {filteredModels.length === 0 ? (
-                      <tr>
-                        <td
-                          colSpan="8"
-                          className="p-8 text-center text-slate-500"
-                        >
-                          {t("models.emptyState")}
-                        </td>
-                      </tr>
-                    ) : (
-                      filteredModels.map((m) => {
-                        const isRemote =
-                          m.size === "remote" ||
-                          m.details?.format === "api" ||
-                          !!m.remote_model;
-                        const quantUpper = m.details?.quantization_level
-                          ? m.details.quantization_level.toUpperCase()
-                          : "-";
-
-                        return (
-                          <tr
-                            key={m.name}
-                            onClick={() => setSelectedModel(m)}
-                            className={`hover:bg-slate-800/50 cursor-pointer transition-colors ${
-                              selectedModel?.name === m.name
-                                ? "bg-cyan-950/40 border-l-4 border-l-cyan-400"
-                                : ""
-                            }`}
-                          >
-                            {columns.name && (
-                              <td className="p-4 font-semibold text-slate-200 flex items-center gap-2">
-                                {m.name}
-                                {isRemote && (
-                                  <span className="px-1.5 py-0.5 bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 text-[10px] rounded">
-                                    {t("models.cloudBadge")}
-                                  </span>
-                                )}
-                              </td>
-                            )}
-                            {columns.family && (
-                              <td className="p-4 text-slate-400">
-                                {m.details?.family || "-"}
-                              </td>
-                            )}
-                            {columns.parameterSize && (
-                              <td className="p-4">
-                                <span className="px-2 py-0.5 bg-slate-800 rounded-md text-xs font-mono text-slate-300">
-                                  {formatParameterSize(
-                                    m.details?.parameter_size,
-                                  )}
-                                </span>
-                              </td>
-                            )}
-                            {columns.quantization && (
-                              <td className="p-4 font-mono text-slate-300">
-                                <span className="px-2 py-0.5 bg-slate-950 rounded border border-slate-800">
-                                  {quantUpper}
-                                </span>
-                              </td>
-                            )}
-                            {columns.contextLength && (
-                              <td className="p-4 font-mono text-xs text-slate-400">
-                                {(
-                                  m.details?.context_length || 0
-                                ).toLocaleString()}
-                              </td>
-                            )}
-                            {columns.size && (
-                              <td className="p-4 font-mono text-xs">
-                                {isRemote ? (
-                                  <span className="inline-flex items-center gap-1.5 text-indigo-400 bg-indigo-950/40 px-2 py-1 rounded-md border border-indigo-800/40">
-                                    <Cloud className="w-3.5 h-3.5" /> {t("models.cloudApiBadge")}
-                                  </span>
-                                ) : (
-                                  <span className="inline-flex items-center gap-1.5 text-emerald-400 bg-emerald-950/40 px-2 py-1 rounded-md border border-emerald-800/40">
-                                    <HardDrive className="w-3.5 h-3.5" />{" "}
-                                    {formatBytes(m.size)}
-                                  </span>
-                                )}
-                              </td>
-                            )}
-                            {columns.status && (
-                              <td className="p-4 font-mono text-xs">
-                                {testResults[m.name] ? (
-                                  <span
-                                    className={`px-2 py-1 rounded-md text-[10px] border ${
-                                      testResults[m.name].status === "ok"
-                                        ? "bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
-                                        : "bg-rose-500/20 text-rose-400 border-rose-500/30"
-                                    }`}
-                                  >
-                                    {testResults[m.name].msg}
-                                  </span>
-                                ) : (
-                                  <span className="text-slate-600">{t("models.statusDash")}</span>
-                                )}
-                              </td>
-                            )}
-                            {columns.capabilities && (
-                              <td className="p-4">
-                                <div className="flex gap-1 flex-wrap">
-                                  {(m.capabilities || []).map((cap) => (
-                                    <span
-                                      key={cap}
-                                      className="px-2 py-0.5 bg-slate-800 rounded text-[10px] text-slate-300"
-                                    >
-                                      {cap}
-                                    </span>
-                                  ))}
-                                </div>
-                              </td>
-                            )}
-                            {columns.modifiedAt && (
-                              <td className="p-4 text-xs text-slate-500 font-mono">
-                                {m.modified_at
-                                  ? new Date(m.modified_at).toLocaleDateString()
-                                  : t("models.statusDash")}
-                              </td>
-                            )}
-                          </tr>
-                        );
-                      })
-                    )}
-                  </tbody>
-                </table>
-              </div>
-
-              {/* 表格 Footer 統計列 */}
-              <div className="bg-slate-950 p-4 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-slate-400">
-                <div className="flex items-center gap-4">
-                  <span>
-                    {t("models.footer.count")}{" "}
-                    <strong className="text-white">
-                      {filteredModels.length}
-                    </strong>{" "}
-                    {t("models.footer.countUnit")}
-                  </span>
-                  <span className="h-3 w-px bg-slate-800"></span>
-                  <span>
-                    {t("models.footer.localUsed")}{" "}
-                    <strong className="text-emerald-400 font-mono">
-                      {formatBytes(totalLocalSize)}
-                    </strong>
-                  </span>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  {testLogs.length > 0 && (
-                    <button
-                      onClick={() => setShowLogs(true)}
-                      className="flex items-center gap-2 px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-xl transition-colors text-xs font-semibold"
-                    >
-                      <Terminal className="w-3.5 h-3.5" /> {t("models.footer.viewLogs")}
-                    </button>
-                  )}
-                  <button
-                    onClick={handleBatchTest}
-                    disabled={isTesting}
-                    className="flex items-center gap-2 px-4 py-1.5 bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-300 border border-indigo-500/30 rounded-xl transition-colors text-xs font-semibold disabled:opacity-50"
-                  >
-                    <Zap className="w-3.5 h-3.5" />
-                    {isTesting ? t("models.footer.batchTesting") : t("models.footer.batchTest")}
-                  </button>
-                </div>
-              </div>
-            </div>
+            <ModelsTable
+              models={filtersApi.filteredModels}
+              columns={filtersApi.columns}
+              selectedModel={overclockApi.selectedModel}
+              onSelect={overclockApi.setSelectedModel}
+              sortTable={filtersApi.sortTable}
+              testResults={testingApi.testResults}
+              totalLocalSize={filtersApi.totalLocalSize}
+              hasLogs={testingApi.testLogs.length > 0}
+              onViewLogs={() => testingApi.setShowLogs(true)}
+              isTesting={testingApi.isTesting}
+              onBatchTest={() =>
+                testingApi.handleBatchTest(filtersApi.filteredModels)
+              }
+            />
           </section>
 
           {/* === 3. 戰略指揮艙 / 超頻預估器 (`#overclock`) === */}
