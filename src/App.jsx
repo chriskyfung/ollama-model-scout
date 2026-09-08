@@ -1157,7 +1157,12 @@ export default function App() {
       <Footer githubRepo={GITHUB_REPO} onNavigate={scrollToSection} />
 
       {/* 浮動式批次測試日誌終端機 (Log Terminal Modal) */}
-      <TestLogModal open={showLogs} logs={testLogs} isTesting={isTesting} onClose={() => setShowLogs(false)} />
+      <TestLogModal
+        open={testingApi.showLogs}
+        logs={testingApi.testLogs}
+        isTesting={testingApi.isTesting}
+        onClose={() => testingApi.setShowLogs(false)}
+      />
     </div>
   );
 }
