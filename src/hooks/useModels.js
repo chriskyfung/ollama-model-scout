@@ -57,61 +57,61 @@ export function useModels({ onFinally } = {}) {
       typeof overrideFallback === "boolean"
         ? overrideFallback
         : allowMockFallbackRef.current;
-    const apiConfig = apiConfigRef.current;
-    const t = tRef.current;
+    const config = apiConfigRef.current;
+    const translate = tRef.current;
 
     setApiStatus({
       state: "loading",
-      message: t("toast.connecting"),
+      message: translate("toast.connecting"),
       isFallback: false,
     });
     try {
       let customHeaders = {};
-      if (apiConfig.headers) {
+      if (config.headers) {
         try {
-          customHeaders = JSON.parse(apiConfig.headers);
+          customHeaders = JSON.parse(config.headers);
         } catch {
-          throw new Error(t("toast.headersError"));
+          throw new Error(translate("toast.headersError"));
         }
       }
 
       const headers = {
         "Content-Type": "application/json",
-        ...(apiConfig.key ? { Authorization: `Bearer ${apiConfig.key}` } : {}),
+        ...(config.key ? { Authorization: `Bearer ${config.key}` } : {}),
         ...customHeaders,
       };
 
-      const res = await fetch(`${apiConfig.url}/api/tags`, {
+      const res = await fetch(`${config.url}/api/tags`, {
         method: "GET",
         headers,
       });
 
-      if (!res.ok) throw new Error(t("toast.httpError", { status: res.status }));
+      if (!res.ok) throw new Error(translate("toast.httpError", { status: res.status }));
 
       const data = await res.json();
       if (data && Array.isArray(data.models)) {
         setModels(data.models);
         setApiStatus({
           state: "success",
-          message: t("toast.success", { count: data.models.length }),
+          message: translate("toast.success", { count: data.models.length }),
           isFallback: false,
         });
       } else {
-        throw new Error(t("toast.responseError"));
+        throw new Error(translate("toast.responseError"));
       }
     } catch (err) {
       if (fallback) {
         setModels(MOCK_MODELS);
         setApiStatus({
           state: "error",
-          message: t("toast.fallback", { error: err.message }),
+          message: translate("toast.fallback", { error: err.message }),
           isFallback: true,
         });
       } else {
         setModels([]);
         setApiStatus({
           state: "error",
-          message: t("toast.failed", { error: err.message }),
+          message: translate("toast.failed", { error: err.message }),
           isFallback: false,
         });
       }
