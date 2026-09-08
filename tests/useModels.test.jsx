@@ -12,16 +12,22 @@ import { MOCK_MODELS } from "@/data/models";
  * the CURRENT ref value at call time, never a stale closure value.
  */
 
+// Small helper to cut the renderHook(useModels({ onFinally })) boilerplate.
+// Exposes the RTL result so tests can call fetchModels/setters and re-render
+// with a fresh onFinally when their assertion depends on it.
+function renderUseModels(onFinally = () => {}) {
+  return renderHook(({ onFinally: cb }) => useModels({ onFinally: cb }), {
+    initialProps: { onFinally },
+  });
+}
+
 describe("useModels — closure stabilization", () => {
   afterEach(() => {
     vi.restoreAllMocks();
   });
 
   it("keeps fetchModels identity stable across re-renders (even when onFinally changes)", () => {
-    const { result, rerender } = renderHook(
-      ({ onFinally }) => useModels({ onFinally }),
-      { initialProps: { onFinally: () => {} } },
-    );
+    const { result, rerender } = renderUseModels();
 
     const first = result.current.fetchModels;
 
@@ -39,10 +45,7 @@ describe("useModels — closure stabilization", () => {
       .spyOn(globalThis, "fetch")
       .mockResolvedValue({ ok: true, json: async () => ({ models: [] }) });
 
-    const { rerender } = renderHook(
-      ({ onFinally }) => useModels({ onFinally }),
-      { initialProps: { onFinally: () => {} } },
-    );
+    const { rerender } = renderUseModels();
 
     rerender({ onFinally: () => {} });
     rerender({ onFinally: () => {} });
@@ -57,10 +60,7 @@ describe("useModels — closure stabilization", () => {
   it("reads the current allowMockFallback value, not the stale closure value", async () => {
     vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("offline"));
 
-    const { result } = renderHook(
-      ({ onFinally }) => useModels({ onFinally }),
-      { initialProps: { onFinally: () => {} } },
-    );
+    const { result } = renderUseModels();
 
     // Mount-time fetch ran with allowMockFallback=true (default) → mock fallback.
     await waitFor(() => {
@@ -86,7 +86,7 @@ describe("useModels — closure stabilization", () => {
   it("falls back to MOCK_MODELS by default when the API rejects", async () => {
     vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("offline"));
 
-    const { result } = renderHook(() => useModels());
+    const { result } = renderUseModels();
 
     await waitFor(() => {
       expect(result.current.apiStatus.state).toBe("error");
@@ -99,7 +99,7 @@ describe("useModels — closure stabilization", () => {
   it("fetchModels(false) forces fallback OFF regardless of current allowMockFallback", async () => {
     vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("offline"));
 
-    const { result } = renderHook(() => useModels());
+    const { result } = renderUseModels();
 
     // allowMockFallback defaults to true, but an explicit false overrides it:
     // the failure path must yield empty models, not the mock data.
@@ -114,7 +114,7 @@ describe("useModels — closure stabilization", () => {
   it("fetchModels(true) forces fallback ON even after allowMockFallback was turned off", async () => {
     vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("offline"));
 
-    const { result } = renderHook(() => useModels());
+    const { result } = renderUseModels();
 
     act(() => result.current.setAllowMockFallback(false));
 
