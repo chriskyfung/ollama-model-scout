@@ -20,18 +20,24 @@ export default function FilterButtonBar({
     "px-3 py-1 rounded-lg border transition-all bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700";
   // Exclusive (radio-style) rows share the same inactive base as pillBase but
   // additionally carry font-semibold always plus an active-state shadow.
- // Rendered
-  // output is byte-for-byte unchanged from the previous inline template literals —
-  // this is a code-shape normalization only (every class stays a full literal so
-  // Tailwind's JIT scanner can see them, per the note atop this component).
+  // Rendered output is identical to the pre-refactor inline template literals
+  // (a code-shape normalization only); the exact class strings are pinned by
+  // tests/filterButtonBar.test.jsx so this stays self-verifying.
   const radioPillBase =
     "px-3 py-1 rounded-lg font-semibold transition-all border bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700";
+  // Active-state constants. Two variants exist because the exclusive
+  // (radio-style) rows always carry `font-semibold` plus an active-state
+  // shadow (`cyan`/`indigoShadow`), while the multi-select rows do not
+  // (`indigo`/`teal`/`emerald`).
   const activePill = {
     cyan: "px-3 py-1 rounded-lg font-semibold transition-all border bg-cyan-500/20 border-cyan-500 text-cyan-300 shadow-sm shadow-cyan-950",
-    indigoShadow: "px-3 py-1 rounded-lg font-semibold transition-all border bg-indigo-500/20 border-indigo-500 text-indigo-300 shadow-sm shadow-indigo-950",
-    indigo: "px-3 py-1 rounded-lg border transition-all bg-indigo-500/20 border-indigo-500 text-indigo-300",
+    indigoShadow:
+      "px-3 py-1 rounded-lg font-semibold transition-all border bg-indigo-500/20 border-indigo-500 text-indigo-300 shadow-sm shadow-indigo-950",
+    indigo:
+      "px-3 py-1 rounded-lg border transition-all bg-indigo-500/20 border-indigo-500 text-indigo-300",
     teal: "px-3 py-1 rounded-lg border transition-all bg-teal-500/20 border-teal-500 text-teal-300",
-    emerald: "px-3 py-1 rounded-lg border transition-all bg-emerald-500/20 border-emerald-500 text-emerald-300",
+    emerald:
+      "px-3 py-1 rounded-lg border transition-all bg-emerald-500/20 border-emerald-500 text-emerald-300",
   };
   return (
     <div className="flex flex-col space-y-3 pt-3 border-t border-slate-800/60 text-xs">
@@ -44,9 +50,7 @@ export default function FilterButtonBar({
           <button
             key={type}
             onClick={() => setFilters((p) => ({ ...p, type }))}
-            className={
-                filters.type === type ? activePill.cyan : radioPillBase
-              }
+            className={filters.type === type ? activePill.cyan : radioPillBase}
           >
             {t("models.filters.types." + type)}
           </button>
@@ -64,9 +68,7 @@ export default function FilterButtonBar({
               key={c}
               onClick={() => toggleFilter("capabilities", c)}
               className={
-                filters.capabilities.includes(c)
-                  ? activePill.indigo
-                  : pillBase
+                filters.capabilities.includes(c) ? activePill.indigo : pillBase
               }
             >
               {c}
@@ -86,9 +88,7 @@ export default function FilterButtonBar({
               key={f}
               onClick={() => toggleFilter("families", f)}
               className={
-                filters.families.includes(f)
-                  ? activePill.teal
-                  : pillBase
+                filters.families.includes(f) ? activePill.teal : pillBase
               }
             >
               {f}
@@ -132,14 +132,12 @@ export default function FilterButtonBar({
         ].map((st) => (
           <button
             key={st.id}
-            onClick={() =>
-              setFilters((p) => ({ ...p, testStatus: st.id }))
-            }
+            onClick={() => setFilters((p) => ({ ...p, testStatus: st.id }))}
             className={
-                filters.testStatus === st.id
-                  ? activePill.indigoShadow
-                  : radioPillBase
-              }
+              filters.testStatus === st.id
+                ? activePill.indigoShadow
+                : radioPillBase
+            }
           >
             {st.label}
           </button>
