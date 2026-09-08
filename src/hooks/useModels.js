@@ -45,6 +45,12 @@ export function useModels({ onFinally } = {}) {
   const onFinallyRef = useRef(onFinally);
   const tRef = useRef(t);
 
+  // !! ORDERING CONTRACT — this ref-sync effect MUST stay declared BEFORE the
+  //    mount-fetch effect below. On mount, effects run in declaration order, so
+  //    the refs are seeded/synced before `fetchModels()` is first invoked. Even
+  //    though useRef already initializes with current values (so today it's not
+  //    strictly load-bearing), pinning the order prevents a future edit from
+  //    relying on it accidentally.
   useEffect(() => {
     allowMockFallbackRef.current = allowMockFallback;
     apiConfigRef.current = apiConfig;

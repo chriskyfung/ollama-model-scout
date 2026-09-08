@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { useModels } from "@/hooks/useModels";
 import { MOCK_MODELS } from "@/data/models";
@@ -8,17 +8,11 @@ import { MOCK_MODELS } from "@/data/models";
  *
  * The hook wraps fetchModels in useCallback(..., []) for a stable identity,
  * reading mutable values (allowMockFallback, apiConfig, onFinally, t) through
- * refs. These tests lock in the two invariants that makes that safe:
- *   1. fetchModels identity never changes (so the mount effect fires once).
- *   2. a bare fetchModels() call always reads the CURRENT ref value, not the
- *      stale value from the render that created the closure.
+ * refs — and (per the effect-ordering contract in useModels.js) always reads
+ * the CURRENT ref value at call time, never a stale closure value.
  */
 
 describe("useModels — closure stabilization", () => {
-  beforeEach(() => {
-    vi.spyOn(console, "error").mockImplementation(() => {});
-  });
-
   afterEach(() => {
     vi.restoreAllMocks();
   });
@@ -40,7 +34,7 @@ describe("useModels — closure stabilization", () => {
     expect(result.current.fetchModels).toBe(first);
   });
 
-  it("fetches exactly once on mount despite re-renders", () => {
+  it("fetches exactly once on mount despite re-renders", async () => {
     const fetchMock = vi
       .spyOn(globalThis, "fetch")
       .mockResolvedValue({ ok: true, json: async () => ({ models: [] }) });
@@ -53,7 +47,11 @@ describe("useModels — closure stabilization", () => {
     rerender({ onFinally: () => {} });
     rerender({ onFinally: () => {} });
 
-    expect(fetchMock).toHaveBeenCalledTimes(1);
+    // Await the mount fetch settling before asserting, so the count is stable
+    // (avoids a theoretical race vs. the async effect completing later).
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+    });
   });
 
   it("reads the current allowMockFallback value, not the stale closure value", async () => {
@@ -92,6 +90,37 @@ describe("useModels — closure stabilization", () => {
 
     await waitFor(() => {
       expect(result.current.apiStatus.state).toBe("error");
+    });
+
+    expect(result.current.models).toEqual(MOCK_MODELS);
+    expect(result.current.apiStatus.isFallback).toBe(true);
+  });
+
+  it("fetchModels(false) forces fallback OFF regardless of current allowMockFallback", async () => {
+    vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("offline"));
+
+    const { result } = renderHook(() => useModels());
+
+    // allowMockFallback defaults to true, but an explicit false overrides it:
+    // the failure path must yield empty models, not the mock data.
+    await act(async () => {
+      await result.current.fetchModels(false);
+    });
+
+    expect(result.current.models).toEqual([]);
+    expect(result.current.apiStatus.isFallback).toBe(false);
+  });
+
+  it("fetchModels(true) forces fallback ON even after allowMockFallback was turned off", async () => {
+    vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("offline"));
+
+    const { result } = renderHook(() => useModels());
+
+    act(() => result.current.setAllowMockFallback(false));
+
+    // Current state is fallback-OFF, but the explicit true override wins.
+    await act(async () => {
+      await result.current.fetchModels(true);
     });
 
     expect(result.current.models).toEqual(MOCK_MODELS);
