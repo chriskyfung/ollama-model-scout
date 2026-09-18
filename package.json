@@ -26,7 +26,7 @@
     "usehooks-ts": "^3.1.1"
   },
   "devDependencies": {
-    "@babel/core": "^8.0.1",
+    "@babel/core": "^8.0.5",
     "@eslint/js": "^10.0.1",
     "@rolldown/plugin-babel": "^0.2.4",
     "@tailwindcss/vite": "^4.3.3",
@@ -36,16 +36,16 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
     "@vitejs/plugin-react": "^6.1.1",
-    "autoprefixer": "^10.5.5",
+    "autoprefixer": "^10.5.6",
     "babel-plugin-react-compiler": "^1.0.0",
-    "eslint": "^10.9.1",
+    "eslint": "^10.10.0",
     "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-react-refresh": "^0.5.6",
+    "eslint-plugin-react-refresh": "^0.5.7",
     "globals": "^17.12.0",
     "jsdom": "^30.0.1",
     "postcss": "^8.5.28",
     "tailwindcss": "^4.3.3",
-    "vite": "^8.2.2",
+    "vite": "^8.3.0",
     "vitest": "^5.0.0"
   },
   "packageManager": "pnpm@11.25.0+sha512.5cde925b4f075f725eb71fbae18a42ffe784524789f19b61c731cb8721ec28aaee160e01a8d5af4fedb2a42cdbf300efe23db356b0d4a17b4d63e11f8ab7c956"
